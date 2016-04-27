@@ -18,6 +18,14 @@ public class CometParams {
     protected Map<Integer, String> cometEnzymeInfos = new TreeMap<>();
     protected String firstLine;
     protected Properties props = new Properties();
+    
+    
+    public static final String PROP_database_name = "database_name";
+    public static final String PROP_peptide_mass_tolerance = "peptide_mass_tolerance";
+    public static final String PROP_fragment_bin_tol = "fragment_bin_tol";
+    public static final String PROP_fragment_bin_offset = "fragment_bin_offset";
+    public static final String PROP_theoretical_fragment_ions = "theoretical_fragment_ions";
+//    public static final String PROP_ = "";
 
     public Map<Integer, String> getCometEnzymeInfos() {
         return cometEnzymeInfos;
@@ -27,6 +35,12 @@ public class CometParams {
         return firstLine;
     }
 
+    public Properties getProps() {
+        return props;
+    }
+
+    
+    
     public static CometParams parse(Path path) throws ParsingException {
 
         CometParams cometParams = new CometParams();
@@ -57,6 +71,8 @@ public class CometParams {
                         Matcher m = valuePattern.matcher(value);
                         if (m.matches()) {
                             cometParams.props.put(key, m.group(1));
+                        } else {
+                            cometParams.props.put(key, value);
                         }
                     }
                 }

@@ -5,6 +5,8 @@
  */
 package dia.umpire.gui;
 
+import dia.umpire.exceptions.ParsingException;
+import dia.umpire.params.CometParams;
 import dia.umpire.params.UmpireParams;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -17,7 +19,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -100,6 +104,21 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         fmtWindowSize = new javax.swing.JFormattedTextField();
         panelInTabCometParams = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        btnBrowseDatabasePath = new javax.swing.JButton();
+        txtDatabasePath = new javax.swing.JTextField();
+        btnSelectCometParamsFile = new javax.swing.JButton();
+        txtCometParamsFile = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        fmtpeptide_mass_tolerance = new javax.swing.JFormattedTextField();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        fmtfragment_bin_tol = new javax.swing.JFormattedTextField();
+        jLabel22 = new javax.swing.JLabel();
+        fmtfragment_bin_offset = new javax.swing.JFormattedTextField();
+        jLabel23 = new javax.swing.JLabel();
+        fmttheoretical_fragment_ions = new javax.swing.JFormattedTextField();
         panelRun = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -508,15 +527,141 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         tabPane.addTab("Umpire Params", panelInTabSeParams);
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Sequence database"));
+
+        btnBrowseDatabasePath.setText("Browse");
+        btnBrowseDatabasePath.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBrowseDatabasePathActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtDatabasePath)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBrowseDatabasePath)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBrowseDatabasePath)
+                    .addComponent(txtDatabasePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btnSelectCometParamsFile.setText("Browse");
+        btnSelectCometParamsFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectCometParamsFileActionPerformed(evt);
+            }
+        });
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Mass tolerance"));
+
+        jLabel14.setText("peptide_mass_tolerance");
+
+        fmtpeptide_mass_tolerance.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmtpeptide_mass_tolerance.setMinimumSize(new java.awt.Dimension(50, 20));
+        fmtpeptide_mass_tolerance.setPreferredSize(new java.awt.Dimension(50, 20));
+
+        jLabel20.setText("(ppm)");
+
+        jLabel21.setText("fragment_bin_tol");
+
+        fmtfragment_bin_tol.setMinimumSize(new java.awt.Dimension(50, 20));
+        fmtfragment_bin_tol.setPreferredSize(new java.awt.Dimension(50, 20));
+
+        jLabel22.setText("fragment_bin_offset");
+
+        fmtfragment_bin_offset.setMinimumSize(new java.awt.Dimension(50, 20));
+        fmtfragment_bin_offset.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtfragment_bin_offset.setRequestFocusEnabled(false);
+
+        jLabel23.setText("theoretical_fragment_ions");
+
+        fmttheoretical_fragment_ions.setMinimumSize(new java.awt.Dimension(50, 20));
+        fmttheoretical_fragment_ions.setPreferredSize(new java.awt.Dimension(50, 20));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel23)
+                    .addComponent(jLabel22)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel21))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(fmtpeptide_mass_tolerance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel20))
+                    .addComponent(fmtfragment_bin_tol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtfragment_bin_offset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmttheoretical_fragment_ions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(253, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(fmtpeptide_mass_tolerance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel20))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(fmtfragment_bin_tol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel22)
+                    .addComponent(fmtfragment_bin_offset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(fmttheoretical_fragment_ions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout panelInTabCometParamsLayout = new javax.swing.GroupLayout(panelInTabCometParams);
         panelInTabCometParams.setLayout(panelInTabCometParamsLayout);
         panelInTabCometParamsLayout.setHorizontalGroup(
             panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 507, Short.MAX_VALUE)
+            .addGroup(panelInTabCometParamsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInTabCometParamsLayout.createSequentialGroup()
+                        .addComponent(txtCometParamsFile)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSelectCometParamsFile))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelInTabCometParamsLayout.setVerticalGroup(
             panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
+            .addGroup(panelInTabCometParamsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSelectCometParamsFile)
+                    .addComponent(txtCometParamsFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(156, Short.MAX_VALUE))
         );
 
         tabPane.addTab("Comet Params", panelInTabCometParams);
@@ -598,6 +743,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fileChooser.setApproveButtonText("Select file");
         fileChooser.setApproveButtonToolTipText("Load params from this file into the GUI");
         fileChooser.setDialogTitle("Choose Umpire SE param file");
+        fileChooser.setMultiSelectionEnabled(false);
         int openDialog = fileChooser.showOpenDialog(this);
         switch (openDialog) {
             case JFileChooser.APPROVE_OPTION:
@@ -624,6 +770,68 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fmtRFmaxActionPerformed
 
+    private void btnSelectCometParamsFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectCometParamsFileActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Comet .params files", "params");
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+        fileChooser.setApproveButtonText("Select file");
+        fileChooser.setApproveButtonToolTipText("Load params from this file into the GUI");
+        fileChooser.setDialogTitle("Choose Comet param file");
+        fileChooser.setMultiSelectionEnabled(false);
+        
+        int openDialog = fileChooser.showOpenDialog(this);
+        switch (openDialog) {
+            case JFileChooser.APPROVE_OPTION:
+            File file = fileChooser.getSelectedFile();
+            txtCometParamsFile.setText(Paths.get(file.getAbsolutePath()).toString());
+            try {
+                CometParams cometParams = loadCometParamsFile(file);
+                fillCometParamFields(cometParams);
+            } catch (ParsingException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            break;
+        }
+    }//GEN-LAST:event_btnSelectCometParamsFileActionPerformed
+
+    private void btnBrowseDatabasePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseDatabasePathActionPerformed
+        
+    }//GEN-LAST:event_btnBrowseDatabasePathActionPerformed
+
+    private CometParams loadCometParamsFile(File file) throws ParsingException {
+        CometParams params = CometParams.parse(Paths.get(file.getAbsolutePath()));
+        if (params.getFirstLine() == null || params.getFirstLine().isEmpty()) {
+            throw new ParsingException("The first line of the comet params file can't be empty.");
+        }
+        if (params.getCometEnzymeInfos().isEmpty()) {
+            throw new ParsingException("COMET_ENZYME_INFO table was not found");
+        }
+        return params;
+    }
+    
+    private void fillCometParamFields(CometParams cometParams) throws ParsingException {
+        Properties props = cometParams.getProps();
+        
+        TreeMap<String, String> treeMap = new TreeMap<>();
+        for (Entry<Object, Object> o : props.entrySet()) {
+            treeMap.put((String)o.getKey(), (String)o.getValue());
+        }
+        
+        
+        String databasePath  = props.getProperty(CometParams.PROP_database_name);
+        if (databasePath == null) {
+            //throw new ParsingException("Could not find database path in the parsed properties");
+        } else {
+            txtDatabasePath.setText(databasePath);
+        }
+        
+        fmtpeptide_mass_tolerance.setText(props.getProperty(CometParams.PROP_peptide_mass_tolerance));
+        fmtfragment_bin_tol.setText(props.getProperty(CometParams.PROP_fragment_bin_tol));
+        fmtfragment_bin_offset.setText(props.getProperty(CometParams.PROP_fragment_bin_offset));
+        fmttheoretical_fragment_ions.setText(props.getProperty(CometParams.PROP_theoretical_fragment_ions));
+    }
+    
     private static List<String> splitTrim(String input, String sep) {
         String[] split = input.split(sep);
         List<String> strings = new ArrayList<>(split.length);
@@ -713,7 +921,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBrowseDatabasePath;
     private javax.swing.JButton btnBrowseUmpireParamFile;
+    private javax.swing.JButton btnSelectCometParamsFile;
     private javax.swing.JButton btnSelectRawFiles;
     private javax.swing.JCheckBox chkAdjustFragIntensity;
     private javax.swing.JCheckBox chkBoostComplementaryIon;
@@ -735,6 +945,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField fmtRTOverlap;
     private javax.swing.JFormattedTextField fmtSN;
     private javax.swing.JFormattedTextField fmtWindowSize;
+    private javax.swing.JFormattedTextField fmtfragment_bin_offset;
+    private javax.swing.JFormattedTextField fmtfragment_bin_tol;
+    private javax.swing.JFormattedTextField fmtpeptide_mass_tolerance;
+    private javax.swing.JFormattedTextField fmttheoretical_fragment_ions;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -742,12 +956,17 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -756,7 +975,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblNoMissedScan;
@@ -767,6 +988,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JPanel panelSeParams;
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JTextArea txtAreaSelectedFiles;
+    private javax.swing.JTextField txtCometParamsFile;
+    private javax.swing.JTextField txtDatabasePath;
     private javax.swing.JTextField txtSelectedFile;
     // End of variables declaration//GEN-END:variables
+
 }
