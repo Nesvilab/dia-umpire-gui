@@ -1,4 +1,4 @@
-package dia.umpire.gui;
+package dia.umpire.params;
 
 import dia.umpire.exceptions.ParsingException;
 

@@ -1,6 +1,6 @@
 package test;
 
-import dia.umpire.gui.CometParams;
+import dia.umpire.params.CometParams;
 import dia.umpire.exceptions.ParsingException;
 
 import java.io.IOException;
