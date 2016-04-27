@@ -5,6 +5,8 @@
  */
 package dia.umpire.gui;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author dattam
@@ -15,7 +17,10 @@ public class DIAUmpireGUI {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        UmpireUnargetedDbSearchFrame frame = new UmpireUnargetedDbSearchFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
     
 }
