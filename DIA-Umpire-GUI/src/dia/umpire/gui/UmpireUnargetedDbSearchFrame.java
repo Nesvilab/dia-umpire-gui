@@ -9,8 +9,13 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,10 +44,15 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
-        tabSeParams = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        tabPane = new javax.swing.JTabbedPane();
+        panelInTabSelectFiles = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtAreaSelectedFiles = new javax.swing.JTextArea();
+        btnSelectRawFiles = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        panelInTabSeParams = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtRpMax = new javax.swing.JTextField();
@@ -58,12 +68,80 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         chkBoostComplementaryIon = new javax.swing.JCheckBox();
         txtSelectedFile = new javax.swing.JTextField();
         btnBrowseUmpireParamFile = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
+        panelInTabCometParams = new javax.swing.JPanel();
+        panelRun = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tabSeParams.setToolTipText("Umpire SE parameters");
-        tabSeParams.setName(""); // NOI18N
+        tabPane.setToolTipText("");
+        tabPane.setName(""); // NOI18N
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Selected files"));
+
+        txtAreaSelectedFiles.setColumns(20);
+        txtAreaSelectedFiles.setRows(5);
+        txtAreaSelectedFiles.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtAreaSelectedFiles.setEnabled(false);
+        jScrollPane1.setViewportView(txtAreaSelectedFiles);
+
+        btnSelectRawFiles.setText("Add files");
+        btnSelectRawFiles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectRawFilesActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Clear");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(btnSelectRawFiles)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)))
+                .addContainerGap(27, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSelectRawFiles)
+                    .addComponent(jButton1))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout panelInTabSelectFilesLayout = new javax.swing.GroupLayout(panelInTabSelectFiles);
+        panelInTabSelectFiles.setLayout(panelInTabSelectFilesLayout);
+        panelInTabSelectFilesLayout.setHorizontalGroup(
+            panelInTabSelectFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInTabSelectFilesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelInTabSelectFilesLayout.setVerticalGroup(
+            panelInTabSelectFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInTabSelectFilesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        tabPane.addTab("Select Raw Files", panelInTabSelectFiles);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Fragment grouping"));
 
@@ -81,11 +159,21 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         txtCorrThreshold.setMinimumSize(new java.awt.Dimension(50, 20));
         txtCorrThreshold.setPreferredSize(new java.awt.Dimension(50, 20));
+        txtCorrThreshold.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCorrThresholdActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("DeltaApex");
 
         txtDeltaApex.setMinimumSize(new java.awt.Dimension(50, 20));
         txtDeltaApex.setPreferredSize(new java.awt.Dimension(50, 20));
+        txtDeltaApex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDeltaApexActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("RTOverlap");
 
@@ -105,31 +193,31 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(txtRpMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtRfMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addGap(4, 4, 4)
+                        .addComponent(txtCorrThreshold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDeltaApex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(txtRtOverlap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(chkAdjustFragIntensity)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkBoostComplementaryIon))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtRpMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtRfMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCorrThreshold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDeltaApex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(312, Short.MAX_VALUE))
+                        .addComponent(chkBoostComplementaryIon)))
+                .addContainerGap(276, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,59 +247,72 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelInTabSeParamsLayout = new javax.swing.GroupLayout(panelInTabSeParams);
+        panelInTabSeParams.setLayout(panelInTabSeParamsLayout);
+        panelInTabSeParamsLayout.setHorizontalGroup(
+            panelInTabSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInTabSeParamsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelInTabSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(panelInTabSeParamsLayout.createSequentialGroup()
                         .addComponent(txtSelectedFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnBrowseUmpireParamFile)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        panelInTabSeParamsLayout.setVerticalGroup(
+            panelInTabSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInTabSeParamsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelInTabSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSelectedFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBrowseUmpireParamFile))
-                .addGap(33, 33, 33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(274, Short.MAX_VALUE))
+                .addContainerGap(296, Short.MAX_VALUE))
         );
 
-        tabSeParams.addTab("tab1", jPanel1);
+        tabPane.addTab("Umpire Params", panelInTabSeParams);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelInTabCometParamsLayout = new javax.swing.GroupLayout(panelInTabCometParams);
+        panelInTabCometParams.setLayout(panelInTabCometParamsLayout);
+        panelInTabCometParamsLayout.setHorizontalGroup(
+            panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 772, Short.MAX_VALUE)
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelInTabCometParamsLayout.setVerticalGroup(
+            panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 428, Short.MAX_VALUE)
         );
 
-        tabSeParams.addTab("tab2", jPanel4);
+        tabPane.addTab("Comet Params", panelInTabCometParams);
+
+        javax.swing.GroupLayout panelRunLayout = new javax.swing.GroupLayout(panelRun);
+        panelRun.setLayout(panelRunLayout);
+        panelRunLayout.setHorizontalGroup(
+            panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 772, Short.MAX_VALUE)
+        );
+        panelRunLayout.setVerticalGroup(
+            panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 428, Short.MAX_VALUE)
+        );
+
+        tabPane.addTab("Run", panelRun);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabSeParams)
+            .addComponent(tabPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabSeParams)
+            .addComponent(tabPane)
         );
 
-        tabSeParams.getAccessibleContext().setAccessibleName("Umpire SE Params");
+        tabPane.getAccessibleContext().setAccessibleName("Umpire SE Params");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -245,6 +346,63 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnBrowseUmpireParamFileActionPerformed
 
+    private void btnSelectRawFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectRawFilesActionPerformed
+        if (btnSelectRawFiles == evt.getSource()) {
+            String approveText = "Select";
+            JFileChooser fc = new JFileChooser();
+            fc.setAcceptAllFileFilterUsed(true);
+            fc.setApproveButtonText(approveText);
+            fc.setDialogTitle("Choose raw data files");
+            fc.setMultiSelectionEnabled(true);
+            fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+
+//            List<String> filePaths = splitTrim(txtFileIn.getText().trim(), ",");
+//            for (int i = 0; i < filePaths.size(); i++) {
+//                String filePath = filePaths.get(i);
+//                Path p = Paths.get(filePath).toAbsolutePath();
+//                if (Files.exists(p)) {
+//                    fc.setSelectedFile(p.toFile());
+//                }
+//            }
+
+            int retVal = fc.showDialog(this, approveText);
+            if (retVal == JFileChooser.APPROVE_OPTION) {
+                File[] files = fc.getSelectedFiles();
+                for (File f : files) {
+                    txtAreaSelectedFiles.append(f.toString() + "\n");
+                }
+                
+            } else {
+                
+            }
+        }
+    }//GEN-LAST:event_btnSelectRawFilesActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        txtAreaSelectedFiles.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtCorrThresholdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorrThresholdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCorrThresholdActionPerformed
+
+    private void txtDeltaApexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDeltaApexActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDeltaApexActionPerformed
+
+    private static List<String> splitTrim(String input, String sep) {
+        String[] split = input.split(sep);
+        List<String> strings = new ArrayList<>(split.length);
+        for (int i = 0; i < split.length; i++) {
+            split[i] = split[i].trim();
+            if (!split[i].isEmpty()) {
+                strings.add(split[i]);
+            }
+        }
+        return strings;
+    }
+    
     private UmpireParams parseUmpireParamsFile(File f) {
         UmpireParams params = new UmpireParams();
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f))) {
@@ -304,17 +462,24 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBrowseUmpireParamFile;
+    private javax.swing.JButton btnSelectRawFiles;
     private javax.swing.JCheckBox chkAdjustFragIntensity;
     private javax.swing.JCheckBox chkBoostComplementaryIon;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JTabbedPane tabSeParams;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel panelInTabCometParams;
+    private javax.swing.JPanel panelInTabSeParams;
+    private javax.swing.JPanel panelInTabSelectFiles;
+    private javax.swing.JPanel panelRun;
+    private javax.swing.JTabbedPane tabPane;
+    private javax.swing.JTextArea txtAreaSelectedFiles;
     private javax.swing.JTextField txtCorrThreshold;
     private javax.swing.JTextField txtDeltaApex;
     private javax.swing.JTextField txtRfMax;
