@@ -56,17 +56,17 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         panelInTabSeParams = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtRpMax = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtRfMax = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtCorrThreshold = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtDeltaApex = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtRtOverlap = new javax.swing.JTextField();
         chkAdjustFragIntensity = new javax.swing.JCheckBox();
         chkBoostComplementaryIon = new javax.swing.JCheckBox();
+        fmtRPmax = new javax.swing.JFormattedTextField();
+        fmtRFmax = new javax.swing.JFormattedTextField();
+        fmtCorrThreshold = new javax.swing.JFormattedTextField();
+        fmtDeltaApex = new javax.swing.JFormattedTextField();
+        fmtRTOverlap = new javax.swing.JFormattedTextField();
         txtSelectedFile = new javax.swing.JTextField();
         btnBrowseUmpireParamFile = new javax.swing.JButton();
         panelSeParams = new javax.swing.JPanel();
@@ -136,7 +136,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(btnSelectRawFiles)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -179,44 +179,41 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel1.setText("RPmax");
 
-        txtRpMax.setMinimumSize(new java.awt.Dimension(50, 20));
-        txtRpMax.setPreferredSize(new java.awt.Dimension(50, 20));
-
         jLabel2.setText("RFmax");
-
-        txtRfMax.setMinimumSize(new java.awt.Dimension(50, 20));
-        txtRfMax.setPreferredSize(new java.awt.Dimension(50, 20));
 
         jLabel3.setText("CorrThreshold");
 
-        txtCorrThreshold.setMinimumSize(new java.awt.Dimension(50, 20));
-        txtCorrThreshold.setPreferredSize(new java.awt.Dimension(50, 20));
-        txtCorrThreshold.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCorrThresholdActionPerformed(evt);
-            }
-        });
-
         jLabel4.setText("DeltaApex");
 
-        txtDeltaApex.setMinimumSize(new java.awt.Dimension(50, 20));
-        txtDeltaApex.setPreferredSize(new java.awt.Dimension(50, 20));
-        txtDeltaApex.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDeltaApexActionPerformed(evt);
-            }
-        });
-
         jLabel5.setText("RTOverlap");
-
-        txtRtOverlap.setMinimumSize(new java.awt.Dimension(50, 20));
-        txtRtOverlap.setPreferredSize(new java.awt.Dimension(50, 20));
 
         chkAdjustFragIntensity.setText("AdjustFragIntensity");
         chkAdjustFragIntensity.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
 
         chkBoostComplementaryIon.setText("BoostComplementaryIon");
         chkBoostComplementaryIon.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+
+        fmtRPmax.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        fmtRPmax.setMinimumSize(new java.awt.Dimension(50, 20));
+        fmtRPmax.setPreferredSize(new java.awt.Dimension(50, 20));
+
+        fmtRFmax.setMinimumSize(new java.awt.Dimension(50, 20));
+        fmtRFmax.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtRFmax.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fmtRFmaxActionPerformed(evt);
+            }
+        });
+
+        fmtCorrThreshold.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmtCorrThreshold.setMinimumSize(new java.awt.Dimension(50, 20));
+        fmtCorrThreshold.setPreferredSize(new java.awt.Dimension(50, 20));
+
+        fmtDeltaApex.setMinimumSize(new java.awt.Dimension(50, 20));
+        fmtDeltaApex.setPreferredSize(new java.awt.Dimension(50, 20));
+
+        fmtRTOverlap.setMinimumSize(new java.awt.Dimension(50, 20));
+        fmtRTOverlap.setPreferredSize(new java.awt.Dimension(50, 20));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -225,30 +222,30 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtRpMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtRfMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
-                        .addGap(4, 4, 4)
-                        .addComponent(txtCorrThreshold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDeltaApex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtRtOverlap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fmtRTOverlap, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(chkAdjustFragIntensity)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkBoostComplementaryIon)))
+                        .addComponent(chkBoostComplementaryIon))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(fmtRPmax, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fmtRFmax, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fmtCorrThreshold, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fmtDeltaApex, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -257,19 +254,19 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtRpMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(txtRfMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(txtCorrThreshold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(txtDeltaApex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fmtRPmax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtRFmax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtCorrThreshold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtDeltaApex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txtRtOverlap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chkAdjustFragIntensity)
-                    .addComponent(chkBoostComplementaryIon)))
+                    .addComponent(chkBoostComplementaryIon)
+                    .addComponent(fmtRTOverlap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         btnBrowseUmpireParamFile.setText("Browse");
@@ -321,11 +318,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         lblNoMissedScan.setText("Num. MissedScan");
 
+        fmtNoMissedScan.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         fmtNoMissedScan.setMinimumSize(new java.awt.Dimension(50, 20));
         fmtNoMissedScan.setPreferredSize(new java.awt.Dimension(50, 20));
 
         jLabel13.setText("MinFrag");
 
+        fmtMinFrag.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         fmtMinFrag.setMinimumSize(new java.awt.Dimension(50, 20));
         fmtMinFrag.setPreferredSize(new java.awt.Dimension(50, 20));
 
@@ -398,7 +397,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(fmtMaxCurveRTRange, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fmtEstimateBG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fmtMS2SN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 26, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         panelSeParamsLayout.setVerticalGroup(
             panelSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -517,7 +516,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         panelInTabCometParams.setLayout(panelInTabCometParamsLayout);
         panelInTabCometParamsLayout.setHorizontalGroup(
             panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 533, Short.MAX_VALUE)
+            .addGap(0, 507, Short.MAX_VALUE)
         );
         panelInTabCometParamsLayout.setVerticalGroup(
             panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -530,7 +529,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         panelRun.setLayout(panelRunLayout);
         panelRunLayout.setHorizontalGroup(
             panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 533, Short.MAX_VALUE)
+            .addGap(0, 507, Short.MAX_VALUE)
         );
         panelRunLayout.setVerticalGroup(
             panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -547,7 +546,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+            .addComponent(tabPane)
         );
 
         tabPane.getAccessibleContext().setAccessibleName("Umpire SE Params");
@@ -629,13 +628,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnBrowseUmpireParamFileActionPerformed
 
-    private void txtDeltaApexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDeltaApexActionPerformed
+    private void fmtRFmaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fmtRFmaxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtDeltaApexActionPerformed
-
-    private void txtCorrThresholdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorrThresholdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCorrThresholdActionPerformed
+    }//GEN-LAST:event_fmtRFmaxActionPerformed
 
     private static List<String> splitTrim(String input, String sep) {
         String[] split = input.split(sep);
@@ -660,12 +655,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         return null;
     }
     
-    private void fillInUmpireParams(UmpireParams params) {
-        txtRpMax.setText(params.getProperty(UmpireParams.PROP_RPmax));
-        txtRfMax.setText(params.getProperty(UmpireParams.PROP_RFmax));
-        txtCorrThreshold.setText(params.getProperty(UmpireParams.PROP_CorrThreshold));
-        txtDeltaApex.setText(params.getProperty(UmpireParams.PROP_DeltaApex));
-        txtRtOverlap.setText(params.getProperty(UmpireParams.PROP_RTOverlap));
+    private void fillInUmpireParams(UmpireParams params) {        
+        fmtRPmax.setText(params.getProperty(UmpireParams.PROP_RPmax));
+        fmtRFmax.setText(params.getProperty(UmpireParams.PROP_RFmax));
+        fmtCorrThreshold.setText(params.getProperty(UmpireParams.PROP_CorrThreshold));
+        fmtDeltaApex.setText(params.getProperty(UmpireParams.PROP_DeltaApex));
+        fmtRTOverlap.setText(params.getProperty(UmpireParams.PROP_RTOverlap));
         chkAdjustFragIntensity.setSelected(params.getAdjustFragIntensity());
         chkBoostComplementaryIon.setSelected(params.getBoostComplementaryIon());
     }
@@ -711,6 +706,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnSelectRawFiles;
     private javax.swing.JCheckBox chkAdjustFragIntensity;
     private javax.swing.JCheckBox chkBoostComplementaryIon;
+    private javax.swing.JFormattedTextField fmtCorrThreshold;
+    private javax.swing.JFormattedTextField fmtDeltaApex;
     private javax.swing.JFormattedTextField fmtEstimateBG;
     private javax.swing.JFormattedTextField fmtMS2SN;
     private javax.swing.JFormattedTextField fmtMaxCurveRTRange;
@@ -720,6 +717,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField fmtMinMSMSIntensity;
     private javax.swing.JFormattedTextField fmtMinNoPeakCluster;
     private javax.swing.JFormattedTextField fmtNoMissedScan;
+    private javax.swing.JFormattedTextField fmtRFmax;
+    private javax.swing.JFormattedTextField fmtRPmax;
+    private javax.swing.JFormattedTextField fmtRTOverlap;
     private javax.swing.JFormattedTextField fmtWindowSize;
     private javax.swing.JFormattedTextField formattedTxtMS1PPM;
     private javax.swing.JFormattedTextField formattedTxtMS2PPM;
@@ -756,11 +756,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JPanel panelSeParams;
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JTextArea txtAreaSelectedFiles;
-    private javax.swing.JTextField txtCorrThreshold;
-    private javax.swing.JTextField txtDeltaApex;
-    private javax.swing.JTextField txtRfMax;
-    private javax.swing.JTextField txtRpMax;
-    private javax.swing.JTextField txtRtOverlap;
     private javax.swing.JTextField txtSelectedFile;
     // End of variables declaration//GEN-END:variables
 }
