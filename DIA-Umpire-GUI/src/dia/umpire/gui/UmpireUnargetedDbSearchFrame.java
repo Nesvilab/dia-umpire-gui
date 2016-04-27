@@ -70,6 +70,27 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         txtSelectedFile = new javax.swing.JTextField();
         btnBrowseUmpireParamFile = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        txtMS1PPM = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jTextField6 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jTextField7 = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jTextField8 = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jTextField9 = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        jTextField10 = new javax.swing.JTextField();
+        jCheckBox1 = new javax.swing.JCheckBox();
         panelInTabCometParams = new javax.swing.JPanel();
         panelRun = new javax.swing.JPanel();
 
@@ -250,17 +271,74 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Singnal Extraction (SE) params"));
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT);
+        flowLayout1.setAlignOnBaseline(true);
+        jPanel1.setLayout(flowLayout1);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 203, Short.MAX_VALUE)
-        );
+        jLabel6.setText("MS1PPM");
+        jPanel1.add(jLabel6);
+
+        txtMS1PPM.setMinimumSize(new java.awt.Dimension(50, 20));
+        txtMS1PPM.setPreferredSize(new java.awt.Dimension(50, 20));
+        jPanel1.add(txtMS1PPM);
+
+        jLabel7.setText("jLabel7");
+        jPanel1.add(jLabel7);
+
+        jTextField2.setMinimumSize(new java.awt.Dimension(50, 20));
+        jTextField2.setPreferredSize(new java.awt.Dimension(50, 20));
+        jPanel1.add(jTextField2);
+
+        jLabel8.setText("jLabel8");
+        jPanel1.add(jLabel8);
+
+        jTextField3.setText("jTextField3");
+        jPanel1.add(jTextField3);
+
+        jLabel9.setText("jLabel9");
+        jPanel1.add(jLabel9);
+
+        jTextField4.setText("jTextField4");
+        jPanel1.add(jTextField4);
+
+        jLabel10.setText("jLabel10");
+        jPanel1.add(jLabel10);
+
+        jTextField5.setText("jTextField5");
+        jPanel1.add(jTextField5);
+
+        jLabel11.setText("jLabel11");
+        jPanel1.add(jLabel11);
+
+        jTextField6.setText("jTextField6");
+        jPanel1.add(jTextField6);
+
+        jLabel12.setText("jLabel12");
+        jPanel1.add(jLabel12);
+
+        jTextField7.setText("jTextField7");
+        jPanel1.add(jTextField7);
+
+        jLabel13.setText("jLabel13");
+        jPanel1.add(jLabel13);
+
+        jTextField8.setText("jTextField8");
+        jPanel1.add(jTextField8);
+
+        jLabel14.setText("jLabel14");
+        jPanel1.add(jLabel14);
+
+        jTextField9.setText("jTextField9");
+        jPanel1.add(jTextField9);
+
+        jLabel15.setText("jLabel15");
+        jPanel1.add(jLabel15);
+
+        jTextField10.setText("jTextField10");
+        jPanel1.add(jTextField10);
+
+        jCheckBox1.setText("jCheckBox1");
+        jPanel1.add(jCheckBox1);
 
         javax.swing.GroupLayout panelInTabSeParamsLayout = new javax.swing.GroupLayout(panelInTabSeParams);
         panelInTabSeParams.setLayout(panelInTabSeParamsLayout);
@@ -269,7 +347,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInTabSeParamsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelInTabSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelInTabSeParamsLayout.createSequentialGroup()
                         .addComponent(txtSelectedFile)
@@ -287,8 +365,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         tabPane.addTab("Umpire Params", panelInTabSeParams);
@@ -484,15 +562,35 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkAdjustFragIntensity;
     private javax.swing.JCheckBox chkBoostComplementaryIon;
     private javax.swing.JButton jButton1;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField10;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
     private javax.swing.JPanel panelInTabCometParams;
     private javax.swing.JPanel panelInTabSeParams;
     private javax.swing.JPanel panelInTabSelectFiles;
@@ -501,6 +599,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea txtAreaSelectedFiles;
     private javax.swing.JTextField txtCorrThreshold;
     private javax.swing.JTextField txtDeltaApex;
+    private javax.swing.JTextField txtMS1PPM;
     private javax.swing.JTextField txtRfMax;
     private javax.swing.JTextField txtRpMax;
     private javax.swing.JTextField txtRtOverlap;
