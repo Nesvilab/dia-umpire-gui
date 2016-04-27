@@ -198,7 +198,7 @@
                       <Component id="panelSeParams" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="42" max="32767" attributes="0"/>
+                      <EmptySpace pref="39" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -285,6 +285,7 @@
                 <Component class="javax.swing.JLabel" name="jLabel2">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="RFmax"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel3">
@@ -407,7 +408,7 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="formattedTxtMS1PPM" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="fmtMS1PPM" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="fmtMinMSIntensity" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="fmtNoMissedScan" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="fmtMinNoPeakCluster" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -424,25 +425,25 @@
                               <Component id="fmtMaxNoPeakCluster" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="formattedTxtMS2PPM" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="fmtMS2PPM" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="fmtMinMSMSIntensity" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="fmtMinFrag" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="jLabel8" alignment="1" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel12" alignment="1" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel14" alignment="1" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel9" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="formattedTxtSN" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="fmtSN" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="fmtMaxCurveRTRange" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="fmtEstimateBG" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="fmtMS2SN" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkEstimateBG" min="-2" pref="21" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -454,11 +455,11 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="formattedTxtMS1PPM" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="fmtMS1PPM" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="formattedTxtMS2PPM" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="fmtMS2PPM" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="formattedTxtSN" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="fmtSN" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -475,8 +476,8 @@
                               <Component id="fmtNoMissedScan" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="fmtMinFrag" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="fmtEstimateBG" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkEstimateBG" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -487,7 +488,7 @@
                               <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="fmtMS2SN" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="13" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -498,7 +499,7 @@
                     <Property name="text" type="java.lang.String" value="MS1PPM"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JFormattedTextField" name="formattedTxtMS1PPM">
+                <Component class="javax.swing.JFormattedTextField" name="fmtMS1PPM">
                   <Properties>
                     <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                       <Format format="#0" subtype="-1" type="0"/>
@@ -516,7 +517,7 @@
                     <Property name="text" type="java.lang.String" value="MS2PPM"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JFormattedTextField" name="formattedTxtMS2PPM">
+                <Component class="javax.swing.JFormattedTextField" name="fmtMS2PPM">
                   <Properties>
                     <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                       <Format format="#0" subtype="-1" type="0"/>
@@ -534,7 +535,7 @@
                     <Property name="text" type="java.lang.String" value="SN"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JFormattedTextField" name="formattedTxtSN">
+                <Component class="javax.swing.JFormattedTextField" name="fmtSN">
                   <Properties>
                     <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
                       <Format format="#0" subtype="-1" type="0"/>
@@ -643,24 +644,6 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel14">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="EstimateBG"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JFormattedTextField" name="fmtEstimateBG">
-                  <Properties>
-                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[50, 20]"/>
-                    </Property>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[50, 20]"/>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fmtEstimateBGActionPerformed"/>
-                  </Events>
-                </Component>
                 <Component class="javax.swing.JLabel" name="jLabel15">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="MinNoPeakCluster"/>
@@ -693,6 +676,17 @@
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[50, 20]"/>
                     </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkEstimateBG">
+                  <Properties>
+                    <Property name="horizontalAlignment" type="int" value="11"/>
+                    <Property name="horizontalTextPosition" type="int" value="10"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel19">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="EstimateBG"/>
                   </Properties>
                 </Component>
               </SubComponents>
