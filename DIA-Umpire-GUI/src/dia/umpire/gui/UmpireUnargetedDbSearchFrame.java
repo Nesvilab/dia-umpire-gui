@@ -33,6 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -51,7 +52,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     public UmpireUnargetedDbSearchFrame() {
         initComponents();
     }
-    
+
     public void enableComponents(Container container, boolean enable) {
         Component[] components = container.getComponents();
         for (Component component : components) {
@@ -1135,21 +1136,44 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
         ExecutorService exec = Executors.newSingleThreadExecutor();
         final TextConsole textConsole = console;
-        exec.submit(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 200; i++) {
-                    try {
-                        console.append("Some text\n");
+//        exec.submit(new Runnable() {
+//            @Override
+//            public void run() {
+//                for (int i = 0; i < 200; i++) {
+//                    try {
+//                        console.append("Some text\n");
+//
+//                        Thread.sleep(100L);
+//                    } catch (IOException ignore) {
+//
+//                    } catch (InterruptedException ex) {
+//                    }
+//                }
+//            }
+//        });
+        String workingDir = txtWorkingDir.getText();
+        if (workingDir.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Working directory can't be left empty.\n"
+                    + "Please select an existing directory for the output.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-                        Thread.sleep(100L);
-                    } catch (IOException ignore) {
+        String selectedFiles = txtAreaSelectedFiles.getText();
+        String[] paths = selectedFiles.split("\n");
+        for (int i = 0; i < paths.length; i++) {
+            paths[i] = paths[i].trim();
+        }
+        if (selectedFiles.isEmpty() || paths.length == 0) {
+            JOptionPane.showMessageDialog(this, "No LC/MS data files selected.\n"
+                    + "Check 'Select Raw Files' tab.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-                    } catch (InterruptedException ex) {
-                    }
-                }
-            }
-        });
+        if (!chkRunUmpire.isSelected() && !chkRunCometSearch.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Nothing to run.\n"
+                    + "Please mark checkboxes in other tabs to run processing tools.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
     }//GEN-LAST:event_btnRunActionPerformed
 
 
