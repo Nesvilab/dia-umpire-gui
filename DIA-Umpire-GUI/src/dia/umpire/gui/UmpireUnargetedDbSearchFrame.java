@@ -9,6 +9,7 @@ import dia.umpire.exceptions.ParsingException;
 import dia.umpire.params.CometParams;
 import dia.umpire.params.ThisAppProps;
 import dia.umpire.params.UmpireParams;
+import java.awt.EventQueue;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,6 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
 
 /**
@@ -174,7 +176,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(btnSelectRawFiles)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -641,7 +643,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(fmtfragment_bin_tol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fmttheoretical_fragment_ions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fmtfragment_bin_offset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(253, Short.MAX_VALUE))
+                .addContainerGap(264, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -753,7 +755,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addComponent(jLabel25)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                         .addComponent(btnClearConsole)))
                 .addContainerGap())
         );
@@ -848,9 +850,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fileChooser.setApproveButtonToolTipText("Load params from this file into the GUI");
         fileChooser.setDialogTitle("Choose Umpire SE param file");
         fileChooser.setMultiSelectionEnabled(false);
-        
+
         setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
-        
+
         int openDialog = fileChooser.showOpenDialog(this);
         switch (openDialog) {
             case JFileChooser.APPROVE_OPTION:
@@ -936,22 +938,22 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fileChooser.setMultiSelectionEnabled(false);
 
         setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
-        
+
         if (!txtDatabasePath.getText().isEmpty()) {
             File toFile = Paths.get(txtDatabasePath.getText()).toFile();
             fileChooser.setCurrentDirectory(toFile);
         }
-        
+
         int showOpenDialog = fileChooser.showOpenDialog(this);
         switch (showOpenDialog) {
             case JFileChooser.APPROVE_OPTION:
-                
+
                 File f = fileChooser.getSelectedFile();
                 txtDatabasePath.setText(f.getAbsolutePath());
-                
+
                 break;
         }
-            
+
     }//GEN-LAST:event_btnBrowseDatabasePathActionPerformed
 
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
@@ -964,7 +966,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     try {
                         console.append("Some text\n");
 
-                        Thread.sleep(200L);
+                        Thread.sleep(100L);
                     } catch (IOException ignore) {
 
                     } catch (InterruptedException ex) {
@@ -1074,7 +1076,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
-        
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
@@ -1092,7 +1094,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
         //</editor-fold>
 
