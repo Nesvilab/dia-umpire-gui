@@ -7,10 +7,12 @@ package dia.umpire.gui;
 
 import dia.umpire.exceptions.ParsingException;
 import dia.umpire.params.CometParams;
+import dia.umpire.params.ThisAppProps;
 import dia.umpire.params.UmpireParams;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -75,7 +77,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fmtDeltaApex = new javax.swing.JFormattedTextField();
         fmtRTOverlap = new javax.swing.JFormattedTextField();
         txtSelectedFile = new javax.swing.JTextField();
-        btnBrowseUmpireParamFile = new javax.swing.JButton();
+        btnSelectUmpireParamFile = new javax.swing.JButton();
         panelSeParams = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         fmtMS1PPM = new javax.swing.JFormattedTextField();
@@ -303,10 +305,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(fmtRTOverlap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        btnBrowseUmpireParamFile.setText("Browse");
-        btnBrowseUmpireParamFile.addActionListener(new java.awt.event.ActionListener() {
+        btnSelectUmpireParamFile.setText("Browse");
+        btnSelectUmpireParamFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBrowseUmpireParamFileActionPerformed(evt);
+                btnSelectUmpireParamFileActionPerformed(evt);
             }
         });
 
@@ -448,13 +450,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(fmtMaxCurveRTRange, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(panelSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNoMissedScan)
-                    .addComponent(fmtNoMissedScan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13)
-                    .addComponent(fmtMinFrag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkEstimateBG)
-                    .addComponent(jLabel19))
+                .addGroup(panelSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkEstimateBG, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblNoMissedScan)
+                        .addComponent(fmtNoMissedScan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel13)
+                        .addComponent(fmtMinFrag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel19)))
                 .addGap(18, 18, 18)
                 .addGroup(panelSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
@@ -519,7 +522,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addGroup(panelInTabSeParamsLayout.createSequentialGroup()
                         .addComponent(txtSelectedFile)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBrowseUmpireParamFile))
+                        .addComponent(btnSelectUmpireParamFile))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -529,7 +532,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelInTabSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSelectedFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBrowseUmpireParamFile))
+                    .addComponent(btnSelectUmpireParamFile))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -756,7 +759,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
+            .addComponent(tabPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -778,6 +781,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             fc.setMultiSelectionEnabled(true);
             fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
+            setFilechooserPathToCached(fc);
 
 //            List<String> filePaths = splitTrim(txtFileIn.getText().trim(), ",");
 //            for (int i = 0; i < filePaths.size(); i++) {
@@ -794,9 +798,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 for (File f : files) {
                     txtAreaSelectedFiles.append(f.toString() + "\n");
                 }
-                
+                if (files.length > 0) {
+                    saveFilechooserPathToCached(files[0]);
+                }
+
             } else {
-                
+
             }
         }
     }//GEN-LAST:event_btnSelectRawFilesActionPerformed
@@ -809,7 +816,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fmtMinNoPeakClusterActionPerformed
 
-    private void btnBrowseUmpireParamFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseUmpireParamFileActionPerformed
+    private void btnSelectUmpireParamFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUmpireParamFileActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Umpire .params files", "params");
         fileChooser.setFileFilter(fileNameExtensionFilter);
@@ -817,33 +824,57 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fileChooser.setApproveButtonToolTipText("Load params from this file into the GUI");
         fileChooser.setDialogTitle("Choose Umpire SE param file");
         fileChooser.setMultiSelectionEnabled(false);
+        
+        setFilechooserPathToCached(fileChooser);
+        
         int openDialog = fileChooser.showOpenDialog(this);
         switch (openDialog) {
             case JFileChooser.APPROVE_OPTION:
-            File file = fileChooser.getSelectedFile();
-            txtSelectedFile.setText(Paths.get(file.getAbsolutePath()).toString());
+                File file = fileChooser.getSelectedFile();
+                txtSelectedFile.setText(Paths.get(file.getAbsolutePath()).toString());
+                saveFilechooserPathToCached(file);
 
-            UmpireParams params = parseUmpireParamsFile(file);
-            if (params == null) {
-                JOptionPane.showMessageDialog(this, "Could not load params file", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            boolean containsWindowType = params.containsKey("WindowType");
-            if (!containsWindowType) {
-                JOptionPane.showMessageDialog(this, "Parameter file loaded, but did not contain WindowType", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            fillInUmpireParams(params);
-            break;
+                UmpireParams params = parseUmpireParamsFile(file);
+                if (params == null) {
+                    JOptionPane.showMessageDialog(this, "Could not load params file", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                boolean containsWindowType = params.containsKey("WindowType");
+                if (!containsWindowType) {
+                    JOptionPane.showMessageDialog(this, "Parameter file loaded, but did not contain WindowType", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                fillInUmpireParams(params);
+                break;
         }
 
-    }//GEN-LAST:event_btnBrowseUmpireParamFileActionPerformed
+    }//GEN-LAST:event_btnSelectUmpireParamFileActionPerformed
 
     private void fmtRFmaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fmtRFmaxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fmtRFmaxActionPerformed
 
+    private void setFilechooserPathToCached(JFileChooser fileChooser) {
+        ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
+        if (thisAppProps == null)
+            return;
+        String inputPath = thisAppProps.getProperty(ThisAppProps.PROP_FILE_IN);
+        if (inputPath != null) {
+            File file = Paths.get(inputPath).toFile();
+            fileChooser.setCurrentDirectory(file);
+        }
+    }
+
+    private void saveFilechooserPathToCached(File file) {
+        ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
+        if (thisAppProps == null)
+            thisAppProps = new ThisAppProps();
+        thisAppProps.setProperty(ThisAppProps.PROP_FILE_IN, file.getAbsolutePath());
+        thisAppProps.save();
+    }
+
     private void btnSelectCometParamsFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectCometParamsFileActionPerformed
+
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Comet .params files", "params");
         fileChooser.setFileFilter(fileNameExtensionFilter);
@@ -851,25 +882,28 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fileChooser.setApproveButtonToolTipText("Load params from this file into the GUI");
         fileChooser.setDialogTitle("Choose Comet param file");
         fileChooser.setMultiSelectionEnabled(false);
-        
+
+        setFilechooserPathToCached(fileChooser);
+
         int openDialog = fileChooser.showOpenDialog(this);
         switch (openDialog) {
             case JFileChooser.APPROVE_OPTION:
-            File file = fileChooser.getSelectedFile();
-            txtCometParamsFile.setText(Paths.get(file.getAbsolutePath()).toString());
-            try {
-                CometParams cometParams = loadCometParamsFile(file);
-                fillCometParamFields(cometParams);
-            } catch (ParsingException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            break;
+                File file = fileChooser.getSelectedFile();
+                txtCometParamsFile.setText(Paths.get(file.getAbsolutePath()).toString());
+                saveFilechooserPathToCached(file);
+                try {
+                    CometParams cometParams = loadCometParamsFile(file);
+                    fillCometParamFields(cometParams);
+                } catch (ParsingException e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                break;
         }
     }//GEN-LAST:event_btnSelectCometParamsFileActionPerformed
 
     private void btnBrowseDatabasePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseDatabasePathActionPerformed
-        
+
     }//GEN-LAST:event_btnBrowseDatabasePathActionPerformed
 
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
@@ -878,59 +912,59 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         exec.submit(new Runnable() {
             @Override
             public void run() {
-//                for (int i = 0; i < 200; i++) {
-//                    try {
-//                        console.append("Some text\n");
-//                        
-//                        Thread.sleep(200L);
-//                    } catch (IOException ignore) {
-//
-//                    } catch (InterruptedException ex) {
-//                    }
-//                }
+                for (int i = 0; i < 200; i++) {
+                    try {
+                        console.append("Some text\n");
+
+                        Thread.sleep(200L);
+                    } catch (IOException ignore) {
+
+                    } catch (InterruptedException ex) {
+                    }
+                }
             }
         });
     }//GEN-LAST:event_btnRunActionPerformed
 
-    
-    
+
+
     private void btnClearConsoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearConsoleActionPerformed
         console.setText("");
     }//GEN-LAST:event_btnClearConsoleActionPerformed
 
     private CometParams loadCometParamsFile(File file) throws ParsingException {
-        CometParams params = CometParams.parse(Paths.get(file.getAbsolutePath()));
-        if (params.getFirstLine() == null || params.getFirstLine().isEmpty()) {
-            throw new ParsingException("The first line of the comet params file can't be empty.");
+        try (FileInputStream fis = new FileInputStream(file)) {
+            CometParams params = CometParams.parse(fis);
+//            if (params.getFirstLine() == null || params.getFirstLine().isEmpty()) {
+//                throw new ParsingException("The first line of the comet params file can't be empty.");
+//            }
+//            if (params.getCometEnzymeInfos().isEmpty()) {
+//                throw new ParsingException("COMET_ENZYME_INFO table was not found");
+//            }
+            return params;
+        } catch (FileNotFoundException ex) {
+            throw new ParsingException(ex);
+        } catch (IOException ex) {
+            throw new ParsingException(ex);
         }
-        if (params.getCometEnzymeInfos().isEmpty()) {
-            throw new ParsingException("COMET_ENZYME_INFO table was not found");
-        }
-        return params;
     }
-    
+
     private void fillCometParamFields(CometParams cometParams) throws ParsingException {
         Properties props = cometParams.getProps();
-        
-        TreeMap<String, String> treeMap = new TreeMap<>();
-        for (Entry<Object, Object> o : props.entrySet()) {
-            treeMap.put((String)o.getKey(), (String)o.getValue());
-        }
-        
-        
+
         String databasePath  = props.getProperty(CometParams.PROP_database_name);
         if (databasePath == null) {
             //throw new ParsingException("Could not find database path in the parsed properties");
         } else {
             txtDatabasePath.setText(databasePath);
         }
-        
+
         fmtpeptide_mass_tolerance.setText(props.getProperty(CometParams.PROP_peptide_mass_tolerance));
         fmtfragment_bin_tol.setText(props.getProperty(CometParams.PROP_fragment_bin_tol));
         fmtfragment_bin_offset.setText(props.getProperty(CometParams.PROP_fragment_bin_offset));
         fmttheoretical_fragment_ions.setText(props.getProperty(CometParams.PROP_theoretical_fragment_ions));
     }
-    
+
     private static List<String> splitTrim(String input, String sep) {
         String[] split = input.split(sep);
         List<String> strings = new ArrayList<>(split.length);
@@ -942,7 +976,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
         return strings;
     }
-    
+
     private UmpireParams parseUmpireParamsFile(File f) {
         UmpireParams params = new UmpireParams();
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f))) {
@@ -953,8 +987,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
         return null;
     }
-    
-    private void fillInUmpireParams(UmpireParams params) {        
+
+    private void fillInUmpireParams(UmpireParams params) {
         fmtRPmax.setText(params.getProperty(UmpireParams.PROP_RPmax));
         fmtRFmax.setText(params.getProperty(UmpireParams.PROP_RFmax));
         fmtCorrThreshold.setText(params.getProperty(UmpireParams.PROP_CorrThreshold));
@@ -962,7 +996,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fmtRTOverlap.setText(params.getProperty(UmpireParams.PROP_RTOverlap));
         chkAdjustFragIntensity.setSelected(params.getAdjustFragIntensity());
         chkBoostComplementaryIon.setSelected(params.getBoostComplementaryIon());
-        
+
         fmtMS1PPM.setText(params.getProperty(UmpireParams.PROP_MS1PPM));
         fmtMS2PPM.setText(params.getProperty(UmpireParams.PROP_MS2PPM));
         fmtSN.setText(params.getProperty(UmpireParams.PROP_SN));
@@ -975,14 +1009,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         chkEstimateBG.setSelected(Boolean.valueOf(params.getProperty(UmpireParams.PROP_EstimateBG)));
         fmtMinNoPeakCluster.setText(params.getProperty(UmpireParams.PROP_MinNoPeakCluster));
         fmtMaxNoPeakCluster.setText(params.getProperty(UmpireParams.PROP_MaxNoPeakCluster));
-        
-        
+
+
         fmtWindowSize.setText(params.getProperty(UmpireParams.PROP_WindowSize));
         //.setText(params.getProperty(UmpireParams.PROP_));
-        
-        
+
+
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -990,7 +1024,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -1021,12 +1055,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBrowseDatabasePath;
-    private javax.swing.JButton btnBrowseUmpireParamFile;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnClearConsole;
     private javax.swing.JButton btnRun;
     private javax.swing.JButton btnSelectCometParamsFile;
     private javax.swing.JButton btnSelectRawFiles;
+    private javax.swing.JButton btnSelectUmpireParamFile;
     private javax.swing.JCheckBox chkAdjustFragIntensity;
     private javax.swing.JCheckBox chkBoostComplementaryIon;
     private javax.swing.JCheckBox chkEstimateBG;

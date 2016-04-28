@@ -23,7 +23,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="tabPane" alignment="0" pref="512" max="32767" attributes="0"/>
+          <Component id="tabPane" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -176,7 +176,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="txtSelectedFile" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnBrowseUmpireParamFile" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnSelectUmpireParamFile" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -190,7 +190,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="txtSelectedFile" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnBrowseUmpireParamFile" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnSelectUmpireParamFile" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
@@ -378,12 +378,12 @@
             </Container>
             <Component class="javax.swing.JTextField" name="txtSelectedFile">
             </Component>
-            <Component class="javax.swing.JButton" name="btnBrowseUmpireParamFile">
+            <Component class="javax.swing.JButton" name="btnSelectUmpireParamFile">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Browse"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBrowseUmpireParamFileActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelectUmpireParamFileActionPerformed"/>
               </Events>
             </Component>
             <Container class="javax.swing.JPanel" name="panelSeParams">
@@ -471,13 +471,15 @@
                               <Component id="fmtMaxCurveRTRange" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblNoMissedScan" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="fmtNoMissedScan" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="fmtMinFrag" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="chkEstimateBG" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblNoMissedScan" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fmtNoMissedScan" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="fmtMinFrag" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
