@@ -22,11 +22,14 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.DefaultCaret;
 
 /**
  *
@@ -120,6 +123,17 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel23 = new javax.swing.JLabel();
         fmttheoretical_fragment_ions = new javax.swing.JFormattedTextField();
         panelRun = new javax.swing.JPanel();
+        btnRun = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
+        btnClearConsole = new javax.swing.JButton();
+        consoleScrollPane = new javax.swing.JScrollPane();
+        console = new dia.umpire.gui.TextConsole();
+        DefaultCaret caret = (DefaultCaret) console.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        jLabel24 = new javax.swing.JLabel();
+        spinnerRam = new javax.swing.JSpinner();
+        jLabel25 = new javax.swing.JLabel();
+        spinnerThreads = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -666,15 +680,74 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         tabPane.addTab("Comet Params", panelInTabCometParams);
 
+        btnRun.setText("Run");
+        btnRun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRunActionPerformed(evt);
+            }
+        });
+
+        btnCancel.setText("Cancel");
+
+        btnClearConsole.setText("Clear console");
+        btnClearConsole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearConsoleActionPerformed(evt);
+            }
+        });
+
+        consoleScrollPane.setViewportView(console);
+
+        jLabel24.setText("RAM");
+
+        spinnerRam.setModel(new javax.swing.SpinnerNumberModel(4, 1, null, 1));
+
+        jLabel25.setText("Threads");
+        jLabel25.setToolTipText("Set to zero to use all CPU cores");
+
+        spinnerThreads.setModel(new javax.swing.SpinnerNumberModel());
+        spinnerThreads.setToolTipText("Set to zero to use all CPU cores");
+        spinnerThreads.setMinimumSize(new java.awt.Dimension(35, 20));
+
         javax.swing.GroupLayout panelRunLayout = new javax.swing.GroupLayout(panelRun);
         panelRun.setLayout(panelRunLayout);
         panelRunLayout.setHorizontalGroup(
             panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 507, Short.MAX_VALUE)
+            .addGroup(panelRunLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(consoleScrollPane)
+                    .addGroup(panelRunLayout.createSequentialGroup()
+                        .addComponent(btnRun)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCancel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel24)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spinnerRam, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel25)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                        .addComponent(btnClearConsole)))
+                .addContainerGap())
         );
         panelRunLayout.setVerticalGroup(
             panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
+            .addGroup(panelRunLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRun)
+                    .addComponent(btnCancel)
+                    .addComponent(btnClearConsole)
+                    .addComponent(jLabel24)
+                    .addComponent(spinnerRam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25)
+                    .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         tabPane.addTab("Run", panelRun);
@@ -683,7 +756,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPane)
+            .addComponent(tabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -798,6 +871,32 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private void btnBrowseDatabasePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseDatabasePathActionPerformed
         
     }//GEN-LAST:event_btnBrowseDatabasePathActionPerformed
+
+    private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
+        ExecutorService exec = Executors.newSingleThreadExecutor();
+        final TextConsole textConsole = console;
+        exec.submit(new Runnable() {
+            @Override
+            public void run() {
+//                for (int i = 0; i < 200; i++) {
+//                    try {
+//                        console.append("Some text\n");
+//                        
+//                        Thread.sleep(200L);
+//                    } catch (IOException ignore) {
+//
+//                    } catch (InterruptedException ex) {
+//                    }
+//                }
+            }
+        });
+    }//GEN-LAST:event_btnRunActionPerformed
+
+    
+    
+    private void btnClearConsoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearConsoleActionPerformed
+        console.setText("");
+    }//GEN-LAST:event_btnClearConsoleActionPerformed
 
     private CometParams loadCometParamsFile(File file) throws ParsingException {
         CometParams params = CometParams.parse(Paths.get(file.getAbsolutePath()));
@@ -923,11 +1022,16 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBrowseDatabasePath;
     private javax.swing.JButton btnBrowseUmpireParamFile;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnClearConsole;
+    private javax.swing.JButton btnRun;
     private javax.swing.JButton btnSelectCometParamsFile;
     private javax.swing.JButton btnSelectRawFiles;
     private javax.swing.JCheckBox chkAdjustFragIntensity;
     private javax.swing.JCheckBox chkBoostComplementaryIon;
     private javax.swing.JCheckBox chkEstimateBG;
+    private dia.umpire.gui.TextConsole console;
+    private javax.swing.JScrollPane consoleScrollPane;
     private javax.swing.JFormattedTextField fmtCorrThreshold;
     private javax.swing.JFormattedTextField fmtDeltaApex;
     private javax.swing.JFormattedTextField fmtMS1PPM;
@@ -967,6 +1071,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -986,6 +1092,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JPanel panelInTabSelectFiles;
     private javax.swing.JPanel panelRun;
     private javax.swing.JPanel panelSeParams;
+    private javax.swing.JSpinner spinnerRam;
+    private javax.swing.JSpinner spinnerThreads;
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JTextArea txtAreaSelectedFiles;
     private javax.swing.JTextField txtCometParamsFile;
