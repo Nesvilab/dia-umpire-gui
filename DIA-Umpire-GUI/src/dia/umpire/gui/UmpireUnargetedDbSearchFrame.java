@@ -127,16 +127,17 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         btnSelectUmpireParamFile = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtBinUmpire = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        jLabel31 = new javax.swing.JLabel();
+        txtBinMsconvert = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
         chkRunUmpire = new javax.swing.JCheckBox();
         panelInTabCometParams = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        panelCometSequence = new javax.swing.JPanel();
         btnBrowseDatabasePath = new javax.swing.JButton();
         txtDatabasePath = new javax.swing.JTextField();
-        btnSelectCometParamsFile = new javax.swing.JButton();
-        txtCometParamsFile = new javax.swing.JTextField();
-        jPanel4 = new javax.swing.JPanel();
+        panelCometTolerance = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         fmtpeptide_mass_tolerance = new javax.swing.JFormattedTextField();
         jLabel20 = new javax.swing.JLabel();
@@ -146,6 +147,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fmtfragment_bin_offset = new javax.swing.JFormattedTextField();
         jLabel23 = new javax.swing.JLabel();
         fmttheoretical_fragment_ions = new javax.swing.JFormattedTextField();
+        chkRunCometSearch = new javax.swing.JCheckBox();
+        panelCometBinary = new javax.swing.JPanel();
+        jLabel29 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
+        txtCometParamsFile = new javax.swing.JTextField();
+        btnSelectCometParamsFile = new javax.swing.JButton();
+        jLabel30 = new javax.swing.JLabel();
         panelRun = new javax.swing.JPanel();
         btnRun = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
@@ -159,6 +168,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel25 = new javax.swing.JLabel();
         spinnerThreads = new javax.swing.JSpinner();
         jLabel26 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        btnSelectWrkingDir = new javax.swing.JButton();
+        txtWorkingDir = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -206,7 +218,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSelectRawFiles)
@@ -546,13 +558,21 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel27.setText("Config file");
 
-        jLabel28.setText("Binary");
+        jLabel28.setText("Umpire");
         jLabel28.setToolTipText("If you don't have Umpire jar file on your PATH, please specify the full path");
 
-        jTextField1.setText("DIA_Umpire_SE.jar");
-        jTextField1.setToolTipText("If you don't have Umpire jar file on your PATH, please specify the full path");
+        txtBinUmpire.setText("DIA_Umpire_SE.jar");
+        txtBinUmpire.setToolTipText("If you don't have Umpire jar file on your PATH, please specify the full path");
 
         jButton2.setText("Browse");
+
+        jLabel31.setText("msconvert");
+        jLabel31.setToolTipText("If you don't have msconvert on your PATH, specify the full path to the executable");
+
+        txtBinMsconvert.setText("msconvert");
+        txtBinMsconvert.setToolTipText("If you don't have msconvert on your PATH, specify the full path to the executable");
+
+        jButton4.setText("Browse");
 
         javax.swing.GroupLayout panelUmpireBinaryLayout = new javax.swing.GroupLayout(panelUmpireBinary);
         panelUmpireBinary.setLayout(panelUmpireBinaryLayout);
@@ -561,15 +581,18 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(panelUmpireBinaryLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
-                    .addComponent(txtSelectedFile))
+                    .addComponent(txtSelectedFile)
+                    .addComponent(txtBinUmpire)
+                    .addComponent(txtBinMsconvert))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnSelectUmpireParamFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -579,8 +602,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel28)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBinUmpire, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel31)
+                    .addComponent(txtBinMsconvert, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSelectedFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -620,18 +648,18 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addComponent(chkRunUmpire)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelUmpireBinary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(13, 13, 13)
                 .addComponent(panelUmpireFragGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelUmpireSeParams, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelUmpireSwathParams, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         tabPane.addTab("Umpire Params", panelInTabSeParams);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Sequence database"));
+        panelCometSequence.setBorder(javax.swing.BorderFactory.createTitledBorder("Sequence database"));
 
         btnBrowseDatabasePath.setText("Browse");
         btnBrowseDatabasePath.addActionListener(new java.awt.event.ActionListener() {
@@ -640,35 +668,28 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelCometSequenceLayout = new javax.swing.GroupLayout(panelCometSequence);
+        panelCometSequence.setLayout(panelCometSequenceLayout);
+        panelCometSequenceLayout.setHorizontalGroup(
+            panelCometSequenceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCometSequenceLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(txtDatabasePath)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBrowseDatabasePath)
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        panelCometSequenceLayout.setVerticalGroup(
+            panelCometSequenceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCometSequenceLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelCometSequenceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBrowseDatabasePath)
                     .addComponent(txtDatabasePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnSelectCometParamsFile.setText("Browse");
-        btnSelectCometParamsFile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSelectCometParamsFileActionPerformed(evt);
-            }
-        });
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Mass tolerance"));
+        panelCometTolerance.setBorder(javax.swing.BorderFactory.createTitledBorder("Mass tolerance"));
 
         jLabel14.setText("peptide_mass_tolerance");
 
@@ -696,20 +717,20 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fmttheoretical_fragment_ions.setMinimumSize(new java.awt.Dimension(50, 24));
         fmttheoretical_fragment_ions.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelCometToleranceLayout = new javax.swing.GroupLayout(panelCometTolerance);
+        panelCometTolerance.setLayout(panelCometToleranceLayout);
+        panelCometToleranceLayout.setHorizontalGroup(
+            panelCometToleranceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCometToleranceLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(panelCometToleranceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel23)
                     .addComponent(jLabel22)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel21))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(panelCometToleranceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelCometToleranceLayout.createSequentialGroup()
                         .addComponent(fmtpeptide_mass_tolerance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel20))
@@ -718,27 +739,89 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(fmtfragment_bin_offset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(271, Short.MAX_VALUE))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        panelCometToleranceLayout.setVerticalGroup(
+            panelCometToleranceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCometToleranceLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelCometToleranceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(fmtpeptide_mass_tolerance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelCometToleranceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
                     .addComponent(fmtfragment_bin_tol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panelCometToleranceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(fmtfragment_bin_offset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelCometToleranceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
                     .addComponent(fmttheoretical_fragment_ions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
+        );
+
+        chkRunCometSearch.setSelected(true);
+        chkRunCometSearch.setText("Run Comet search");
+        chkRunCometSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkRunCometSearchActionPerformed(evt);
+            }
+        });
+
+        panelCometBinary.setBorder(javax.swing.BorderFactory.createTitledBorder("Comet"));
+
+        jLabel29.setText("Comet (Philosopher)");
+
+        jTextField2.setText("philosopher_windows_amd64");
+
+        jButton3.setText("Browse");
+
+        btnSelectCometParamsFile.setText("Browse");
+        btnSelectCometParamsFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectCometParamsFileActionPerformed(evt);
+            }
+        });
+
+        jLabel30.setText("Config file");
+
+        javax.swing.GroupLayout panelCometBinaryLayout = new javax.swing.GroupLayout(panelCometBinary);
+        panelCometBinary.setLayout(panelCometBinaryLayout);
+        panelCometBinaryLayout.setHorizontalGroup(
+            panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCometBinaryLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel29, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel30, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelCometBinaryLayout.createSequentialGroup()
+                        .addComponent(txtCometParamsFile)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSelectCometParamsFile))
+                    .addGroup(panelCometBinaryLayout.createSequentialGroup()
+                        .addComponent(jTextField2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)))
+                .addContainerGap())
+        );
+        panelCometBinaryLayout.setVerticalGroup(
+            panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCometBinaryLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel29)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCometParamsFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSelectCometParamsFile)
+                    .addComponent(jLabel30))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelInTabCometParamsLayout = new javax.swing.GroupLayout(panelInTabCometParams);
@@ -748,26 +831,26 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(panelInTabCometParamsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInTabCometParamsLayout.createSequentialGroup()
-                        .addComponent(txtCometParamsFile)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSelectCometParamsFile))
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelCometSequence, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelCometTolerance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelInTabCometParamsLayout.createSequentialGroup()
+                        .addComponent(chkRunCometSearch)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(panelCometBinary, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelInTabCometParamsLayout.setVerticalGroup(
             panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInTabCometParamsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSelectCometParamsFile)
-                    .addComponent(txtCometParamsFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(chkRunCometSearch)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(225, Short.MAX_VALUE))
+                .addComponent(panelCometBinary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelCometSequence, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelCometTolerance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(200, Short.MAX_VALUE))
         );
 
         tabPane.addTab("Comet Params", panelInTabCometParams);
@@ -806,6 +889,15 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel26.setText("(GB)");
 
+        jLabel32.setText("Working dir");
+
+        btnSelectWrkingDir.setText("Browse");
+        btnSelectWrkingDir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectWrkingDirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelRunLayout = new javax.swing.GroupLayout(panelRun);
         panelRun.setLayout(panelRunLayout);
         panelRunLayout.setHorizontalGroup(
@@ -829,13 +921,24 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
-                        .addComponent(btnClearConsole)))
+                        .addComponent(btnClearConsole))
+                    .addGroup(panelRunLayout.createSequentialGroup()
+                        .addComponent(jLabel32)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtWorkingDir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSelectWrkingDir)))
                 .addContainerGap())
         );
         panelRunLayout.setVerticalGroup(
             panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRunLayout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel32)
+                    .addComponent(btnSelectWrkingDir)
+                    .addComponent(txtWorkingDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRun)
                     .addComponent(btnCancel)
@@ -846,7 +949,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel26))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1068,6 +1171,46 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chkRunUmpireActionPerformed
 
+    private void chkRunCometSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRunCometSearchActionPerformed
+        boolean selected = chkRunCometSearch.isSelected();
+        Container[] comps = new Container[] {
+            panelCometBinary,
+            panelCometSequence,
+            panelCometTolerance
+        };
+        for (Container c : comps) {
+            enableComponents(c, selected);
+        }
+    }//GEN-LAST:event_chkRunCometSearchActionPerformed
+
+    private void btnSelectWrkingDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectWrkingDirActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        //FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("FASTA files", "fa", "fasta");
+        //fileChooser.setFileFilter(fileNameExtensionFilter);
+        fileChooser.setApproveButtonText("Select directory");
+        fileChooser.setApproveButtonToolTipText("Select");
+        fileChooser.setDialogTitle("Choose working directory");
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
+
+        if (!txtWorkingDir.getText().isEmpty()) {
+            File toFile = Paths.get(txtWorkingDir.getText()).toFile();
+            fileChooser.setCurrentDirectory(toFile);
+        }
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+
+                File f = fileChooser.getSelectedFile();
+                txtWorkingDir.setText(f.getAbsolutePath());
+
+                break;
+        }
+    }//GEN-LAST:event_btnSelectWrkingDirActionPerformed
+
     private CometParams loadCometParamsFile(File file) throws ParsingException {
         try (FileInputStream fis = new FileInputStream(file)) {
             CometParams params = CometParams.parse(fis);
@@ -1200,9 +1343,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnSelectCometParamsFile;
     private javax.swing.JButton btnSelectRawFiles;
     private javax.swing.JButton btnSelectUmpireParamFile;
+    private javax.swing.JButton btnSelectWrkingDir;
     private javax.swing.JCheckBox chkAdjustFragIntensity;
     private javax.swing.JCheckBox chkBoostComplementaryIon;
     private javax.swing.JCheckBox chkEstimateBG;
+    private javax.swing.JCheckBox chkRunCometSearch;
     private javax.swing.JCheckBox chkRunUmpire;
     private dia.umpire.gui.TextConsole console;
     private javax.swing.JScrollPane consoleScrollPane;
@@ -1229,6 +1374,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField fmttheoretical_fragment_ions;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1251,19 +1398,24 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblNoMissedScan;
+    private javax.swing.JPanel panelCometBinary;
+    private javax.swing.JPanel panelCometSequence;
+    private javax.swing.JPanel panelCometTolerance;
     private javax.swing.JPanel panelInTabCometParams;
     private javax.swing.JPanel panelInTabSeParams;
     private javax.swing.JPanel panelInTabSelectFiles;
@@ -1276,9 +1428,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JSpinner spinnerThreads;
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JTextArea txtAreaSelectedFiles;
+    private javax.swing.JTextField txtBinMsconvert;
+    private javax.swing.JTextField txtBinUmpire;
     private javax.swing.JTextField txtCometParamsFile;
     private javax.swing.JTextField txtDatabasePath;
     private javax.swing.JTextField txtSelectedFile;
+    private javax.swing.JTextField txtWorkingDir;
     // End of variables declaration//GEN-END:variables
 
 }
