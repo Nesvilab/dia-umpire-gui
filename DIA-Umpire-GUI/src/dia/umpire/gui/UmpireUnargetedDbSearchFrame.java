@@ -30,6 +30,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultCaret;
 
@@ -136,6 +138,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         spinnerRam = new javax.swing.JSpinner();
         jLabel25 = new javax.swing.JLabel();
         spinnerThreads = new javax.swing.JSpinner();
+        jLabel26 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -183,7 +186,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSelectRawFiles)
@@ -230,11 +233,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         chkBoostComplementaryIon.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
 
         fmtRPmax.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        fmtRPmax.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtRPmax.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtRPmax.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtRPmax.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        fmtRFmax.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtRFmax.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtRFmax.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmtRFmax.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtRFmax.setPreferredSize(new java.awt.Dimension(50, 24));
         fmtRFmax.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fmtRFmaxActionPerformed(evt);
@@ -242,14 +246,16 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         });
 
         fmtCorrThreshold.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-        fmtCorrThreshold.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtCorrThreshold.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtCorrThreshold.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtCorrThreshold.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        fmtDeltaApex.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtDeltaApex.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtDeltaApex.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmtDeltaApex.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtDeltaApex.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        fmtRTOverlap.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtRTOverlap.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtRTOverlap.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmtRTOverlap.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtRTOverlap.setPreferredSize(new java.awt.Dimension(50, 24));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -293,16 +299,16 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
-                    .addComponent(fmtRPmax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fmtRFmax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fmtCorrThreshold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fmtDeltaApex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fmtRPmax, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtRFmax, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtCorrThreshold, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtDeltaApex, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(chkAdjustFragIntensity)
                     .addComponent(chkBoostComplementaryIon)
-                    .addComponent(fmtRTOverlap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(fmtRTOverlap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         btnSelectUmpireParamFile.setText("Browse");
@@ -317,57 +323,62 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel6.setText("MS1PPM");
 
         fmtMS1PPM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        fmtMS1PPM.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtMS1PPM.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtMS1PPM.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtMS1PPM.setPreferredSize(new java.awt.Dimension(50, 24));
 
         jLabel7.setText("MS2PPM");
 
         fmtMS2PPM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        fmtMS2PPM.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtMS2PPM.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtMS2PPM.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtMS2PPM.setPreferredSize(new java.awt.Dimension(50, 24));
 
         jLabel8.setText("SN");
 
         fmtSN.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        fmtSN.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtSN.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtSN.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtSN.setPreferredSize(new java.awt.Dimension(50, 24));
 
         jLabel9.setText("MS2SN");
 
-        fmtMS2SN.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtMS2SN.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtMS2SN.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmtMS2SN.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtMS2SN.setPreferredSize(new java.awt.Dimension(50, 24));
 
         jLabel10.setText("MinMSIntensity");
 
-        fmtMinMSIntensity.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtMinMSIntensity.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtMinMSIntensity.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmtMinMSIntensity.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtMinMSIntensity.setPreferredSize(new java.awt.Dimension(50, 24));
 
         jLabel11.setText("MinMSMSIntensity");
 
-        fmtMinMSMSIntensity.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtMinMSMSIntensity.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtMinMSMSIntensity.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmtMinMSMSIntensity.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtMinMSMSIntensity.setPreferredSize(new java.awt.Dimension(50, 24));
 
         jLabel12.setText("MaxCurveRTRange");
 
-        fmtMaxCurveRTRange.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtMaxCurveRTRange.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtMaxCurveRTRange.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmtMaxCurveRTRange.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtMaxCurveRTRange.setPreferredSize(new java.awt.Dimension(50, 24));
 
         lblNoMissedScan.setText("Num. MissedScan");
 
         fmtNoMissedScan.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        fmtNoMissedScan.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtNoMissedScan.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtNoMissedScan.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtNoMissedScan.setPreferredSize(new java.awt.Dimension(50, 24));
 
         jLabel13.setText("MinFrag");
 
         fmtMinFrag.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        fmtMinFrag.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtMinFrag.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtMinFrag.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtMinFrag.setPreferredSize(new java.awt.Dimension(50, 24));
 
         jLabel15.setText("MinNoPeakCluster");
 
-        fmtMinNoPeakCluster.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtMinNoPeakCluster.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtMinNoPeakCluster.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        fmtMinNoPeakCluster.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtMinNoPeakCluster.setPreferredSize(new java.awt.Dimension(50, 24));
         fmtMinNoPeakCluster.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fmtMinNoPeakClusterActionPerformed(evt);
@@ -376,9 +387,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel16.setText("MaxNoPeakCluster");
 
+        fmtMaxNoPeakCluster.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         fmtMaxNoPeakCluster.setToolTipText("");
-        fmtMaxNoPeakCluster.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtMaxNoPeakCluster.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtMaxNoPeakCluster.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtMaxNoPeakCluster.setPreferredSize(new java.awt.Dimension(50, 24));
 
         chkEstimateBG.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         chkEstimateBG.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
@@ -436,37 +448,37 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(fmtMS1PPM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtMS1PPM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
-                    .addComponent(fmtMS2PPM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtMS2PPM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(fmtSN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fmtSN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(fmtMinMSMSIntensity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtMinMSMSIntensity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
-                    .addComponent(fmtMinMSIntensity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtMinMSIntensity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12)
-                    .addComponent(fmtMaxCurveRTRange, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fmtMaxCurveRTRange, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkEstimateBG, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblNoMissedScan)
-                        .addComponent(fmtNoMissedScan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fmtNoMissedScan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel13)
-                        .addComponent(fmtMinFrag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fmtMinFrag, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel19)))
                 .addGap(18, 18, 18)
                 .addGroup(panelSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(fmtMinNoPeakCluster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtMinNoPeakCluster, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16)
-                    .addComponent(fmtMaxNoPeakCluster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtMaxNoPeakCluster, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
-                    .addComponent(fmtMS2SN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
+                    .addComponent(fmtMS2SN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Swath window params"));
@@ -477,11 +489,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel18.setText("WindowSize");
 
-        fmtWindowSize.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        fmtWindowSize.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         fmtWindowSize.setText("25");
         fmtWindowSize.setToolTipText("");
-        fmtWindowSize.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtWindowSize.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtWindowSize.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtWindowSize.setPreferredSize(new java.awt.Dimension(50, 24));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -506,7 +518,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(jLabel17)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel18)
-                    .addComponent(fmtWindowSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fmtWindowSize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -539,7 +551,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addComponent(panelSeParams, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         tabPane.addTab("Umpire Params", panelInTabSeParams);
@@ -586,26 +598,28 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel14.setText("peptide_mass_tolerance");
 
         fmtpeptide_mass_tolerance.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-        fmtpeptide_mass_tolerance.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtpeptide_mass_tolerance.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtpeptide_mass_tolerance.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtpeptide_mass_tolerance.setPreferredSize(new java.awt.Dimension(50, 24));
 
         jLabel20.setText("(ppm)");
 
         jLabel21.setText("fragment_bin_tol");
 
-        fmtfragment_bin_tol.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtfragment_bin_tol.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmtfragment_bin_tol.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmtfragment_bin_tol.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtfragment_bin_tol.setPreferredSize(new java.awt.Dimension(50, 24));
 
         jLabel22.setText("fragment_bin_offset");
 
-        fmtfragment_bin_offset.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmtfragment_bin_offset.setPreferredSize(new java.awt.Dimension(50, 20));
-        fmtfragment_bin_offset.setRequestFocusEnabled(false);
+        fmtfragment_bin_offset.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmtfragment_bin_offset.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmtfragment_bin_offset.setPreferredSize(new java.awt.Dimension(50, 24));
 
         jLabel23.setText("theoretical_fragment_ions");
 
-        fmttheoretical_fragment_ions.setMinimumSize(new java.awt.Dimension(50, 20));
-        fmttheoretical_fragment_ions.setPreferredSize(new java.awt.Dimension(50, 20));
+        fmttheoretical_fragment_ions.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        fmttheoretical_fragment_ions.setMinimumSize(new java.awt.Dimension(50, 24));
+        fmttheoretical_fragment_ions.setPreferredSize(new java.awt.Dimension(50, 24));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -625,8 +639,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel20))
                     .addComponent(fmtfragment_bin_tol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fmtfragment_bin_offset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fmttheoretical_fragment_ions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fmttheoretical_fragment_ions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fmtfragment_bin_offset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(253, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -642,9 +656,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(jLabel21)
                     .addComponent(fmtfragment_bin_tol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel22)
-                    .addComponent(fmtfragment_bin_offset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(fmtfragment_bin_offset, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
@@ -678,7 +692,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         tabPane.addTab("Comet Params", panelInTabCometParams);
@@ -704,13 +718,18 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel24.setText("RAM");
 
         spinnerRam.setModel(new javax.swing.SpinnerNumberModel(4, 1, null, 1));
+        spinnerRam.setMinimumSize(new java.awt.Dimension(40, 20));
+        spinnerRam.setPreferredSize(new java.awt.Dimension(40, 20));
 
         jLabel25.setText("Threads");
         jLabel25.setToolTipText("Set to zero to use all CPU cores");
 
-        spinnerThreads.setModel(new javax.swing.SpinnerNumberModel());
+        spinnerThreads.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         spinnerThreads.setToolTipText("Set to zero to use all CPU cores");
-        spinnerThreads.setMinimumSize(new java.awt.Dimension(35, 20));
+        spinnerThreads.setMinimumSize(new java.awt.Dimension(40, 20));
+        spinnerThreads.setPreferredSize(new java.awt.Dimension(40, 20));
+
+        jLabel26.setText("(GB)");
 
         javax.swing.GroupLayout panelRunLayout = new javax.swing.GroupLayout(panelRun);
         panelRun.setLayout(panelRunLayout);
@@ -727,12 +746,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel24)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spinnerRam, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spinnerRam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel25)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                        .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                         .addComponent(btnClearConsole)))
                 .addContainerGap())
         );
@@ -747,9 +768,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(jLabel24)
                     .addComponent(spinnerRam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel25)
-                    .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel26))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -776,12 +798,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             String approveText = "Select";
             JFileChooser fc = new JFileChooser();
             fc.setAcceptAllFileFilterUsed(true);
+            FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("LCMS files (mzML/mzXML)", "mzml", "mzxml");
+            fc.setFileFilter(fileNameExtensionFilter);
             fc.setApproveButtonText(approveText);
             fc.setDialogTitle("Choose raw data files");
             fc.setMultiSelectionEnabled(true);
             fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-            setFilechooserPathToCached(fc);
+            setFilechooserPathToCached(fc, ThisAppProps.PROP_LCMS_FILES_IN);
 
 //            List<String> filePaths = splitTrim(txtFileIn.getText().trim(), ",");
 //            for (int i = 0; i < filePaths.size(); i++) {
@@ -799,7 +823,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     txtAreaSelectedFiles.append(f.toString() + "\n");
                 }
                 if (files.length > 0) {
-                    saveFilechooserPathToCached(files[0]);
+                    saveFilechooserPathToCached(files[0], ThisAppProps.PROP_LCMS_FILES_IN);
                 }
 
             } else {
@@ -825,14 +849,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Choose Umpire SE param file");
         fileChooser.setMultiSelectionEnabled(false);
         
-        setFilechooserPathToCached(fileChooser);
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
         
         int openDialog = fileChooser.showOpenDialog(this);
         switch (openDialog) {
             case JFileChooser.APPROVE_OPTION:
                 File file = fileChooser.getSelectedFile();
                 txtSelectedFile.setText(Paths.get(file.getAbsolutePath()).toString());
-                saveFilechooserPathToCached(file);
+                saveFilechooserPathToCached(file, ThisAppProps.PROP_PARAMS_FILE_IN);
 
                 UmpireParams params = parseUmpireParamsFile(file);
                 if (params == null) {
@@ -854,22 +878,22 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fmtRFmaxActionPerformed
 
-    private void setFilechooserPathToCached(JFileChooser fileChooser) {
+    private void setFilechooserPathToCached(JFileChooser fileChooser, String propName) {
         ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
         if (thisAppProps == null)
             return;
-        String inputPath = thisAppProps.getProperty(ThisAppProps.PROP_FILE_IN);
+        String inputPath = thisAppProps.getProperty(ThisAppProps.PROP_PARAMS_FILE_IN);
         if (inputPath != null) {
             File file = Paths.get(inputPath).toFile();
             fileChooser.setCurrentDirectory(file);
         }
     }
 
-    private void saveFilechooserPathToCached(File file) {
+    private void saveFilechooserPathToCached(File file, String propName) {
         ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
         if (thisAppProps == null)
             thisAppProps = new ThisAppProps();
-        thisAppProps.setProperty(ThisAppProps.PROP_FILE_IN, file.getAbsolutePath());
+        thisAppProps.setProperty(ThisAppProps.PROP_PARAMS_FILE_IN, file.getAbsolutePath());
         thisAppProps.save();
     }
 
@@ -883,14 +907,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Choose Comet param file");
         fileChooser.setMultiSelectionEnabled(false);
 
-        setFilechooserPathToCached(fileChooser);
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
 
         int openDialog = fileChooser.showOpenDialog(this);
         switch (openDialog) {
             case JFileChooser.APPROVE_OPTION:
                 File file = fileChooser.getSelectedFile();
                 txtCometParamsFile.setText(Paths.get(file.getAbsolutePath()).toString());
-                saveFilechooserPathToCached(file);
+                saveFilechooserPathToCached(file, ThisAppProps.PROP_PARAMS_FILE_IN);
                 try {
                     CometParams cometParams = loadCometParamsFile(file);
                     fillCometParamFields(cometParams);
@@ -903,7 +927,31 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSelectCometParamsFileActionPerformed
 
     private void btnBrowseDatabasePathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseDatabasePathActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("FASTA files", "fa", "fasta");
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+        fileChooser.setApproveButtonText("Select file");
+        fileChooser.setApproveButtonToolTipText("Select");
+        fileChooser.setDialogTitle("Choose FASTA file");
+        fileChooser.setMultiSelectionEnabled(false);
 
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
+        
+        if (!txtDatabasePath.getText().isEmpty()) {
+            File toFile = Paths.get(txtDatabasePath.getText()).toFile();
+            fileChooser.setCurrentDirectory(toFile);
+        }
+        
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                
+                File f = fileChooser.getSelectedFile();
+                txtDatabasePath.setText(f.getAbsolutePath());
+                
+                break;
+        }
+            
     }//GEN-LAST:event_btnBrowseDatabasePathActionPerformed
 
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
@@ -1026,22 +1074,25 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
+        
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
+            java.util.logging.Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, e1);
+            try {
+                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
                 }
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException e2) {
+                java.util.logging.Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, e2);
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
 
@@ -1107,6 +1158,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

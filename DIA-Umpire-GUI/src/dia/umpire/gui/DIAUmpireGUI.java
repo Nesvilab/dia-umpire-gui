@@ -5,6 +5,7 @@
  */
 package dia.umpire.gui;
 
+import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 /**
@@ -17,10 +18,17 @@ public class DIAUmpireGUI {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        UmpireUnargetedDbSearchFrame frame = new UmpireUnargetedDbSearchFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+//        UmpireUnargetedDbSearchFrame frame = new UmpireUnargetedDbSearchFrame();
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.pack();
+//        EventQueue.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                frame.setVisible(true);
+//            }
+//        });
+
+        UmpireUnargetedDbSearchFrame.main(args);
     }
     
 }
