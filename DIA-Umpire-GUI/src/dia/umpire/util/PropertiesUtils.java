@@ -11,7 +11,10 @@ import dia.umpire.params.PropertyFileContent;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,18 +36,31 @@ public class PropertiesUtils {
         try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8), true)) {
             
             Map<Integer, PropLine> mapLines = pfc.getMapLines();
+            Properties props = pfc.getProps();
+            HashSet<String> propNamesWritten = new HashSet<String>();
             for (Map.Entry<Integer, PropLine> entry : mapLines.entrySet()) {
                 int lineNum = entry.getKey();
                 PropLine propLine = entry.getValue();
                 if (propLine.isSimpleLine()) {
                     pw.println(propLine.getJustALine());
                 } else {
-                    pw.print(propLine.getValue() + " = " + propLine.getValue());
+                    String propName = propLine.getName();
+                    String propValue = props.getProperty(propName);
+                    pw.print(propName + " = " + propValue);
+                    propNamesWritten.add(propName);
                     if (propLine.getComment() != null) {
                         pw.print("\t\t\t" + propLine.getComment());
                     }
                     pw.println();
                 }
+            }
+            Set<String> stringPropertyNames = props.stringPropertyNames();
+            // if there was something else added on top of what was in the file
+            // we will append to the end of the file
+            for (String propName : stringPropertyNames) {
+                if (propNamesWritten.contains(propName))
+                    continue;
+                pw.println(propName + " = " + props.getProperty(propName));
             }
         } finally {
             if (out != null)
