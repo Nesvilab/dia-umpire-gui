@@ -9,35 +9,30 @@ import dia.umpire.exceptions.ParsingException;
 import dia.umpire.params.CometParams;
 import dia.umpire.params.ThisAppProps;
 import dia.umpire.params.UmpireParams;
+import dia.umpire.util.LogUtils;
+
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.EventQueue;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
 
 /**
@@ -46,11 +41,14 @@ import javax.swing.text.DefaultCaret;
  */
 public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
+    protected ExecutorService exec;
+
     /**
      * Creates new form UmpireUnargetedDbSearchPanel
      */
     public UmpireUnargetedDbSearchFrame() {
         initComponents();
+        initManual();
     }
 
     public void enableComponents(Container container, boolean enable) {
@@ -61,6 +59,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 enableComponents((Container)component, enable);
             }
         }
+    }
+
+    private void initManual() {
+        exec = Executors.newCachedThreadPool();
     }
 
     /**
@@ -124,7 +126,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         fmtWindowSize = new javax.swing.JFormattedTextField();
         panelUmpireBinary = new javax.swing.JPanel();
-        txtSelectedFile = new javax.swing.JTextField();
+        txtUmpireConfigFile = new javax.swing.JTextField();
         btnSelectUmpireParamFile = new javax.swing.JButton();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
@@ -151,7 +153,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         chkRunCometSearch = new javax.swing.JCheckBox();
         panelCometBinary = new javax.swing.JPanel();
         jLabel29 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtBinPhilosopher = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         txtCometParamsFile = new javax.swing.JTextField();
         btnSelectCometParamsFile = new javax.swing.JButton();
@@ -587,7 +589,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSelectedFile)
+                    .addComponent(txtUmpireConfigFile)
                     .addComponent(txtBinUmpire)
                     .addComponent(txtBinMsconvert))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -612,7 +614,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSelectedFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUmpireConfigFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSelectUmpireParamFile)
                     .addComponent(jLabel27))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -775,7 +777,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel29.setText("Comet (Philosopher)");
 
-        jTextField2.setText("philosopher_windows_amd64");
+        txtBinPhilosopher.setText("philosopher_windows_amd64");
 
         jButton3.setText("Browse");
 
@@ -804,7 +806,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSelectCometParamsFile))
                     .addGroup(panelCometBinaryLayout.createSequentialGroup()
-                        .addComponent(jTextField2)
+                        .addComponent(txtBinPhilosopher)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3)))
                 .addContainerGap())
@@ -815,7 +817,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel29)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBinPhilosopher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1034,15 +1036,22 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         switch (openDialog) {
             case JFileChooser.APPROVE_OPTION:
                 File file = fileChooser.getSelectedFile();
-                txtSelectedFile.setText(Paths.get(file.getAbsolutePath()).toString());
+                txtUmpireConfigFile.setText(Paths.get(file.getAbsolutePath()).toString());
                 saveFilechooserPathToCached(file, ThisAppProps.PROP_PARAMS_FILE_IN);
 
-                UmpireParams params = parseUmpireParamsFile(file);
+                UmpireParams params = null;
+                try {
+                    params = loadUmpireParamsFile(file);
+                } catch (ParsingException ex) {
+                    JOptionPane.showMessageDialog(this, "Could not load params file", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 if (params == null) {
                     JOptionPane.showMessageDialog(this, "Could not load params file", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                boolean containsWindowType = params.containsKey("WindowType");
+                
+                boolean containsWindowType = params.getProps().containsKey("WindowType");
                 if (!containsWindowType) {
                     JOptionPane.showMessageDialog(this, "Parameter file loaded, but did not contain WindowType", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -1174,8 +1183,74 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     + "Please mark checkboxes in other tabs to run processing tools.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
+        
+        
+        
+        
+        // we will now compose parameter objects for running processes.
+        // at first we will try to load the base parameter files, if the file paths
+        // in the GUI are not empty. If empty, we will load the defaults and
+        // add params from the GUI to it.
+        if (chkRunUmpire.isSelected()) {
+            // Running Umpire
+            
+        }
+        
+        
+        
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                
+            }
+        };
+        REHandler reHandler = new REHandler(runnable, System.err, console);
+        exec.execute(reHandler);
     }//GEN-LAST:event_btnRunActionPerformed
 
+
+    public UmpireParams collectUmpireParams() throws ParsingException {
+        try {
+            
+            // load deafaults
+            UmpireParams params = null;
+            String userSpecifiedFileLoc = txtUmpireConfigFile.getText();
+            if (userSpecifiedFileLoc.isEmpty()) {
+                params = UmpireParams.parseDefault();
+            } else {
+                params = UmpireParams.parse(new FileInputStream(userSpecifiedFileLoc));
+            }
+            
+            // now fill in the values from the UI
+            
+            
+            return params;
+        } catch (FileNotFoundException ex) {
+            throw new ParsingException("Error collecting user-specified params for Umpire", ex);
+        }
+    }
+    
+    
+    public static class REHandler implements Runnable {
+        Runnable delegate;
+        Appendable[] outs;
+        public REHandler (Runnable delegate, Appendable... out) {
+            this.delegate = delegate;
+            this.outs = out;
+        }
+        public void run () {
+            try {
+                delegate.run ();
+            } catch (Exception e) {
+                //log.error("Something bad happened in a worker thread", e);
+                String msg = String.format("Something bad happened in a worker thread:\n%s", e.getMessage());
+                for (Appendable out : outs) {
+                    LogUtils.println(out, msg);
+                }
+            }
+        }
+    }
 
 
     private void btnClearConsoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearConsoleActionPerformed
@@ -1238,12 +1313,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private CometParams loadCometParamsFile(File file) throws ParsingException {
         try (FileInputStream fis = new FileInputStream(file)) {
             CometParams params = CometParams.parse(fis);
-//            if (params.getFirstLine() == null || params.getFirstLine().isEmpty()) {
-//                throw new ParsingException("The first line of the comet params file can't be empty.");
-//            }
-//            if (params.getCometEnzymeInfos().isEmpty()) {
-//                throw new ParsingException("COMET_ENZYME_INFO table was not found");
-//            }
             return params;
         } catch (FileNotFoundException ex) {
             throw new ParsingException(ex);
@@ -1280,41 +1349,44 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         return strings;
     }
 
-    private UmpireParams parseUmpireParamsFile(File f) {
-        UmpireParams params = new UmpireParams();
-        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f))) {
-            params.load(bis);
+    private UmpireParams loadUmpireParamsFile(File file) throws ParsingException {
+        try (FileInputStream fis = new FileInputStream(file)) {
+            UmpireParams params = UmpireParams.parse(fis);
             return params;
+        } catch (FileNotFoundException ex) {
+            throw new ParsingException(ex);
         } catch (IOException ex) {
-            Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ParsingException(ex);
         }
-        return null;
     }
 
     private void fillInUmpireParams(UmpireParams params) {
-        fmtRPmax.setText(params.getProperty(UmpireParams.PROP_RPmax));
-        fmtRFmax.setText(params.getProperty(UmpireParams.PROP_RFmax));
-        fmtCorrThreshold.setText(params.getProperty(UmpireParams.PROP_CorrThreshold));
-        fmtDeltaApex.setText(params.getProperty(UmpireParams.PROP_DeltaApex));
-        fmtRTOverlap.setText(params.getProperty(UmpireParams.PROP_RTOverlap));
-        chkAdjustFragIntensity.setSelected(params.getAdjustFragIntensity());
-        chkBoostComplementaryIon.setSelected(params.getBoostComplementaryIon());
+        fmtRPmax.setText(params.getProps().getProperty(UmpireParams.PROP_RPmax));
+        fmtRFmax.setText(params.getProps().getProperty(UmpireParams.PROP_RFmax));
+        fmtCorrThreshold.setText(params.getProps().getProperty(UmpireParams.PROP_CorrThreshold));
+        fmtDeltaApex.setText(params.getProps().getProperty(UmpireParams.PROP_DeltaApex));
+        fmtRTOverlap.setText(params.getProps().getProperty(UmpireParams.PROP_RTOverlap));
+        
+        boolean getAdjustFragIntensity = Boolean.valueOf(params.getProps().getProperty(UmpireParams.PROP_AdjustFragIntensity));
+        boolean getBoostComplementaryIon = Boolean.valueOf(params.getProps().getProperty(UmpireParams.PROP_BoostComplementaryIon));
+        chkAdjustFragIntensity.setSelected(getAdjustFragIntensity);
+        chkBoostComplementaryIon.setSelected(getBoostComplementaryIon);
 
-        fmtMS1PPM.setText(params.getProperty(UmpireParams.PROP_MS1PPM));
-        fmtMS2PPM.setText(params.getProperty(UmpireParams.PROP_MS2PPM));
-        fmtSN.setText(params.getProperty(UmpireParams.PROP_SN));
-        fmtMS2SN.setText(params.getProperty(UmpireParams.PROP_MS2SN));
-        fmtMinMSIntensity.setText(params.getProperty(UmpireParams.PROP_MinMSIntensity));
-        fmtMinMSMSIntensity.setText(params.getProperty(UmpireParams.PROP_MinMSMSIntensity));
-        fmtMaxCurveRTRange.setText(params.getProperty(UmpireParams.PROP_MaxCurveRTRange));
-        fmtNoMissedScan.setText(params.getProperty(UmpireParams.PROP_NoMissedScan));
-        fmtMinFrag.setText(params.getProperty(UmpireParams.PROP_MinFrag));
-        chkEstimateBG.setSelected(Boolean.valueOf(params.getProperty(UmpireParams.PROP_EstimateBG)));
-        fmtMinNoPeakCluster.setText(params.getProperty(UmpireParams.PROP_MinNoPeakCluster));
-        fmtMaxNoPeakCluster.setText(params.getProperty(UmpireParams.PROP_MaxNoPeakCluster));
+        fmtMS1PPM.setText(params.getProps().getProperty(UmpireParams.PROP_MS1PPM));
+        fmtMS2PPM.setText(params.getProps().getProperty(UmpireParams.PROP_MS2PPM));
+        fmtSN.setText(params.getProps().getProperty(UmpireParams.PROP_SN));
+        fmtMS2SN.setText(params.getProps().getProperty(UmpireParams.PROP_MS2SN));
+        fmtMinMSIntensity.setText(params.getProps().getProperty(UmpireParams.PROP_MinMSIntensity));
+        fmtMinMSMSIntensity.setText(params.getProps().getProperty(UmpireParams.PROP_MinMSMSIntensity));
+        fmtMaxCurveRTRange.setText(params.getProps().getProperty(UmpireParams.PROP_MaxCurveRTRange));
+        fmtNoMissedScan.setText(params.getProps().getProperty(UmpireParams.PROP_NoMissedScan));
+        fmtMinFrag.setText(params.getProps().getProperty(UmpireParams.PROP_MinFrag));
+        chkEstimateBG.setSelected(Boolean.valueOf(params.getProps().getProperty(UmpireParams.PROP_EstimateBG)));
+        fmtMinNoPeakCluster.setText(params.getProps().getProperty(UmpireParams.PROP_MinNoPeakCluster));
+        fmtMaxNoPeakCluster.setText(params.getProps().getProperty(UmpireParams.PROP_MaxNoPeakCluster));
 
 
-        fmtWindowSize.setText(params.getProperty(UmpireParams.PROP_WindowSize));
+        fmtWindowSize.setText(params.getProps().getProperty(UmpireParams.PROP_WindowSize));
         //.setText(params.getProperty(UmpireParams.PROP_));
 
 
@@ -1354,7 +1426,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UmpireUnargetedDbSearchFrame().setVisible(true);
+                UmpireUnargetedDbSearchFrame frame = new UmpireUnargetedDbSearchFrame();
+                frame.setVisible(true);
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
             }
         });
     }
@@ -1435,7 +1510,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblNoMissedScan;
     private javax.swing.JPanel panelCometBinary;
     private javax.swing.JPanel panelCometSequence;
@@ -1453,10 +1527,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JTextArea txtAreaSelectedFiles;
     private javax.swing.JTextField txtBinMsconvert;
+    private javax.swing.JTextField txtBinPhilosopher;
     private javax.swing.JTextField txtBinUmpire;
     private javax.swing.JTextField txtCometParamsFile;
     private javax.swing.JTextField txtDatabasePath;
-    private javax.swing.JTextField txtSelectedFile;
+    private javax.swing.JTextField txtUmpireConfigFile;
     private javax.swing.JTextField txtWorkingDir;
     // End of variables declaration//GEN-END:variables
 

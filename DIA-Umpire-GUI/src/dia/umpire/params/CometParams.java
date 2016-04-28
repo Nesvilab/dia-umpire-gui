@@ -4,7 +4,6 @@ import dia.umpire.exceptions.ParsingException;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Dmitry Avtonomov on 2016-04-27.
  */
-public class CometParams {
+public class CometParams implements PropertyFileContent {
     public static final String COMET_ENZYME_INFO = "[COMET_ENZYME_INFO]";
     protected Map<Integer, String> cometEnzymeInfos = new TreeMap<>();
     protected String firstLine;
@@ -25,37 +24,14 @@ public class CometParams {
     protected List<String> linesInOriginalFile = new ArrayList<>();
     protected Map<Integer, PropLine> mapLines= new TreeMap<>();
     protected Map<String, Integer> mapProps = new HashMap<>();
+    
+    public static final String FILE_BASE_NAME = "comet";
+    public static final String FILE_BASE_EXT = "params";
 
-    private static class PropLine {
-        String justALine;
-        String name;
-        String value;
-        String comment;
+    protected String binPhilosopher;
 
-        public PropLine(String justALine, String name, String value, String comment) {
-            this.justALine = justALine;
-            this.name = name;
-            this.value = value;
-            this.comment = comment;
-        }
-
-        public boolean isSimpleLine() {
-            return justALine != null;
-        }
-
-        @Override
-        public String toString() {
-            if (isSimpleLine())
-                return "TextLine{" + justALine + "}";
-
-            return "PropLine{" +
-                    ", name='" + name + '\'' +
-                    ", value='" + value + '\'' +
-                    ", comment='" + comment + '\'' +
-                    '}';
-        }
-    }
-
+    /** This file is in the jar, use getResourceAsStream() to get it. */
+    public static final String DEFAULT_FILE = "comet.params";
 
     public static final String PROP_database_name = "database_name";
     public static final String PROP_peptide_mass_tolerance = "peptide_mass_tolerance";
@@ -64,6 +40,41 @@ public class CometParams {
     public static final String PROP_theoretical_fragment_ions = "theoretical_fragment_ions";
 //    public static final String PROP_ = "";
 
+    @Override
+    public List<String> getLinesInOriginalFile() {
+        return linesInOriginalFile;
+    }
+
+    public void setLinesInOriginalFile(List<String> linesInOriginalFile) {
+        this.linesInOriginalFile = linesInOriginalFile;
+    }
+
+    @Override
+    public Map<Integer, PropLine> getMapLines() {
+        return mapLines;
+    }
+
+    public void setMapLines(Map<Integer, PropLine> mapLines) {
+        this.mapLines = mapLines;
+    }
+
+    @Override
+    public Map<String, Integer> getMapProps() {
+        return mapProps;
+    }
+
+    public void setMapProps(Map<String, Integer> mapProps) {
+        this.mapProps = mapProps;
+    }
+
+    public String getBinPhilosopher() {
+        return binPhilosopher;
+    }
+
+    public void setBinPhilosopher(String binPhilosopher) {
+        this.binPhilosopher = binPhilosopher;
+    }
+    
     public Map<Integer, String> getCometEnzymeInfos() {
         return cometEnzymeInfos;
     }
@@ -72,14 +83,14 @@ public class CometParams {
         return firstLine;
     }
 
+    @Override
     public Properties getProps() {
         return props;
     }
 
-    public static void main(String[] args) throws ParsingException {
-        InputStream is = CometParams.class.getResourceAsStream("comet.params");
-        CometParams params = CometParams.parse(is);
-        int a = 1;
+    public static CometParams parseDefault() throws ParsingException {
+        InputStream is = CometParams.class.getResourceAsStream(DEFAULT_FILE);
+        return CometParams.parse(is);
     }
 
     public static CometParams parse(InputStream is) throws ParsingException {
