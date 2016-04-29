@@ -141,10 +141,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         txtBinUmpire = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        btnSelectUmpireJar = new javax.swing.JButton();
         jLabel31 = new javax.swing.JLabel();
         txtBinMsconvert = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        btnSelectMSConvertBinay = new javax.swing.JButton();
         chkRunUmpire = new javax.swing.JCheckBox();
         panelInTabCometParams = new javax.swing.JPanel();
         panelCometSequence = new javax.swing.JPanel();
@@ -164,7 +164,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         panelCometBinary = new javax.swing.JPanel();
         jLabel29 = new javax.swing.JLabel();
         txtBinPhilosopher = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btnSelectPhilosopherBinary = new javax.swing.JButton();
         txtCometParamsFile = new javax.swing.JTextField();
         btnSelectCometParamsFile = new javax.swing.JButton();
         jLabel30 = new javax.swing.JLabel();
@@ -256,7 +256,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tabPane.addTab("Raw Files", panelInTabSelectFiles);
+        tabPane.addTab("Select Raw Files", panelInTabSelectFiles);
 
         panelUmpireFragGroup.setBorder(javax.swing.BorderFactory.createTitledBorder("Fragment grouping"));
 
@@ -577,7 +577,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         txtBinUmpire.setText("DIA_Umpire_SE.jar");
         txtBinUmpire.setToolTipText("If you don't have Umpire jar file on your PATH, please specify the full path");
 
-        jButton2.setText("Browse");
+        btnSelectUmpireJar.setText("Browse");
+        btnSelectUmpireJar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectUmpireJarActionPerformed(evt);
+            }
+        });
 
         jLabel31.setText("msconvert");
         jLabel31.setToolTipText("If you don't have msconvert on your PATH, specify the full path to the executable");
@@ -585,7 +590,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         txtBinMsconvert.setText("msconvert");
         txtBinMsconvert.setToolTipText("If you don't have msconvert on your PATH, specify the full path to the executable");
 
-        jButton4.setText("Browse");
+        btnSelectMSConvertBinay.setText("Browse");
+        btnSelectMSConvertBinay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectMSConvertBinayActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelUmpireBinaryLayout = new javax.swing.GroupLayout(panelUmpireBinary);
         panelUmpireBinary.setLayout(panelUmpireBinaryLayout);
@@ -605,8 +615,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnSelectUmpireParamFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnSelectMSConvertBinay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSelectUmpireJar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelUmpireBinaryLayout.setVerticalGroup(
@@ -616,12 +626,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel28)
                     .addComponent(txtBinUmpire, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(btnSelectUmpireJar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel31)
                     .addComponent(txtBinMsconvert, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4))
+                    .addComponent(btnSelectMSConvertBinay))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtUmpireConfigFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -786,10 +796,17 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         panelCometBinary.setBorder(javax.swing.BorderFactory.createTitledBorder("Comet"));
 
         jLabel29.setText("Comet (Philosopher)");
+        jLabel29.setToolTipText("If you don't have Philosopher on your PATH or it is the wrong platform, provide the full path to the executable");
 
         txtBinPhilosopher.setText("philosopher_windows_amd64");
+        txtBinPhilosopher.setToolTipText("If you don't have Philosopher on your PATH or it is the wrong platform, provide the full path to the executable");
 
-        jButton3.setText("Browse");
+        btnSelectPhilosopherBinary.setText("Browse");
+        btnSelectPhilosopherBinary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectPhilosopherBinaryActionPerformed(evt);
+            }
+        });
 
         btnSelectCometParamsFile.setText("Browse");
         btnSelectCometParamsFile.addActionListener(new java.awt.event.ActionListener() {
@@ -818,7 +835,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addGroup(panelCometBinaryLayout.createSequentialGroup()
                         .addComponent(txtBinPhilosopher)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)))
+                        .addComponent(btnSelectPhilosopherBinary)))
                 .addContainerGap())
         );
         panelCometBinaryLayout.setVerticalGroup(
@@ -828,7 +845,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addGroup(panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel29)
                     .addComponent(txtBinPhilosopher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(btnSelectPhilosopherBinary))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCometParamsFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1596,6 +1613,96 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSelectWrkingDirActionPerformed
 
+    private void btnSelectUmpireJarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUmpireJarActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select DIA-Umpire jar");
+        fileChooser.setApproveButtonToolTipText("Select");
+        fileChooser.setDialogTitle("Select DIA-Umpire jar");
+        fileChooser.setMultiSelectionEnabled(false);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+        
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
+
+        if (!txtBinUmpire.getText().isEmpty()) {
+            File toFile = Paths.get(txtBinUmpire.getText()).toFile();
+            fileChooser.setCurrentDirectory(toFile);
+        }
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+
+                File f = fileChooser.getSelectedFile();
+                txtBinUmpire.setText(f.getAbsolutePath());
+                saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
+
+                break;
+        }
+    }//GEN-LAST:event_btnSelectUmpireJarActionPerformed
+
+    private void btnSelectMSConvertBinayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectMSConvertBinayActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select MSConvert binary");
+        fileChooser.setApproveButtonToolTipText("Select");
+        fileChooser.setDialogTitle("Select MSConvert binary");
+        fileChooser.setMultiSelectionEnabled(false);
+//        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
+//        fileChooser.setFileFilter(fileNameExtensionFilter);
+        
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
+
+        if (!txtBinMsconvert.getText().isEmpty()) {
+            File toFile = Paths.get(txtBinMsconvert.getText()).toFile();
+            fileChooser.setCurrentDirectory(toFile);
+        }
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+
+                File f = fileChooser.getSelectedFile();
+                txtBinMsconvert.setText(f.getAbsolutePath());
+                saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
+
+                break;
+        }
+    }//GEN-LAST:event_btnSelectMSConvertBinayActionPerformed
+
+    private void btnSelectPhilosopherBinaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectPhilosopherBinaryActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select Philosopher binary");
+        fileChooser.setApproveButtonToolTipText("Select");
+        fileChooser.setDialogTitle("Select Philosopher binary");
+        fileChooser.setMultiSelectionEnabled(false);
+//        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
+//        fileChooser.setFileFilter(fileNameExtensionFilter);
+        
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
+
+        if (!txtBinPhilosopher.getText().isEmpty()) {
+            File toFile = Paths.get(txtBinPhilosopher.getText()).toFile();
+            fileChooser.setCurrentDirectory(toFile);
+        }
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+
+                File f = fileChooser.getSelectedFile();
+                txtBinPhilosopher.setText(f.getAbsolutePath());
+                saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
+
+                break;
+        }
+    }//GEN-LAST:event_btnSelectPhilosopherBinaryActionPerformed
+
     private CometParams loadCometParamsFile(File file) throws ParsingException {
         try (FileInputStream fis = new FileInputStream(file)) {
             CometParams params = CometParams.parse(fis);
@@ -1726,7 +1833,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnClearConsole;
     private javax.swing.JButton btnRun;
     private javax.swing.JButton btnSelectCometParamsFile;
+    private javax.swing.JButton btnSelectMSConvertBinay;
+    private javax.swing.JButton btnSelectPhilosopherBinary;
     private javax.swing.JButton btnSelectRawFiles;
+    private javax.swing.JButton btnSelectUmpireJar;
     private javax.swing.JButton btnSelectUmpireParamFile;
     private javax.swing.JButton btnSelectWrkingDir;
     private javax.swing.JCheckBox chkAdjustFragIntensity;
@@ -1759,9 +1869,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField fmtpeptide_mass_tolerance;
     private javax.swing.JFormattedTextField fmttheoretical_fragment_ions;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

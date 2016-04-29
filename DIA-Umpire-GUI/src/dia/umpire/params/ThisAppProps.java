@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 public class ThisAppProps extends Properties {
     //private static final Logger log = LoggerFactory.getLogger(ThisAppProps.class);
     public static final String PROP_PARAMS_FILE_IN = "path.params.file.in";
+    public static final String PROP_BINARIES_IN = "path.params.bins.in";
     public static final String PROP_LCMS_FILES_IN = "path.lcms.files.in";
     public static final String PROP_FILE_OUT = "path.file.out";
 

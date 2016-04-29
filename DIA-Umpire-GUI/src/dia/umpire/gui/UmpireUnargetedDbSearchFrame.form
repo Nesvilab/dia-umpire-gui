@@ -47,8 +47,8 @@
         <Container class="javax.swing.JPanel" name="panelInTabSelectFiles">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Raw Files">
-                <Property name="tabTitle" type="java.lang.String" value="Raw Files"/>
+              <JTabbedPaneConstraints tabName="Select Raw Files">
+                <Property name="tabTitle" type="java.lang.String" value="Select Raw Files"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -817,8 +817,8 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="btnSelectUmpireParamFile" max="32767" attributes="0"/>
-                              <Component id="jButton4" max="32767" attributes="0"/>
-                              <Component id="jButton2" max="32767" attributes="0"/>
+                              <Component id="btnSelectMSConvertBinay" max="32767" attributes="0"/>
+                              <Component id="btnSelectUmpireJar" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -831,13 +831,13 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel28" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtBinUmpire" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnSelectUmpireJar" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel31" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtBinMsconvert" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnSelectMSConvertBinay" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -878,10 +878,13 @@
                     <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have Umpire jar file on your PATH, please specify the full path"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton2">
+                <Component class="javax.swing.JButton" name="btnSelectUmpireJar">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Browse"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelectUmpireJarActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel31">
                   <Properties>
@@ -895,10 +898,13 @@
                     <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have msconvert on your PATH, specify the full path to the executable"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton4">
+                <Component class="javax.swing.JButton" name="btnSelectMSConvertBinay">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Browse"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelectMSConvertBinayActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -1185,7 +1191,7 @@
                               <Group type="102" attributes="0">
                                   <Component id="txtBinPhilosopher" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnSelectPhilosopherBinary" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -1199,7 +1205,7 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel29" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtBinPhilosopher" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnSelectPhilosopherBinary" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -1216,17 +1222,22 @@
                 <Component class="javax.swing.JLabel" name="jLabel29">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Comet (Philosopher)"/>
+                    <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have Philosopher on your PATH or it is the wrong platform, provide the full path to the executable"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtBinPhilosopher">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="philosopher_windows_amd64"/>
+                    <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have Philosopher on your PATH or it is the wrong platform, provide the full path to the executable"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton3">
+                <Component class="javax.swing.JButton" name="btnSelectPhilosopherBinary">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Browse"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelectPhilosopherBinaryActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtCometParamsFile">
                 </Component>
