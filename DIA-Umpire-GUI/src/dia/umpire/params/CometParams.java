@@ -130,9 +130,13 @@ public class CometParams implements PropertyFileContent {
                 } else {
                     // it must be a pure property string or just a meaningless string
                     int indexOfEquals = line.indexOf('=');
-                    if (indexOfEquals > 2) {
+                    if (indexOfEquals > 0) {
                         String possiblePropString = line;
                         addString(propRegex, possiblePropString, line, indexOfHash, cometParams, lineNum);
+                    } else {
+                        // it's an ordinary line
+                        String simpleLine = line;
+                        cometParams.mapLines.put(lineNum, new PropLine(simpleLine, null, null, null));
                     }
                 }
             }
@@ -140,36 +144,6 @@ public class CometParams implements PropertyFileContent {
         } catch (IOException e) {
             throw new ParsingException("Error reading comet params file", e);
         }
-
-//        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(path.toString()))) {
-//            Properties properties = new Properties();
-//
-//            properties.load(bis);
-//            Pattern enzymePattern = Pattern.compile("^([\\d]+)\\..*");
-//            Pattern valuePattern = Pattern.compile("^(.*?)(?:\\s*#.*)$");
-//            for (Object o : properties.keySet()) {
-//                if (!(o instanceof String)) {
-//                    throw new ParsingException("Enountered a key that is not a String");
-//                } else {
-//                    String key = (String)o;
-//                    String value = properties.getProperty(key);
-//                    Matcher matcherEnzyme = enzymePattern.matcher(key);
-//                    if (matcherEnzyme.matches()) {
-//                        cometParams.cometEnzymeInfos.put(Integer.parseInt(matcherEnzyme.group(1)), value);
-//                    } else {
-//                        Matcher m = valuePattern.matcher(value);
-//                        if (m.matches()) {
-//                            cometParams.props.put(key, m.group(1));
-//                        } else {
-//                            cometParams.props.put(key, value);
-//                        }
-//                    }
-//                }
-//
-//            }
-//        } catch (IOException e) {
-//            throw new ParsingException("Error parsing Comet parameters", e);
-//        }
         return cometParams;
     }
 

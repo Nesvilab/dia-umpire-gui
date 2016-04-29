@@ -17,14 +17,12 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -36,8 +34,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -52,6 +49,7 @@ import javax.swing.text.DefaultCaret;
 public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
     protected ExecutorService exec;
+    private final List<Process> submittedProcesses = new ArrayList<>(100);
 
     /**
      * Creates new form UmpireUnargetedDbSearchPanel
@@ -170,7 +168,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel30 = new javax.swing.JLabel();
         panelRun = new javax.swing.JPanel();
         btnRun = new javax.swing.JButton();
-        btnCancel = new javax.swing.JButton();
+        btnStop = new javax.swing.JButton();
         btnClearConsole = new javax.swing.JButton();
         consoleScrollPane = new javax.swing.JScrollPane();
         console = new dia.umpire.gui.TextConsole();
@@ -863,10 +861,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addGroup(panelInTabCometParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelCometSequence, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelCometTolerance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelCometBinary, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelInTabCometParamsLayout.createSequentialGroup()
                         .addComponent(chkRunCometSearch)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(panelCometBinary, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelInTabCometParamsLayout.setVerticalGroup(
@@ -892,7 +890,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
-        btnCancel.setText("Cancel");
+        btnStop.setText("Stop");
+        btnStop.setEnabled(false);
+        btnStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStopActionPerformed(evt);
+            }
+        });
 
         btnClearConsole.setText("Clear console");
         btnClearConsole.addActionListener(new java.awt.event.ActionListener() {
@@ -905,7 +909,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel24.setText("RAM");
 
-        spinnerRam.setModel(new javax.swing.SpinnerNumberModel(4, 1, null, 1));
+        spinnerRam.setModel(new javax.swing.SpinnerNumberModel(1000, 128, null, 100));
         spinnerRam.setMinimumSize(new java.awt.Dimension(40, 20));
         spinnerRam.setPreferredSize(new java.awt.Dimension(40, 20));
 
@@ -917,7 +921,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         spinnerThreads.setMinimumSize(new java.awt.Dimension(40, 20));
         spinnerThreads.setPreferredSize(new java.awt.Dimension(40, 20));
 
-        jLabel26.setText("(GB)");
+        jLabel26.setText("(Mb)");
 
         jLabel32.setText("Working dir");
 
@@ -939,18 +943,18 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addGroup(panelRunLayout.createSequentialGroup()
                         .addComponent(btnRun)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancel)
+                        .addComponent(btnStop)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel24)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spinnerRam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spinnerRam, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel26)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel25)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
                         .addComponent(btnClearConsole))
                     .addGroup(panelRunLayout.createSequentialGroup()
                         .addComponent(jLabel32)
@@ -971,7 +975,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRun)
-                    .addComponent(btnCancel)
+                    .addComponent(btnStop)
                     .addComponent(btnClearConsole)
                     .addComponent(jLabel24)
                     .addComponent(spinnerRam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1014,15 +1018,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
             setFilechooserPathToCached(fc, ThisAppProps.PROP_LCMS_FILES_IN);
-
-//            List<String> filePaths = splitTrim(txtFileIn.getText().trim(), ",");
-//            for (int i = 0; i < filePaths.size(); i++) {
-//                String filePath = filePaths.get(i);
-//                Path p = Paths.get(filePath).toAbsolutePath();
-//                if (Files.exists(p)) {
-//                    fc.setSelectedFile(p.toFile());
-//                }
-//            }
 
             int retVal = fc.showDialog(this, approveText);
             if (retVal == JFileChooser.APPROVE_OPTION) {
@@ -1169,32 +1164,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnBrowseDatabasePathActionPerformed
 
+    //private boolean testBinaryPath(String programName)
+    
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
+        btnRun.setEnabled(false);
+        btnStop.setEnabled(true);
         
-        try {
-            UmpireParams collectUmpireParams = collectUmpireParams();
-            int a = 1;
-        } catch (ParsingException ex) {
-            Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        ExecutorService exec = Executors.newSingleThreadExecutor();
         final TextConsole textConsole = console;
-//        exec.submit(new Runnable() {
-//            @Override
-//            public void run() {
-//                for (int i = 0; i < 200; i++) {
-//                    try {
-//                        console.append("Some text\n");
-//
-//                        Thread.sleep(100L);
-//                    } catch (IOException ignore) {
-//
-//                    } catch (InterruptedException ex) {
-//                    }
-//                }
-//            }
-//        });
         String workingDir = txtWorkingDir.getText();
         if (workingDir.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Working directory can't be left empty.\n"
@@ -1268,7 +1244,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     commands.add("java");
                     //commands.add("-d64");
                     commands.add("-jar");
-                    StringBuilder sb = new StringBuilder().append("-Xmx").append(ram).append("G");
+                    StringBuilder sb = new StringBuilder().append("-Xmx").append(ram).append("m");
                     commands.add(sb.toString());
                     commands.add(binUmpire);
                     commands.add(Paths.get(lcMsFilePathStr).toAbsolutePath().toString());
@@ -1294,7 +1270,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         String s = mzXmlFileName.toString();
                         int indexOf = s.toLowerCase().indexOf(".mzxml");
                         String baseName = mzXmlFileName.toString().substring(0, indexOf);
-                        Path createdMzXml = Paths.get(curMzXMl.getParent().toString(), baseName+"_Q"+i+".mzXML");
+                        Path createdMzXml = Paths.get(curMzXMl.getParent().toString(), baseName+"_Q"+i+".mgf");
                         commandsMsconvert.add(createdMzXml.toString());
                         
                         ProcessBuilder pbMsconv = new ProcessBuilder(commandsMsconvert);
@@ -1365,11 +1341,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         ProcessBuilder pb = new ProcessBuilder(commands);
                         processBuilders.add(pb);
                         createdMzXmlFiles.add(createdMzXml.toString());
-//                        if (Files.exists(pathToCheck)) { // this won't work as those files don't exist at process creation stage
-//                            commands.add(pathToCheck.toString());
-//                            processBuilders.add(pb);
-//                        }
-                        
                     }
                 }
                 
@@ -1406,15 +1377,19 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             reHandler = new REHandler(new Runnable() {
                 @Override
                 public void run() {
+                    Process process = null;
                     try {
-                        
-                        
                         List<String> command = pb.command();
-                        StringBuilder sb = new StringBuilder("About to execute:\n\t");
+                        StringBuilder sb = new StringBuilder("Executing command:\n$> ");
                         for (String commandPart : command)
                             sb.append(commandPart).append(" ");
                         LogUtils.println(console, sb.toString());
-                        Process process = pb.start();
+                        process = pb.start();
+//                        int waitFor = process.waitFor();
+//                        submittedProcesses.add(process);
+//                        
+//                        LogUtils.println(console, String.format("Process waitFor result is: [%d]", waitFor));
+//                        
                         LogUtils.println(console, "Process started");
                         
                         InputStream err = process.getErrorStream();
@@ -1441,23 +1416,37 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         }
                         
                     } catch (IOException ex) {
+                        LogUtils.println(console, String.format("Error in process:\n%s", ex.getMessage()));
                     } catch (InterruptedException ex) {
-                        //Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        if (process != null) {
+                            process.destroy();
+                        }
+                        LogUtils.println(console, String.format("Error in process:\n%s", ex.getMessage()));
                     }
                 }
             }, console, System.err);
             exec.submit(reHandler);
         }
         
-        //final ProcessBuilder pb = new ProcessBuilder(null);
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                
-//            }
-//        };
-//        REHandler reHandler = new REHandler(runnable, System.err, console);
-//        exec.execute(reHandler);
+        final JButton btnStartPtr = btnRun;
+        final JButton btnStopPtr = btnStop;
+        REHandler finalizerTask = new REHandler(new Runnable() {
+            @Override
+            public void run() {
+                submittedProcesses.clear();
+                btnRun.setEnabled(true);
+                btnStop.setEnabled(false);
+                LogUtils.println(console, String.format("========================="));
+                LogUtils.println(console, String.format("==="));
+                LogUtils.println(console, String.format("===        Done"));
+                LogUtils.println(console, String.format("==="));
+                LogUtils.println(console, String.format("========================="));
+            }
+        }, console, System.err);
+        
+        exec.submit(finalizerTask);
+        
+        exec.shutdown();
     }//GEN-LAST:event_btnRunActionPerformed
 
     
@@ -1712,6 +1701,19 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSelectPhilosopherBinaryActionPerformed
 
+    private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
+        btnRun.setEnabled(true);
+        btnStop.setEnabled(false);
+        
+        if (exec != null) {
+            exec.shutdownNow();
+        }
+        for (Process p : submittedProcesses) {
+            p.destroy();
+        }
+        submittedProcesses.clear();
+    }//GEN-LAST:event_btnStopActionPerformed
+
     private CometParams loadCometParamsFile(File file) throws ParsingException {
         try (FileInputStream fis = new FileInputStream(file)) {
             CometParams params = CometParams.parse(fis);
@@ -1838,7 +1840,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBrowseDatabasePath;
-    private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnClearConsole;
     private javax.swing.JButton btnRun;
     private javax.swing.JButton btnSelectCometParamsFile;
@@ -1848,6 +1849,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnSelectUmpireJar;
     private javax.swing.JButton btnSelectUmpireParamFile;
     private javax.swing.JButton btnSelectWrkingDir;
+    private javax.swing.JButton btnStop;
     private javax.swing.JCheckBox chkAdjustFragIntensity;
     private javax.swing.JCheckBox chkBoostComplementaryIon;
     private javax.swing.JCheckBox chkEstimateBG;
