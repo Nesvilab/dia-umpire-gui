@@ -23,7 +23,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -36,8 +38,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -1198,26 +1198,40 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     }
     
     private String testFilePath(String fileName, String workingDir) {
-        Path fileNameWasAbsolute = Paths.get(fileName);
-        if (Files.exists(fileNameWasAbsolute)) {
-            return fileNameWasAbsolute.toString();
+        try {
+            Path fileNameWasAbsolute = Paths.get(fileName);
+            if (Files.exists(fileNameWasAbsolute)) {
+                return fileNameWasAbsolute.toString();
+            }
+        } catch (IllegalArgumentException | FileSystemNotFoundException | SecurityException e) {
+            // something wrong with the path
         }
-        Path fileNameWasRelative = Paths.get(workingDir, fileName);
-        if (Files.exists(fileNameWasRelative)) {
-            return fileNameWasRelative.toString();
+        
+        try {
+            Path fileNameWasRelative = Paths.get(workingDir, fileName);
+            if (Files.exists(fileNameWasRelative)) {
+                return fileNameWasRelative.toString();
+            }
+        } catch (IllegalArgumentException | FileSystemNotFoundException | SecurityException e) {
+            // something wrong with the path
         }
         return null;
     }
     
+    private void resetRunButtons(boolean runEnabled) {
+        btnRun.setEnabled(runEnabled);
+        btnStop.setEnabled(!runEnabled);
+    }
+    
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
-        btnRun.setEnabled(false);
-        btnStop.setEnabled(true);
+        resetRunButtons(false);
         
         final TextConsole textConsole = console;
         String workingDir = txtWorkingDir.getText();
         if (workingDir.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Working directory can't be left empty.\n"
                     + "Please select an existing directory for the output.", "Error", JOptionPane.WARNING_MESSAGE);
+            resetRunButtons(true);
             return;
         }
 
@@ -1229,12 +1243,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         if (selectedFiles.isEmpty() || lcmsFilePaths.length == 0) {
             JOptionPane.showMessageDialog(this, "No LC/MS data files selected.\n"
                     + "Check 'Select Raw Files' tab.", "Error", JOptionPane.WARNING_MESSAGE);
+            resetRunButtons(true);
             return;
         }
 
         if (!chkRunUmpire.isSelected() && !chkRunCometSearch.isSelected()) {
             JOptionPane.showMessageDialog(this, "Nothing to run.\n"
                     + "Please mark checkboxes in other tabs to run processing tools.", "Error", JOptionPane.WARNING_MESSAGE);
+            resetRunButtons(true);
             return;
         }
         
@@ -1256,6 +1272,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Java could not be found.\n"
                         + "please make sure you have it installed \n"
                         + "and that java.exe can be found on PATH", "Error", JOptionPane.ERROR_MESSAGE);
+                resetRunButtons(true);
                 return;
             }
             
@@ -1263,23 +1280,27 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             String binUmpire = txtBinUmpire.getText();
             if (binUmpire.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "DIA Umpire binary can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
+                resetRunButtons(true);
                 return;
             }
             binUmpire = testFilePath(binUmpire, workingDir);
             if (binUmpire == null) {
                 JOptionPane.showMessageDialog(this, "Could not locate DIA-Umpire.jar", "Error", JOptionPane.ERROR_MESSAGE);
+                resetRunButtons(true);
                 return;
             }
             
             String binMsconvert = txtBinMsconvert.getText();
             if (binMsconvert.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "MSConvert binary can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
+                resetRunButtons(true);
                 return;
             }
             binMsconvert = testBinaryPath(binMsconvert, workingDir);
             if (binMsconvert == null) {
                 JOptionPane.showMessageDialog(this, "MSConvert binary could not be found \n"
                         + "on PATH or in the working directory", "Error", JOptionPane.ERROR_MESSAGE);
+                resetRunButtons(true);
                 return;
             }
             
@@ -1353,10 +1374,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             } catch (ParsingException ex) {
                 JOptionPane.showMessageDialog(this, "Error collecting user variables for Umpire.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
+                resetRunButtons(true);
                 return;
             } catch (FileNotFoundException | FileWritingException ex) {
                 JOptionPane.showMessageDialog(this, "Error writing Umpire parameters file to working dir.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
+                resetRunButtons(true);
                 return;
             }
         }
@@ -1369,6 +1392,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 if (binPhilosopher.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Philosopher (Comet) binary can not be an empty string.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
+                    resetRunButtons(true);
                     return;
                 }
                 binPhilosopher = testBinaryPath(binPhilosopher, workingDir);
@@ -1376,8 +1400,26 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Philosopher binary not found.\n"
                             + "Neither on PATH, nor in the working directory",
                         "Error", JOptionPane.ERROR_MESSAGE);
+                    resetRunButtons(true);
                     return;
                 }
+                
+                String fastaPath = txtDatabasePath.getText();
+                if (fastaPath.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Fasta file path can't be empty",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+                    resetRunButtons(true);
+                    return;
+                }
+                String fastaPathOrig = new String(fastaPath);
+                fastaPath = testFilePath(fastaPath, workingDir);
+                if (fastaPath == null) {
+                    JOptionPane.showMessageDialog(this, String.format("Could not find fasta file at:\n%s", fastaPathOrig),
+                            "Errors", JOptionPane.ERROR_MESSAGE);
+                    resetRunButtons(true);
+                    return;
+                }
+                
                     
 
                 // writing Comet params file
@@ -1419,10 +1461,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             } catch (ParsingException ex) {
                 JOptionPane.showMessageDialog(this, "Error collecting user variables for Comet Search.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
+                resetRunButtons(true);
                 return;
             } catch (FileNotFoundException | FileWritingException ex) {
                 JOptionPane.showMessageDialog(this, "Error collecting user variables for Comet Search.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
+                resetRunButtons(true);
                 return;
             }
         }
