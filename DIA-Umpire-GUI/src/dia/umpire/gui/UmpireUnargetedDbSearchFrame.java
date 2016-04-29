@@ -1261,16 +1261,17 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 
                 List<String> createdMgfFiles = new ArrayList<>();
                 List<String> createdMzXmlFiles = new ArrayList<>();
-                for (String filePath : lcmsFilePaths) {
+                for (String lcMsFilePathStr : lcmsFilePaths) {
                     // umpire
+                    //  java -jar -Xmx8G DIA_Umpire_SE.jar mzMXL_file diaumpire_se.params
                     List<String> commands = new ArrayList<>();
                     commands.add("java");
-                    commands.add("-d64");
+                    //commands.add("-d64");
                     commands.add("-jar");
                     StringBuilder sb = new StringBuilder().append("-Xmx").append(ram).append("G");
                     commands.add(sb.toString());
                     commands.add(binUmpire);
-                    commands.add(Paths.get(filePath).toAbsolutePath().toString());
+                    commands.add(Paths.get(lcMsFilePathStr).toAbsolutePath().toString());
                     commands.add(umpireParamsFilePath.toString());
                     
                     ProcessBuilder pb = new ProcessBuilder(commands);
@@ -1282,10 +1283,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         List<String> commandsMsconvert = new ArrayList<>();
                         commandsMsconvert.add(binMsconvert);
                         commandsMsconvert.add("--verbose");
-                        commandsMsconvert.add("--param");
-                        commandsMsconvert.add(umpireParamsFilePath.toString());
+                        commandsMsconvert.add("--32");
+                        commandsMsconvert.add("--zlib");
+                        commandsMsconvert.add("--mzXML");
+                        commandsMsconvert.add("--outdir");
+                        commandsMsconvert.add(workingDir);
 
-                        Path curMzXMl = Paths.get(filePath);
+                        Path curMzXMl = Paths.get(lcMsFilePathStr);
                         Path mzXmlFileName = curMzXMl.getFileName();
                         String s = mzXmlFileName.toString();
                         int indexOf = s.toLowerCase().indexOf(".mzxml");
@@ -1346,12 +1350,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     for (int i = 1; i <= 3; i++) {
                         List<String> commands = new ArrayList<>();
                         commands.add(binComet);
-                        commands.add("comet ");
-                        commands.add("--32");
-                        commands.add("--zlib");
-                        commands.add("--mzXML");
-                        commands.add("--outdir");
-                        commands.add(workingDir);
+                        commands.add("comet");
+                        commands.add("--param");
+                        commands.add(cometParamsFilePath.toString());
 
                         Path curMzXMl = Paths.get(filePath);
                         Path mzXmlFileName = curMzXMl.getFileName();
@@ -1406,7 +1407,15 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 @Override
                 public void run() {
                     try {
+                        
+                        
+                        List<String> command = pb.command();
+                        StringBuilder sb = new StringBuilder("About to execute:\n\t");
+                        for (String commandPart : command)
+                            sb.append(commandPart).append(" ");
+                        LogUtils.println(console, sb.toString());
                         Process process = pb.start();
+                        LogUtils.println(console, "Process started");
                         
                         InputStream err = process.getErrorStream();
                         InputStream out = process.getInputStream();
@@ -1415,16 +1424,16 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                             if (err.available() > 0) {
                                 byte[] bytes = new byte[err.available()];
                                 int read = err.read(bytes);
-                                console.append(new String(bytes));
+                                LogUtils.println(console, new String(bytes));
                             }
                             if (out.available() > 0) {
                                 byte[] bytes = new byte[out.available()];
                                 int read = out.read(bytes);
-                                console.append(new String(bytes));
+                                LogUtils.println(console, new String(bytes));
                             }
                             try {
                                 int exitValue = process.exitValue();
-                                console.append(String.format("Job finished, exit value: %d\n", exitValue));
+                                LogUtils.println(console, String.format("Process finished, exit value: %d\n", exitValue));
                                 break;
                             } catch (IllegalThreadStateException e) {
                                 
