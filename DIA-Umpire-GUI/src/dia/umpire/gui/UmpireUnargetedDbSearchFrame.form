@@ -47,8 +47,8 @@
         <Container class="javax.swing.JPanel" name="panelInTabSelectFiles">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Select Raw Files">
-                <Property name="tabTitle" type="java.lang.String" value="Select Raw Files"/>
+              <JTabbedPaneConstraints tabName="Raw Files">
+                <Property name="tabTitle" type="java.lang.String" value="Raw Files"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -159,8 +159,8 @@
         <Container class="javax.swing.JPanel" name="panelInTabSeParams">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Umpire Params">
-                <Property name="tabTitle" type="java.lang.String" value="Umpire Params"/>
+              <JTabbedPaneConstraints tabName="DIA-Umpire">
+                <Property name="tabTitle" type="java.lang.String" value="DIA-Umpire"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -916,8 +916,8 @@
         <Container class="javax.swing.JPanel" name="panelInTabCometParams">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Comet Params">
-                <Property name="tabTitle" type="java.lang.String" value="Comet Params"/>
+              <JTabbedPaneConstraints tabName="Comet">
+                <Property name="tabTitle" type="java.lang.String" value="Comet"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

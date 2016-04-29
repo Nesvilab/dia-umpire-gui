@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
  * @author dattam
  */
 public class UmpireParams implements PropertyFileContent {
+    public static final String PROP_Threads = "Thread";
     public static final String PROP_RPmax = "RPmax";
     public static final String PROP_RFmax = "RFmax";
     public static final String PROP_CorrThreshold = "CorrThreshold";

@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -255,7 +256,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tabPane.addTab("Select Raw Files", panelInTabSelectFiles);
+        tabPane.addTab("Raw Files", panelInTabSelectFiles);
 
         panelUmpireFragGroup.setBorder(javax.swing.BorderFactory.createTitledBorder("Fragment grouping"));
 
@@ -669,7 +670,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
-        tabPane.addTab("Umpire Params", panelInTabSeParams);
+        tabPane.addTab("DIA-Umpire", panelInTabSeParams);
 
         panelCometSequence.setBorder(javax.swing.BorderFactory.createTitledBorder("Sequence database"));
 
@@ -865,7 +866,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap(200, Short.MAX_VALUE))
         );
 
-        tabPane.addTab("Comet Params", panelInTabCometParams);
+        tabPane.addTab("Comet", panelInTabCometParams);
 
         btnRun.setText("Run");
         btnRun.addActionListener(new java.awt.event.ActionListener() {
@@ -1204,6 +1205,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         
         
         List<ProcessBuilder> processBuilders = new ArrayList();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String dateString = df.format(new Date());
         
         // we will now compose parameter objects for running processes.
         // at first we will try to load the base parameter files, if the file paths
@@ -1228,8 +1231,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 UmpireParams collectedUmpireParams = collectUmpireParams();
                 
                 // writing umpire params file
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-                String dateString = df.format(new Date());
                 String umpireParamsFileName = UmpireParams.FILE_BASE_NAME + "_" + dateString + "." + UmpireParams.FILE_BASE_EXT;
                 Path umpireParamsFilePath = Paths.get(workingDir, umpireParamsFileName);
                 FileOutputStream fos = new FileOutputStream(umpireParamsFilePath.toFile());
@@ -1240,7 +1241,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 int ram = (Integer)spinnerRam.getModel().getValue();
                 if (ram < 1)
                     ram = 1;
+                
+                List<String> createdMgfFiles = new ArrayList<>();
+                List<String> createdMzXmlFiles = new ArrayList<>();
                 for (String filePath : lcmsFilePaths) {
+                    // umpire
                     List<String> commands = new ArrayList<>();
                     commands.add("java");
                     commands.add("-d64");
@@ -1253,6 +1258,33 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     
                     ProcessBuilder pb = new ProcessBuilder(commands);
                     processBuilders.add(pb);
+                    
+                    
+                    // msconvert
+                    for (int i = 1; i <= 3; i++) {
+                        commands = new ArrayList<>();
+                        commands.add(binMsconvert);
+                        commands.add("--verbose");
+                        commands.add("--param");
+                        commands.add(umpireParamsFilePath.toString());
+
+                        Path curMzXMl = Paths.get(filePath);
+                        Path mzXmlFileName = curMzXMl.getFileName();
+                        String s = mzXmlFileName.toString();
+                        int indexOf = s.toLowerCase().indexOf(".mzxml");
+                        String baseName = mzXmlFileName.toString().substring(0, indexOf);
+                        Path createdMzXml = Paths.get(curMzXMl.getParent().toString(), baseName+"_Q"+i+".mzXML");
+                        commands.add(createdMzXml.toString());
+                        
+                        processBuilders.add(pb);
+                        createdMgfFiles.add(createdMzXml.toString());
+                        createdMzXmlFiles.add(createdMzXml.toString());
+//                        if (Files.exists(pathToCheck)) { // this won't work as those files don't exist at process creation stage
+//                            commands.add(pathToCheck.toString());
+//                            processBuilders.add(pb);
+//                        }
+                        
+                    }
                 }
                 
             } catch (ParsingException ex) {
@@ -1269,7 +1301,64 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         if (chkRunCometSearch.isSelected()) {
             try {
                 CometParams collectedCometParams = collectCometParams();
+                
+                String binComet = txtBinPhilosopher.getText();
+                if (binComet.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Philosopher (Comet) binary can not be an empty string.\n",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                    
+
+                // writing Comet params file
+                String cometParamsFileName = CometParams.FILE_BASE_NAME + "_" + dateString + "." + CometParams.FILE_BASE_EXT;
+                Path cometParamsFilePath = Paths.get(workingDir, cometParamsFileName);
+                FileOutputStream fos = new FileOutputStream(cometParamsFilePath.toFile());
+                PropertiesUtils.writePropertiesContent(collectedCometParams, fos);
+                
+                // run comet for each file
+                Object value = spinnerRam.getModel().getValue();
+                int ram = (Integer)spinnerRam.getModel().getValue();
+                if (ram < 1)
+                    ram = 1;
+                
+                List<String> createdMzXmlFiles = new ArrayList<>();
+                for (String filePath : lcmsFilePaths) {
+                    // Comet
+                    for (int i = 1; i <= 3; i++) {
+                        List<String> commands = new ArrayList<>();
+                        commands.add(binComet);
+                        commands.add("comet ");
+                        commands.add("--32");
+                        commands.add("--zlib");
+                        commands.add("--mzXML");
+                        commands.add("--outdir");
+                        commands.add(workingDir);
+
+                        Path curMzXMl = Paths.get(filePath);
+                        Path mzXmlFileName = curMzXMl.getFileName();
+                    
+                        String s = mzXmlFileName.toString();
+                        int indexOf = s.toLowerCase().indexOf(".mzxml");
+                        String baseName = mzXmlFileName.toString().substring(0, indexOf);
+                        Path createdMzXml = Paths.get(curMzXMl.getParent().toString(), baseName+"_Q"+i+".mzXML");
+                        commands.add(createdMzXml.toString());
+                        ProcessBuilder pb = new ProcessBuilder(commands);
+                        processBuilders.add(pb);
+                        createdMzXmlFiles.add(createdMzXml.toString());
+//                        if (Files.exists(pathToCheck)) { // this won't work as those files don't exist at process creation stage
+//                            commands.add(pathToCheck.toString());
+//                            processBuilders.add(pb);
+//                        }
+                        
+                    }
+                }
+                
             } catch (ParsingException ex) {
+                JOptionPane.showMessageDialog(this, "Error collecting user variables for Comet Search.\n",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } catch (FileNotFoundException | FileWritingException ex) {
                 JOptionPane.showMessageDialog(this, "Error collecting user variables for Comet Search.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -1400,6 +1489,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             Object selectedWindowType = comboWindowType.getSelectedItem();
             props.setProperty(UmpireParams.PROP_WindowType, (String)selectedWindowType);
             //props.setProperty(UmpireParams.PROP_, fmt.getText());
+            
+            //adding the number of threads
+            int numThreads = (Integer)spinnerThreads.getValue();
+            if (numThreads == 0)
+                numThreads = Runtime.getRuntime().availableProcessors();
+            props.setProperty(UmpireParams.PROP_Threads, Integer.toString(numThreads));
             
             return params;
         } catch (FileNotFoundException ex) {
