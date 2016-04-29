@@ -1375,7 +1375,7 @@
             <Component class="javax.swing.JSpinner" name="spinnerRam">
               <Properties>
                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                  <SpinnerModel initial="1000" minimum="128" numberType="java.lang.Integer" stepSize="100" type="number"/>
+                  <SpinnerModel initial="1000" minimum="128" numberType="java.lang.Integer" stepSize="200" type="number"/>
                 </Property>
                 <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[40, 20]"/>
@@ -1407,7 +1407,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel26">
               <Properties>
-                <Property name="text" type="java.lang.String" value="(Mb)"/>
+                <Property name="text" type="java.lang.String" value="(MB)"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel32">

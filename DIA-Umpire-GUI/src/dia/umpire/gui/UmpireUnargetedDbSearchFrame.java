@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -30,10 +31,13 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -909,7 +913,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel24.setText("RAM");
 
-        spinnerRam.setModel(new javax.swing.SpinnerNumberModel(1000, 128, null, 100));
+        spinnerRam.setModel(new javax.swing.SpinnerNumberModel(1000, 128, null, 200));
         spinnerRam.setMinimumSize(new java.awt.Dimension(40, 20));
         spinnerRam.setPreferredSize(new java.awt.Dimension(40, 20));
 
@@ -921,7 +925,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         spinnerThreads.setMinimumSize(new java.awt.Dimension(40, 20));
         spinnerThreads.setPreferredSize(new java.awt.Dimension(40, 20));
 
-        jLabel26.setText("(Mb)");
+        jLabel26.setText("(MB)");
 
         jLabel32.setText("Working dir");
 
@@ -1164,7 +1168,46 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnBrowseDatabasePathActionPerformed
 
-    //private boolean testBinaryPath(String programName)
+    /**
+     * Returns the value for the program, that will work with process builder.
+     */
+    private String testBinaryPath(String programName, String workingDir) {
+        
+        // First try running just the program, hoping that it's in the path
+        List<String> commands = new LinkedList<>();
+        commands.add(programName);
+        ProcessBuilder pb = new ProcessBuilder(commands);
+        try {
+            pb.start();
+        } catch (IOException e1) {
+            // could not run the program, it was not on PATH
+            // Try running the program using absolute path
+            commands = new LinkedList<>();
+            String absolutePathProgramName = Paths.get(workingDir, programName).toString();
+            commands.add(absolutePathProgramName);
+            pb = new ProcessBuilder(commands);
+            try {
+                pb.start();
+            } catch (IOException e2) {
+                // could not run the program even with absolute path
+                return null;
+            }
+            return absolutePathProgramName;
+        }
+        return programName;
+    }
+    
+    private String testFilePath(String fileName, String workingDir) {
+        Path fileNameWasAbsolute = Paths.get(fileName);
+        if (Files.exists(fileNameWasAbsolute)) {
+            return fileNameWasAbsolute.toString();
+        }
+        Path fileNameWasRelative = Paths.get(workingDir, fileName);
+        if (Files.exists(fileNameWasRelative)) {
+            return fileNameWasRelative.toString();
+        }
+        return null;
+    }
     
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
         btnRun.setEnabled(false);
@@ -1207,14 +1250,36 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         // add params from the GUI to it.
         if (chkRunUmpire.isSelected()) {
             
+            String binJava = "java";
+            binJava = testBinaryPath(binJava, workingDir);
+            if (binJava == null) {
+                JOptionPane.showMessageDialog(this, "Java could not be found.\n"
+                        + "please make sure you have it installed \n"
+                        + "and that java.exe can be found on PATH", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            
             String binUmpire = txtBinUmpire.getText();
             if (binUmpire.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "DIA Umpire binary can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            binUmpire = testFilePath(binUmpire, workingDir);
+            if (binUmpire == null) {
+                JOptionPane.showMessageDialog(this, "Could not locate DIA-Umpire.jar", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
             String binMsconvert = txtBinMsconvert.getText();
             if (binMsconvert.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "MSConvert binary can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            binMsconvert = testBinaryPath(binMsconvert, workingDir);
+            if (binMsconvert == null) {
+                JOptionPane.showMessageDialog(this, "MSConvert binary could not be found \n"
+                        + "on PATH or in the working directory", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             
@@ -1300,9 +1365,16 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             try {
                 CometParams collectedCometParams = collectCometParams();
                 
-                String binComet = txtBinPhilosopher.getText();
-                if (binComet.isEmpty()) {
+                String binPhilosopher = txtBinPhilosopher.getText();
+                if (binPhilosopher.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Philosopher (Comet) binary can not be an empty string.\n",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                binPhilosopher = testBinaryPath(binPhilosopher, workingDir);
+                if (binPhilosopher == null) {
+                    JOptionPane.showMessageDialog(this, "Philosopher binary not found.\n"
+                            + "Neither on PATH, nor in the working directory",
                         "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -1325,7 +1397,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     // Comet
                     for (int i = 1; i <= 3; i++) {
                         List<String> commands = new ArrayList<>();
-                        commands.add(binComet);
+                        commands.add(binPhilosopher);
                         commands.add("comet");
                         commands.add("--param");
                         commands.add(cometParamsFilePath.toString());
@@ -1410,18 +1482,25 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                                 int exitValue = process.exitValue();
                                 LogUtils.println(console, String.format("Process finished, exit value: %d\n", exitValue));
                                 break;
-                            } catch (IllegalThreadStateException e) {
-                                
+                            } catch (IllegalThreadStateException ignore) {
                             }
                         }
                         
                     } catch (IOException ex) {
-                        LogUtils.println(console, String.format("Error in process:\n%s", ex.getMessage()));
+                        LogUtils.println(console, String.format("IOException: Error in process,\n%s", ex.getMessage()));
                     } catch (InterruptedException ex) {
                         if (process != null) {
                             process.destroy();
                         }
-                        LogUtils.println(console, String.format("Error in process:\n%s", ex.getMessage()));
+                        LogUtils.println(console, String.format("InterruptedException: Error in process,\n%s", ex.getMessage()));
+                    } finally {
+                        if (process != null) {
+                            try {
+                                int exitValue = process.exitValue();
+                            } catch (IllegalThreadStateException ignore) {
+                                process.destroy();
+                            }
+                        }
                     }
                 }
             }, console, System.err);

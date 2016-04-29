@@ -180,9 +180,12 @@ public class UmpireParams implements PropertyFileContent {
                 } else {
                     // it must be a pure property string or just a meaningless string
                     int indexOfEquals = line.indexOf('=');
-                    if (indexOfEquals > 2) {
+                    if (indexOfEquals > 0) {
                         String possiblePropString = line;
                         addString(propRegex, possiblePropString, line, indexOfHash, umpireParams, lineNum);
+                    } else {
+                        // it's a simple line, just add it
+                        umpireParams.mapLines.put(lineNum, new PropLine(line, null, null, null));
                     }
                 }
             }
