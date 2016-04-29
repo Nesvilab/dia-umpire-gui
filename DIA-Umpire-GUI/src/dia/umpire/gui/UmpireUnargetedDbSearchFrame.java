@@ -1262,11 +1262,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     
                     // msconvert
                     for (int i = 1; i <= 3; i++) {
-                        commands = new ArrayList<>();
-                        commands.add(binMsconvert);
-                        commands.add("--verbose");
-                        commands.add("--param");
-                        commands.add(umpireParamsFilePath.toString());
+                        List<String> commandsMsconvert = new ArrayList<>();
+                        commandsMsconvert.add(binMsconvert);
+                        commandsMsconvert.add("--verbose");
+                        commandsMsconvert.add("--param");
+                        commandsMsconvert.add(umpireParamsFilePath.toString());
 
                         Path curMzXMl = Paths.get(filePath);
                         Path mzXmlFileName = curMzXMl.getFileName();
@@ -1274,9 +1274,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         int indexOf = s.toLowerCase().indexOf(".mzxml");
                         String baseName = mzXmlFileName.toString().substring(0, indexOf);
                         Path createdMzXml = Paths.get(curMzXMl.getParent().toString(), baseName+"_Q"+i+".mzXML");
-                        commands.add(createdMzXml.toString());
+                        commandsMsconvert.add(createdMzXml.toString());
                         
-                        processBuilders.add(pb);
+                        ProcessBuilder pbMsconv = new ProcessBuilder(commandsMsconvert);
+                        processBuilders.add(pbMsconv);
                         createdMgfFiles.add(createdMzXml.toString());
                         createdMzXmlFiles.add(createdMzXml.toString());
 //                        if (Files.exists(pathToCheck)) { // this won't work as those files don't exist at process creation stage
@@ -1365,6 +1366,20 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         }
         
+        LogUtils.println(console, String.format("Will execute %d commands:", processBuilders.size()));
+        for (final ProcessBuilder pb : processBuilders) {
+            StringBuilder sb = new StringBuilder();
+            List<String> command = pb.command();
+            for (String commandPart : command)
+                sb.append(commandPart).append(" ");
+            LogUtils.println(console, sb.toString());
+        }
+        LogUtils.println(console, "~~~~~~~~~~~~~~~~~~~~~~");
+        LogUtils.println(console, "");
+        LogUtils.println(console, "");
+        
+        
+        exec = Executors.newFixedThreadPool(1);
         for (final ProcessBuilder pb : processBuilders) {
             
             pb.directory(Paths.get(workingDir).toFile());
