@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -1591,6 +1592,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         Path createdMzXml = Paths.get(curMzXMl.getParent().toString(), baseName+"_Q"+i+".mzXML");
                         commands.add(createdMzXml.toString());
                         ProcessBuilder pb = new ProcessBuilder(commands);
+                        Map<String, String> env = pb.environment();
+                        // set environment 
+                        env.put("WEBSERVER_ROOT", "fake-WEBSERVER_ROOT-var");
                         processBuilders.add(pb);
                         createdMzXmlFiles.add(createdMzXml.toString());
                     }
@@ -1676,6 +1680,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), baseName+"_Q"+i+".pep.xml");
                     commands.add(createdPepXml.toString());
                     ProcessBuilder pb = new ProcessBuilder(commands);
+                    Map<String, String> env = pb.environment();
+                    // set environment 
+                    env.put("WEBSERVER_ROOT", "fake-WEBSERVER_ROOT-var");
                     processBuilders.add(pb);
                     createdPepXmlFiles.add(createdPepXml.toString());
                 }
