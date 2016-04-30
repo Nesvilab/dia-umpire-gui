@@ -1293,7 +1293,7 @@
                       <Component id="panelPeptideProphetBin" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelPeptideProphetOptions" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="392" max="32767" attributes="0"/>
+                      <EmptySpace pref="358" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1315,7 +1315,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel33" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="txtBinPhilosopherPeptideProphet" pref="256" max="32767" attributes="0"/>
+                          <Component id="txtBinPhilosopherPeptideProphet" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnSelectPeptideProphetBin" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -1378,11 +1378,21 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel34" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel35" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel34" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="txtPeptideProphetCmdLineOptions" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="txtPeptideProphetSeqDb" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="btnSelectPeptideProphetSeqDbPath" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="txtPeptideProphetCmdLineOptions" pref="345" max="32767" attributes="0"/>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -1394,6 +1404,12 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel34" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtPeptideProphetCmdLineOptions" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel35" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtPeptideProphetSeqDb" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnSelectPeptideProphetSeqDbPath" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -1407,6 +1423,28 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtPeptideProphetCmdLineOptions">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="--nonparam --accmass --decoy rev --expectscore --decoyprobs"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel35">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Sequence Database"/>
+                    <Property name="toolTipText" type="java.lang.String" value="If left empty, will try to get value from Comet search sequence database"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtPeptideProphetSeqDb">
+                  <Properties>
+                    <Property name="toolTipText" type="java.lang.String" value="If left empty, will try to get value from Comet search sequence database"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnSelectPeptideProphetSeqDbPath">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Browse"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelectPeptideProphetSeqDbPathActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
