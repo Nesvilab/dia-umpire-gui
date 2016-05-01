@@ -1317,23 +1317,25 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         commands.add(programName);
         ProcessBuilder pb = new ProcessBuilder(commands);
         try {
-            pb.start();
-        } catch (IOException e1) {
+            Process proc = pb.start();
+            proc.destroy();
+            return programName;
+        } catch (Exception e1) {
             // could not run the program, it was not on PATH
             // Try running the program using absolute path
-            commands = new LinkedList<>();
-            String absolutePathProgramName = Paths.get(workingDir, programName).toString();
-            commands.add(absolutePathProgramName);
-            pb = new ProcessBuilder(commands);
             try {
-                pb.start();
-            } catch (IOException e2) {
+                commands = new LinkedList<>();
+                String absolutePathProgramName = Paths.get(workingDir, programName).toString();
+                commands.add(absolutePathProgramName);
+                pb = new ProcessBuilder(commands);
+                Process proc = pb.start();
+                proc.destroy();
+                return absolutePathProgramName;
+            } catch (Exception e2) {
                 // could not run the program even with absolute path
-                return null;
             }
-            return absolutePathProgramName;
         }
-        return programName;
+        return null;
     }
     
     private String testFilePath(String fileName, String workingDir) {
@@ -1342,7 +1344,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             if (Files.exists(fileNameWasAbsolute)) {
                 return fileNameWasAbsolute.toString();
             }
-        } catch (IllegalArgumentException | FileSystemNotFoundException | SecurityException e) {
+        } catch (Exception e) {
             // something wrong with the path
         }
         
@@ -1351,7 +1353,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             if (Files.exists(fileNameWasRelative)) {
                 return fileNameWasRelative.toString();
             }
-        } catch (IllegalArgumentException | FileSystemNotFoundException | SecurityException e) {
+        } catch (Exception e) {
             // something wrong with the path
         }
         return null;
