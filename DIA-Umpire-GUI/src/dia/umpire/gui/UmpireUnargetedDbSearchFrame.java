@@ -181,10 +181,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         chkRunPeptideProphet = new javax.swing.JCheckBox();
         panelPeptideProphetOptions = new javax.swing.JPanel();
         jLabel34 = new javax.swing.JLabel();
-        txtPeptideProphetCmdLineOptions = new javax.swing.JTextField();
         jLabel35 = new javax.swing.JLabel();
         txtPeptideProphetSeqDb = new javax.swing.JTextField();
         btnSelectPeptideProphetSeqDbPath = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtPeptideProphetCmdLineOptions = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jPanel2 = new javax.swing.JPanel();
         panelRun = new javax.swing.JPanel();
         btnRun = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
@@ -236,7 +240,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(btnSelectRawFiles)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -495,7 +499,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(fmtMaxCurveRTRange, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fmtMS2SN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chkEstimateBG, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 18, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         panelUmpireSeParamsLayout.setVerticalGroup(
             panelUmpireSeParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -902,9 +906,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         tabPane.addTab("Comet", panelInTabCometParams);
 
-        panelPeptideProphetBin.setBorder(javax.swing.BorderFactory.createTitledBorder("PeptideProphet (Philosopher)"));
+        panelPeptideProphetBin.setBorder(javax.swing.BorderFactory.createTitledBorder("PeptideProphet"));
+        panelPeptideProphetBin.setToolTipText("If you're using Philosopher to run PeptideProhphet, make sure 'peptideprophet' is the first command in Cmd Line Options text");
 
-        jLabel33.setText("PeptideProphet (Philosopher)");
+        jLabel33.setText("PeptideProphet");
+        jLabel33.setToolTipText("If you're using Philosopher to run PeptideProhphet, make sure 'peptideprophet' is the first command in Cmd Line Options text");
 
         btnSelectPeptideProphetBin.setText("Browse");
         btnSelectPeptideProphetBin.addActionListener(new java.awt.event.ActionListener() {
@@ -914,6 +920,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         });
 
         txtBinPhilosopherPeptideProphet.setText("philosopher_windows_amd64");
+        txtBinPhilosopherPeptideProphet.setToolTipText("If you're using Philosopher to run PeptideProhphet, make sure 'peptideprophet' is the first command in Cmd Line Options text");
 
         javax.swing.GroupLayout panelPeptideProphetBinLayout = new javax.swing.GroupLayout(panelPeptideProphetBin);
         panelPeptideProphetBin.setLayout(panelPeptideProphetBinLayout);
@@ -949,9 +956,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         panelPeptideProphetOptions.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
 
-        jLabel34.setText("Prophet Cmd Line Options");
-
-        txtPeptideProphetCmdLineOptions.setText("--nonparam --accmass --decoy rev --expectscore --decoyprobs");
+        jLabel34.setText("Cmd Line Options");
 
         jLabel35.setText("Sequence Database");
         jLabel35.setToolTipText("If left empty, will try to get value from Comet search sequence database");
@@ -965,37 +970,46 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
+        txtPeptideProphetCmdLineOptions.setColumns(20);
+        txtPeptideProphetCmdLineOptions.setLineWrap(true);
+        txtPeptideProphetCmdLineOptions.setRows(5);
+        txtPeptideProphetCmdLineOptions.setText("peptideprophet --nonparam --accmass --decoy rev --expectscore --decoyprobs");
+        jScrollPane2.setViewportView(txtPeptideProphetCmdLineOptions);
+
         javax.swing.GroupLayout panelPeptideProphetOptionsLayout = new javax.swing.GroupLayout(panelPeptideProphetOptions);
         panelPeptideProphetOptions.setLayout(panelPeptideProphetOptionsLayout);
         panelPeptideProphetOptionsLayout.setHorizontalGroup(
             panelPeptideProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPeptideProphetOptionsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelPeptideProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel35, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel34, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelPeptideProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelPeptideProphetOptionsLayout.createSequentialGroup()
-                        .addComponent(txtPeptideProphetSeqDb)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel35)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPeptideProphetSeqDb, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSelectPeptideProphetSeqDbPath))
-                    .addComponent(txtPeptideProphetCmdLineOptions, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
+                    .addGroup(panelPeptideProphetOptionsLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel34)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2)))
                 .addContainerGap())
         );
         panelPeptideProphetOptionsLayout.setVerticalGroup(
             panelPeptideProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPeptideProphetOptionsLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(panelPeptideProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel34)
-                    .addComponent(txtPeptideProphetCmdLineOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelPeptideProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel35)
+                    .addComponent(btnSelectPeptideProphetSeqDbPath)
                     .addComponent(txtPeptideProphetSeqDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSelectPeptideProphetSeqDbPath))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel35))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelPeptideProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelPeptideProphetOptionsLayout.createSequentialGroup()
+                        .addComponent(jLabel34)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout panelPeptideProphetLayout = new javax.swing.GroupLayout(panelPeptideProphet);
@@ -1017,14 +1031,55 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(panelPeptideProphetLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(chkRunPeptideProphet)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelPeptideProphetBin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelPeptideProphetOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(358, Short.MAX_VALUE))
+                .addContainerGap(302, Short.MAX_VALUE))
         );
 
         tabPane.addTab("PeptideProphet", panelPeptideProphet);
+
+        jCheckBox1.setSelected(true);
+        jCheckBox1.setText("Run ProteinProphet");
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("ProteinProphet"));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jCheckBox1)
+                        .addGap(0, 400, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jCheckBox1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(447, Short.MAX_VALUE))
+        );
+
+        tabPane.addTab("ProteinProphet", jPanel1);
 
         btnRun.setText("Run");
         btnRun.addActionListener(new java.awt.event.ActionListener() {
@@ -1097,7 +1152,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addComponent(jLabel25)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                         .addComponent(btnClearConsole))
                     .addGroup(panelRunLayout.createSequentialGroup()
                         .addComponent(jLabel32)
@@ -1136,7 +1191,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPane)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tabPane)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1664,7 +1722,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 for (int i = 1; i <= 3; i++) {
                     List<String> commands = new ArrayList<>();
                     commands.add(binPhilosopher);
-                    commands.add("peptideprophet");
+                    //commands.add("peptideprophet"); // this was moved to be a part of commands in {@code txtPeptideProphetCmdLineOptions}
                     if (!peptideProphetParams.getCmdLineParams().isEmpty()) {
                         String pepProphFlags = peptideProphetParams.getCmdLineParams();
                         String[] flags = pepProphFlags.split("\\s+");
@@ -2295,6 +2353,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField fmtpeptide_mass_tolerance;
     private javax.swing.JFormattedTextField fmttheoretical_fragment_ions;
     private javax.swing.JButton jButton1;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2330,8 +2389,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblNoMissedScan;
     private javax.swing.JPanel panelCometBinary;
     private javax.swing.JPanel panelCometSequence;
@@ -2357,7 +2419,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtBinUmpire;
     private javax.swing.JTextField txtCometParamsFile;
     private javax.swing.JTextField txtDatabasePath;
-    private javax.swing.JTextField txtPeptideProphetCmdLineOptions;
+    private javax.swing.JTextArea txtPeptideProphetCmdLineOptions;
     private javax.swing.JTextField txtPeptideProphetSeqDb;
     private javax.swing.JTextField txtUmpireConfigFile;
     private javax.swing.JTextField txtWorkingDir;
