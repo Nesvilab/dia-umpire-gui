@@ -204,7 +204,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         txtProteinProphetCmdLineOpts = new javax.swing.JTextArea();
         jLabel40 = new javax.swing.JLabel();
-        chkProteinProphetAddInteractPepXmlsSeparately = new javax.swing.JCheckBox();
+        chkProteinProphetUseWilcardMatcher = new javax.swing.JCheckBox();
         panelRun = new javax.swing.JPanel();
         btnRun = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
@@ -1141,8 +1141,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel40.setText("Cmd Line Options");
 
-        chkProteinProphetAddInteractPepXmlsSeparately.setText("Add all generated 'interact-...pep.xml' files separately");
-        chkProteinProphetAddInteractPepXmlsSeparately.setToolTipText("<html>If not checked will use 'interact-*pep.xml' to match pep.xml files after PeptideProphet.<br/> Otherwise will add files as separate entries, which might cause problems on Windows<br/> when there are many pepxml files, as the length of command line parameter string is limited to 8192 chars."); // NOI18N
+        chkProteinProphetUseWilcardMatcher.setSelected(true);
+        chkProteinProphetUseWilcardMatcher.setText("Use 'interact-*pep.xml' as file filter for ProteinProphet");
+        chkProteinProphetUseWilcardMatcher.setToolTipText("<html>If checked will use 'interact-*pep.xml' to match pep.xml files to be passed to ProteinProphet.<br/> Otherwise will add files as separate entries, \nwhich might cause problems on Windows<br/> when there are many pepxml files, as the length of command line parameter string is limited to 8192 chars."); // NOI18N
 
         javax.swing.GroupLayout panelProteinProphetOptionsLayout = new javax.swing.GroupLayout(panelProteinProphetOptions);
         panelProteinProphetOptions.setLayout(panelProteinProphetOptionsLayout);
@@ -1151,7 +1152,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(chkProteinProphetAddInteractPepXmlsSeparately)
+                    .addComponent(chkProteinProphetUseWilcardMatcher)
                     .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
                         .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel39)
@@ -1177,7 +1178,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel40))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-                .addComponent(chkProteinProphetAddInteractPepXmlsSeparately)
+                .addComponent(chkProteinProphetUseWilcardMatcher)
                 .addContainerGap())
         );
 
@@ -1933,7 +1934,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 commands.addAll(Arrays.asList(flags));
             }
             
-            if (chkProteinProphetAddInteractPepXmlsSeparately.isSelected()) {
+            if (chkProteinProphetUseWilcardMatcher.isSelected()) {
                 commands.add("interact-*.pep.xml");
             } else {
 
@@ -2582,7 +2583,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkAdjustFragIntensity;
     private javax.swing.JCheckBox chkBoostComplementaryIon;
     private javax.swing.JCheckBox chkEstimateBG;
-    private javax.swing.JCheckBox chkProteinProphetAddInteractPepXmlsSeparately;
+    private javax.swing.JCheckBox chkProteinProphetUseWilcardMatcher;
     private javax.swing.JCheckBox chkRunCometSearch;
     private javax.swing.JCheckBox chkRunPeptideProphet;
     private javax.swing.JCheckBox chkRunProteinProphet;

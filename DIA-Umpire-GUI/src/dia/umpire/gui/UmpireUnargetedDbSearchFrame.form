@@ -1644,7 +1644,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="chkProteinProphetAddInteractPepXmlsSeparately" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkProteinProphetUseWilcardMatcher" min="-2" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="jLabel39" min="-2" max="-2" attributes="0"/>
@@ -1679,7 +1679,7 @@
                               <Component id="jLabel40" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="6" max="32767" attributes="0"/>
-                          <Component id="chkProteinProphetAddInteractPepXmlsSeparately" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkProteinProphetUseWilcardMatcher" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -1723,10 +1723,11 @@
                     <Property name="text" type="java.lang.String" value="Cmd Line Options"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="chkProteinProphetAddInteractPepXmlsSeparately">
+                <Component class="javax.swing.JCheckBox" name="chkProteinProphetUseWilcardMatcher">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Add all generated &apos;interact-...pep.xml&apos; files separately"/>
-                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;If not checked will use &apos;interact-*pep.xml&apos; to match pep.xml files after PeptideProphet.&lt;br/&gt; Otherwise will add files as separate entries, which might cause problems on Windows&lt;br/&gt; when there are many pepxml files, as the length of command line parameter string is limited to 8192 chars." noResource="true"/>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="Use &apos;interact-*pep.xml&apos; as file filter for ProteinProphet"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;If checked will use &apos;interact-*pep.xml&apos; to match pep.xml files to be passed to ProteinProphet.&lt;br/&gt; Otherwise will add files as separate entries, &#xa;which might cause problems on Windows&lt;br/&gt; when there are many pepxml files, as the length of command line parameter string is limited to 8192 chars." noResource="true"/>
                   </Properties>
                 </Component>
               </SubComponents>
