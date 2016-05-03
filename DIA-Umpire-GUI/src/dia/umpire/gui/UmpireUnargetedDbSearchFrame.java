@@ -204,6 +204,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         txtProteinProphetCmdLineOpts = new javax.swing.JTextArea();
         jLabel40 = new javax.swing.JLabel();
+        chkProteinProphetAddInteractPepXmlsSeparately = new javax.swing.JCheckBox();
         panelRun = new javax.swing.JPanel();
         btnRun = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
@@ -608,10 +609,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel27.setText("Config file");
 
         jLabel28.setText("Umpire");
-        jLabel28.setToolTipText("If you don't have Umpire jar file on your PATH, please specify the full path");
+        jLabel28.setToolTipText("If you don't have Umpire jar in working directory, please specify the full path");
 
         txtBinUmpire.setText("DIA_Umpire_SE.jar");
-        txtBinUmpire.setToolTipText("If you don't have Umpire jar file on your PATH, please specify the full path");
+        txtBinUmpire.setToolTipText("If you don't have Umpire jar in working directory, please specify the full path");
 
         btnSelectUmpireJar.setText("Browse");
         btnSelectUmpireJar.addActionListener(new java.awt.event.ActionListener() {
@@ -1128,7 +1129,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         btnProteinProphetSeqDb.setText("Browse");
 
-        txtProteinProphetSeqDb.setToolTipText("Not Used Now. If not specified, the value will be taken from PeptideProphet or Comet tabs");
+        txtProteinProphetSeqDb.setToolTipText("If not specified, the value will be taken from PeptideProphet or Comet tabs");
 
         jLabel39.setText("Sequence Database");
         jLabel39.setToolTipText("Not Used Now. If not specified, the value will be taken from PeptideProphet or Comet tabs");
@@ -1140,6 +1141,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel40.setText("Cmd Line Options");
 
+        chkProteinProphetAddInteractPepXmlsSeparately.setText("Add all generated 'interact-...pep.xml' files separately");
+        chkProteinProphetAddInteractPepXmlsSeparately.setToolTipText("<html>If not checked will use 'interact-*pep.xml' to match pep.xml files after PeptideProphet.<br/> Otherwise will add files as separate entries, which might cause problems on Windows<br/> when there are many pepxml files, as the length of command line parameter string is limited to 8192 chars."); // NOI18N
+
         javax.swing.GroupLayout panelProteinProphetOptionsLayout = new javax.swing.GroupLayout(panelProteinProphetOptions);
         panelProteinProphetOptions.setLayout(panelProteinProphetOptionsLayout);
         panelProteinProphetOptionsLayout.setHorizontalGroup(
@@ -1147,15 +1151,18 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel39)
-                    .addComponent(jLabel40))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(chkProteinProphetAddInteractPepXmlsSeparately)
                     .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addComponent(txtProteinProphetSeqDb, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnProteinProphetSeqDb))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel39)
+                            .addComponent(jLabel40))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
+                                .addComponent(txtProteinProphetSeqDb, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnProteinProphetSeqDb))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelProteinProphetOptionsLayout.setVerticalGroup(
@@ -1169,7 +1176,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel40))
-                .addGap(0, 13, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+                .addComponent(chkProteinProphetAddInteractPepXmlsSeparately)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -1195,7 +1204,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addComponent(panelProteinProphetBin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelProteinProphetOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(323, Short.MAX_VALUE))
+                .addContainerGap(296, Short.MAX_VALUE))
         );
 
         tabPane.addTab("ProteinProphet", jPanel1);
@@ -1917,27 +1926,32 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             List<String> createdInteractFiles = new ArrayList<>();
             List<String> commands = new ArrayList<>();
             commands.add(bin);
-            for (String filePath : lcmsFilePaths) {
-                // Comet
-                for (int i = 1; i <= 3; i++) {
-                    //commands.add("peptideprophet"); // this was moved to be a part of commands in {@code txtPeptideProphetCmdLineOptions}
-                    if (!proteinProphetParams.getCmdLineParams().isEmpty()) {
-                        String pepProphFlags = proteinProphetParams.getCmdLineParams();
-                        String[] flags = pepProphFlags.split("\\s+");
-                        commands.addAll(Arrays.asList(flags));
-                    }
+            //commands.add("peptideprophet"); // this was moved to be a part of commands in {@code txtPeptideProphetCmdLineOptions}
+            if (!proteinProphetParams.getCmdLineParams().isEmpty()) {
+                String protProphFlags = proteinProphetParams.getCmdLineParams();
+                String[] flags = protProphFlags.split("\\s+");
+                commands.addAll(Arrays.asList(flags));
+            }
+            
+            if (chkProteinProphetAddInteractPepXmlsSeparately.isSelected()) {
+                commands.add("interact-*.pep.xml");
+            } else {
+
+                for (String filePath : lcmsFilePaths) {
+                    // Comet
+                    for (int i = 1; i <= 3; i++) {
 //                    commands.add("--database");
 //                    commands.add(fastaPath);
+                        Path curMzXMl = Paths.get(filePath);
+                        Path mzXmlFileName = curMzXMl.getFileName();
 
-                    Path curMzXMl = Paths.get(filePath);
-                    Path mzXmlFileName = curMzXMl.getFileName();
-
-                    String s = mzXmlFileName.toString();
-                    int indexOf = s.toLowerCase().indexOf(".mzxml");
-                    String baseName = mzXmlFileName.toString().substring(0, indexOf);
-                    Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), "interact-" + baseName+"_Q"+i+".pep.xml");
-                    commands.add(createdPepXml.toString());
-                    createdInteractFiles.add(createdPepXml.toString());
+                        String s = mzXmlFileName.toString();
+                        int indexOf = s.toLowerCase().indexOf(".mzxml");
+                        String baseName = mzXmlFileName.toString().substring(0, indexOf);
+                        Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), "interact-" + baseName + "_Q" + i + ".pep.xml");
+                        commands.add(createdPepXml.toString());
+                        createdInteractFiles.add(createdPepXml.toString());
+                    }
                 }
             }
             ProcessBuilder pb = new ProcessBuilder(commands);
@@ -2568,6 +2582,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkAdjustFragIntensity;
     private javax.swing.JCheckBox chkBoostComplementaryIon;
     private javax.swing.JCheckBox chkEstimateBG;
+    private javax.swing.JCheckBox chkProteinProphetAddInteractPepXmlsSeparately;
     private javax.swing.JCheckBox chkRunCometSearch;
     private javax.swing.JCheckBox chkRunPeptideProphet;
     private javax.swing.JCheckBox chkRunProteinProphet;

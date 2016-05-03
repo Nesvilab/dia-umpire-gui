@@ -873,13 +873,13 @@
                 <Component class="javax.swing.JLabel" name="jLabel28">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Umpire"/>
-                    <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have Umpire jar file on your PATH, please specify the full path"/>
+                    <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have Umpire jar in working directory, please specify the full path"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtBinUmpire">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="DIA_Umpire_SE.jar"/>
-                    <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have Umpire jar file on your PATH, please specify the full path"/>
+                    <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have Umpire jar in working directory, please specify the full path"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnSelectUmpireJar">
@@ -1556,7 +1556,7 @@
                       <Component id="panelProteinProphetBin" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelProteinProphetOptions" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="323" max="32767" attributes="0"/>
+                      <EmptySpace pref="296" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1644,17 +1644,22 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jLabel39" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel40" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="chkProteinProphetAddInteractPepXmlsSeparately" min="-2" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="txtProteinProphetSeqDb" min="-2" pref="320" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnProteinProphetSeqDb" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="jLabel39" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel40" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="txtProteinProphetSeqDb" min="-2" pref="320" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="btnProteinProphetSeqDb" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="jScrollPane4" min="-2" pref="402" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <Component id="jScrollPane4" min="-2" pref="402" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -1673,7 +1678,9 @@
                               <Component id="jScrollPane4" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel40" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="13" max="32767" attributes="0"/>
+                          <EmptySpace pref="6" max="32767" attributes="0"/>
+                          <Component id="chkProteinProphetAddInteractPepXmlsSeparately" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1686,7 +1693,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtProteinProphetSeqDb">
                   <Properties>
-                    <Property name="toolTipText" type="java.lang.String" value="Not Used Now. If not specified, the value will be taken from PeptideProphet or Comet tabs"/>
+                    <Property name="toolTipText" type="java.lang.String" value="If not specified, the value will be taken from PeptideProphet or Comet tabs"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel39">
@@ -1714,6 +1721,12 @@
                 <Component class="javax.swing.JLabel" name="jLabel40">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Cmd Line Options"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkProteinProphetAddInteractPepXmlsSeparately">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Add all generated &apos;interact-...pep.xml&apos; files separately"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;If not checked will use &apos;interact-*pep.xml&apos; to match pep.xml files after PeptideProphet.&lt;br/&gt; Otherwise will add files as separate entries, which might cause problems on Windows&lt;br/&gt; when there are many pepxml files, as the length of command line parameter string is limited to 8192 chars." noResource="true"/>
                   </Properties>
                 </Component>
               </SubComponents>
