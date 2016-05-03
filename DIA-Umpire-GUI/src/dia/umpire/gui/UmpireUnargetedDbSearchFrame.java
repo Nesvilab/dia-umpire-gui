@@ -35,6 +35,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +43,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -1591,10 +1594,151 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String dateString = df.format(new Date());
         
+        
         // we will now compose parameter objects for running processes.
         // at first we will try to load the base parameter files, if the file paths
         // in the GUI are not empty. If empty, we will load the defaults and
         // add params from the GUI to it.
+        List<ProcessBuilder> processBuildersUmpire = processBuildersUmpire(workingDir, lcmsFilePaths, dateString);
+        if (processBuildersUmpire == null) {
+            resetRunButtons(true);
+            return;
+        }
+        processBuilders.addAll(processBuildersUmpire);
+        
+        List<ProcessBuilder> processBuildersComet = processBuildersComet(workingDir, lcmsFilePaths, dateString);
+        if (processBuildersComet == null) {
+            resetRunButtons(true);
+            return;
+        }
+        processBuilders.addAll(processBuildersComet);
+        
+        
+        List<ProcessBuilder> processBuildersPeptideProphet = processBuildersPeptideProphet(workingDir, lcmsFilePaths);
+        if (processBuildersPeptideProphet == null) {
+            resetRunButtons(true);
+            return;
+        }
+        processBuilders.addAll(processBuildersPeptideProphet);
+        
+        
+        List<ProcessBuilder> processBuildersProteinProphet = processBuildersProteinProphet(workingDir, lcmsFilePaths);
+        if (processBuildersProteinProphet == null) {
+            resetRunButtons(true);
+            return;
+        }
+        processBuilders.addAll(processBuildersProteinProphet);
+        
+        
+        
+        LogUtils.println(console, String.format("Will execute %d commands:", processBuilders.size()));
+        for (final ProcessBuilder pb : processBuilders) {
+            StringBuilder sb = new StringBuilder();
+            List<String> command = pb.command();
+            for (String commandPart : command)
+                sb.append(commandPart).append(" ");
+            LogUtils.println(console, sb.toString());
+        }
+        LogUtils.println(console, "~~~~~~~~~~~~~~~~~~~~~~");
+        LogUtils.println(console, "");
+        LogUtils.println(console, "");
+        
+        
+        exec = Executors.newFixedThreadPool(1);
+        for (final ProcessBuilder pb : processBuilders) {
+            
+            pb.directory(Paths.get(workingDir).toFile());
+            
+            REHandler reHandler;
+            reHandler = new REHandler(new Runnable() {
+                @Override
+                public void run() {
+                    Process process = null;
+                    try {
+                        List<String> command = pb.command();
+                        StringBuilder sb = new StringBuilder("Executing command:\n$> ");
+                        for (String commandPart : command)
+                            sb.append(commandPart).append(" ");
+                        LogUtils.println(console, sb.toString());
+                        process = pb.start();
+//                        int waitFor = process.waitFor();
+//                        submittedProcesses.add(process);
+//                        
+//                        LogUtils.println(console, String.format("Process waitFor result is: [%d]", waitFor));
+//                        
+                        LogUtils.println(console, "Process started");
+                        
+                        InputStream err = process.getErrorStream();
+                        InputStream out = process.getInputStream();
+                        while (true) {
+                            Thread.sleep(200L);
+                            int errAvailable = err.available();
+                            if (errAvailable > 0) {
+                                byte[] bytes = new byte[errAvailable];
+                                int read = err.read(bytes);
+                                LogUtils.println(console, new String(bytes));
+                            }
+                            int outAvailable = out.available();
+                            if (outAvailable > 0) {
+                                byte[] bytes = new byte[outAvailable];
+                                int read = out.read(bytes);
+                                LogUtils.println(console, new String(bytes));
+                            }
+                            try {
+                                int exitValue = process.exitValue();
+                                LogUtils.println(console, String.format("Process finished, exit value: %d\n", exitValue));
+                                break;
+                            } catch (IllegalThreadStateException ignore) {
+                                // this error is thrown by process.exitValue() if the underlying process has not yet finished
+                                //LogUtils.println(console, String.format("IllegalThreadStateException: \n", ignore.getMessage()));
+                            }
+                        }
+                        
+                    } catch (IOException ex) {
+                        LogUtils.println(console, String.format("IOException: Error in process,\n%s", ex.getMessage()));
+                    } catch (InterruptedException ex) {
+                        if (process != null) {
+                            process.destroy();
+                        }
+                        LogUtils.println(console, String.format("InterruptedException: Error in process,\n%s", ex.getMessage()));
+                    } finally {
+                        if (process != null) {
+                            try {
+                                int exitValue = process.exitValue();
+                            } catch (IllegalThreadStateException ignore) {
+                                process.destroy();
+                            }
+                        }
+                    }
+                }
+            }, console, System.err);
+            exec.submit(reHandler);
+        }
+        
+        final JButton btnStartPtr = btnRun;
+        final JButton btnStopPtr = btnStop;
+        REHandler finalizerTask = new REHandler(new Runnable() {
+            @Override
+            public void run() {
+                submittedProcesses.clear();
+                btnRun.setEnabled(true);
+                btnStop.setEnabled(false);
+                LogUtils.println(console, String.format("========================="));
+                LogUtils.println(console, String.format("==="));
+                LogUtils.println(console, String.format("===        Done"));
+                LogUtils.println(console, String.format("==="));
+                LogUtils.println(console, String.format("========================="));
+            }
+        }, console, System.err);
+        
+        exec.submit(finalizerTask);
+        
+        exec.shutdown();
+    }//GEN-LAST:event_btnRunActionPerformed
+
+    
+    private List<ProcessBuilder> processBuildersUmpire(String workingDir, String[] lcmsFilePaths, String dateStr) {
+        List<ProcessBuilder> processBuilders = new LinkedList<>();
         if (chkRunUmpire.isSelected()) {
             
             String binJava = "java";
@@ -1603,36 +1747,31 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Java could not be found.\n"
                         + "please make sure you have it installed \n"
                         + "and that java.exe can be found on PATH", "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
             
             
             String binUmpire = txtBinUmpire.getText();
             if (binUmpire.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "DIA Umpire binary can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
             binUmpire = testFilePath(binUmpire, workingDir);
             if (binUmpire == null) {
                 JOptionPane.showMessageDialog(this, "Could not locate DIA-Umpire.jar", "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
             
             String binMsconvert = txtBinMsconvert.getText();
             if (binMsconvert.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "MSConvert binary can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
             binMsconvert = testBinaryPath(binMsconvert, workingDir);
             if (binMsconvert == null) {
                 JOptionPane.showMessageDialog(this, "MSConvert binary could not be found \n"
                         + "on PATH or in the working directory", "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
             
             
@@ -1641,7 +1780,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 UmpireParams collectedUmpireParams = collectUmpireParams();
                 
                 // writing umpire params file
-                String umpireParamsFileName = UmpireParams.FILE_BASE_NAME + "_" + dateString + "." + UmpireParams.FILE_BASE_EXT;
+                String umpireParamsFileName = UmpireParams.FILE_BASE_NAME + "_" + dateStr + "." + UmpireParams.FILE_BASE_EXT;
                 Path umpireParamsFilePath = Paths.get(workingDir, umpireParamsFileName);
                 FileOutputStream fos = new FileOutputStream(umpireParamsFilePath.toFile());
                 PropertiesUtils.writePropertiesContent(collectedUmpireParams, fos);
@@ -1694,27 +1833,24 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         processBuilders.add(pbMsconv);
                         createdMgfFiles.add(createdMzXml.toString());
                         createdMzXmlFiles.add(createdMzXml.toString());
-//                        if (Files.exists(pathToCheck)) { // this won't work as those files don't exist at process creation stage
-//                            commands.add(pathToCheck.toString());
-//                            processBuilders.add(pb);
-//                        }
-                        
                     }
                 }
                 
             } catch (ParsingException ex) {
                 JOptionPane.showMessageDialog(this, "Error collecting user variables for Umpire.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             } catch (FileNotFoundException | FileWritingException ex) {
                 JOptionPane.showMessageDialog(this, "Error writing Umpire parameters file to working dir.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
         }
-        
+        return processBuilders;
+    }
+    
+    private List<ProcessBuilder> processBuildersComet(String workingDir, String[] lcmsFilePaths, String dateStr) {
+        List<ProcessBuilder> processBuilders = new LinkedList<>();
         if (chkRunCometSearch.isSelected()) {
             try {
                 CometParams collectedCometParams = collectCometParams();
@@ -1723,38 +1859,34 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 if (binPhilosopher.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Binary for running Comet can not be an empty string.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
-                    resetRunButtons(true);
-                    return;
+                    return null;
                 }
                 binPhilosopher = testBinaryPath(binPhilosopher, workingDir);
                 if (binPhilosopher == null) {
                     JOptionPane.showMessageDialog(this, "Binary for running Comet not found or could not be run.\n"
                             + "Neither on PATH, nor in the working directory",
                         "Error", JOptionPane.ERROR_MESSAGE);
-                    resetRunButtons(true);
-                    return;
+                    return null;
                 }
                 
                 String fastaPath = txtCometSeqDb.getText();
                 if (fastaPath.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Fasta file (Comet) path can't be empty",
                         "Warning", JOptionPane.WARNING_MESSAGE);
-                    resetRunButtons(true);
-                    return;
+                    return null;
                 }
                 String fastaPathOrig = new String(fastaPath);
                 fastaPath = testFilePath(fastaPath, workingDir);
                 if (fastaPath == null) {
                     JOptionPane.showMessageDialog(this, String.format("Could not find fasta file (Comet) at:\n%s", fastaPathOrig),
                             "Errors", JOptionPane.ERROR_MESSAGE);
-                    resetRunButtons(true);
-                    return;
+                    return null;
                 }
                 
                     
 
                 // writing Comet params file
-                String cometParamsFileName = CometParams.FILE_BASE_NAME + "_" + dateString + "." + CometParams.FILE_BASE_EXT;
+                String cometParamsFileName = CometParams.FILE_BASE_NAME + "_" + dateStr + "." + CometParams.FILE_BASE_EXT;
                 Path cometParamsFilePath = Paths.get(workingDir, cometParamsFileName);
                 FileOutputStream fos = new FileOutputStream(cometParamsFilePath.toFile());
                 PropertiesUtils.writePropertiesContent(collectedCometParams, fos);
@@ -1786,7 +1918,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         ProcessBuilder pb = new ProcessBuilder(commands);
                         Map<String, String> env = pb.environment();
                         // set environment 
-                        env.put("WEBSERVER_ROOT", "fake-WEBSERVER_ROOT-var");
+                        String ENV_WEBSERVER_ROOT = "WEBSERVER_ROOT";
+                        String webroot = env.get(ENV_WEBSERVER_ROOT);
+                        if (webroot == null) {
+                            env.put(ENV_WEBSERVER_ROOT, "fake-WEBSERVER_ROOT-value");
+                        }
                         processBuilders.add(pb);
                         createdMzXmlFiles.add(createdMzXml.toString());
                     }
@@ -1795,33 +1931,37 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             } catch (ParsingException ex) {
                 JOptionPane.showMessageDialog(this, "Error collecting user variables for Comet Search.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             } catch (FileNotFoundException | FileWritingException ex) {
                 JOptionPane.showMessageDialog(this, "Error collecting user variables for Comet Search.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
         }
-        // END: Comet
-        
-        
+        return processBuilders;
+    }
+    
+    /**
+     * Creates the ProcessBuilders for running PeptideProphet.
+     * @param workingDir
+     * @param lcmsFilePaths
+     * @return null in case of errors, or a list of process builders.
+     */
+    private List<ProcessBuilder> processBuildersPeptideProphet(String workingDir, String[] lcmsFilePaths) {
+        List<ProcessBuilder> processBuilders = new LinkedList<>();
         if (chkRunPeptideProphet.isSelected()) {
             String binPhilosopher = txtBinPeptideProphet.getText();
             if (binPhilosopher.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Philosopher (PeptideProphet) binary can not be an empty string.\n",
                     "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
             binPhilosopher = testBinaryPath(binPhilosopher, workingDir);
             if (binPhilosopher == null) {
                 JOptionPane.showMessageDialog(this, "Philosopher (PeptideProphet) binary not found.\n"
                         + "Neither on PATH, nor in the working directory",
                     "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
 
 
@@ -1831,8 +1971,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 if (fastaPath.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Fasta file (PeptideProphet) path can't be empty",
                         "Warning", JOptionPane.WARNING_MESSAGE);
-                    resetRunButtons(true);
-                    return;
+                    return null;
                 }
             }
             String fastaPathOrig = new String(fastaPath);
@@ -1840,8 +1979,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             if (fastaPath == null) {
                 JOptionPane.showMessageDialog(this, String.format("Could not find fasta file (PeptideProphet) at:\n%s", fastaPathOrig),
                         "Errors", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
 
             PeptideProphetParams peptideProphetParams = new PeptideProphetParams();
@@ -1874,54 +2012,38 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     ProcessBuilder pb = new ProcessBuilder(commands);
                     Map<String, String> env = pb.environment();
                     // set environment 
-                    env.put("WEBSERVER_ROOT", "fake-WEBSERVER_ROOT-var");
+                    String ENV_WEBSERVER_ROOT = "WEBSERVER_ROOT";
+                    String webroot = env.get(ENV_WEBSERVER_ROOT);
+                    if (webroot == null) {
+                        env.put(ENV_WEBSERVER_ROOT, "fake-WEBSERVER_ROOT-value");
+                    }
                     processBuilders.add(pb);
                     createdPepXmlFiles.add(createdPepXml.toString());
                 }
             }
         }
-        // END: PeptideProphet
-        
-        
+        return processBuilders;
+    }
+    
+    /**
+     * Creates the processBuilders for running ProteinProphet.
+     * @return null in case of error, empty list if nothing needs to be added.
+     */
+    private List<ProcessBuilder> processBuildersProteinProphet(String workingDir, String[] lcmsFilePaths) {
         if (chkRunProteinProphet.isSelected()) {
             String bin = txtBinProteinProphet.getText();
             if (bin.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "ProteinProphet binary can not be an empty string.\n",
                     "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
             bin = testBinaryPath(bin, workingDir);
             if (bin == null) {
                 JOptionPane.showMessageDialog(this, "ProteinProphet binary not found or could not be launched.\n"
                         + "Neither on PATH, nor in the working directory",
                     "Error", JOptionPane.ERROR_MESSAGE);
-                resetRunButtons(true);
-                return;
+                return null;
             }
-
-
-//            String fastaPath = txtProteinProphetSeqDb.getText();
-//            if (fastaPath.isEmpty()) {
-//                fastaPath = txtPeptideProphetSeqDb.getText();
-//                if (fastaPath.isEmpty()) {
-//                    fastaPath = txtCometSeqDb.getText();
-//                    if (fastaPath.isEmpty()) {
-//                        JOptionPane.showMessageDialog(this, "Fasta file (ProteinProphet) path can't be empty",
-//                                "Warning", JOptionPane.WARNING_MESSAGE);
-//                        resetRunButtons(true);
-//                        return;
-//                    }
-//                }
-//            }
-//            String fastaPathOrig = new String(fastaPath);
-//            fastaPath = testFilePath(fastaPath, workingDir);
-//            if (fastaPath == null) {
-//                JOptionPane.showMessageDialog(this, String.format("Could not find fasta file (ProteinProphet) at:\n%s", fastaPathOrig),
-//                        "Errors", JOptionPane.ERROR_MESSAGE);
-//                resetRunButtons(true);
-//                return;
-//            }
 
             ProteinProphetParams proteinProphetParams = new ProteinProphetParams();
             proteinProphetParams.setCmdLineParams(txtProteinProphetCmdLineOpts.getText());
@@ -1952,122 +2074,67 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         String s = mzXmlFileName.toString();
                         int indexOf = s.toLowerCase().indexOf(".mzxml");
                         String baseName = mzXmlFileName.toString().substring(0, indexOf);
-                        Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), "interact-" + baseName + "_Q" + i + ".pep.xml");
+                        //Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), "interact-" + baseName + "_Q" + i + ".pep.xml");
+                        Path createdPepXml = Paths.get("interact-" + baseName + "_Q" + i + ".pep.xml");
                         commands.add(createdPepXml.toString());
                         createdInteractFiles.add(createdPepXml.toString());
                     }
                 }
             }
+            commands.add("interact-my.prot.xml");
+            
             ProcessBuilder pb = new ProcessBuilder(commands);
+            pb.directory(Paths.get(workingDir).toFile());
             Map<String, String> env = pb.environment();
             // set environment 
-            env.put("WEBSERVER_ROOT", "fake-WEBSERVER_ROOT-var");
-            processBuilders.add(pb);
-        }
-        // END: PeptideProphet
-        
-        
-        LogUtils.println(console, String.format("Will execute %d commands:", processBuilders.size()));
-        for (final ProcessBuilder pb : processBuilders) {
-            StringBuilder sb = new StringBuilder();
-            List<String> command = pb.command();
-            for (String commandPart : command)
-                sb.append(commandPart).append(" ");
-            LogUtils.println(console, sb.toString());
-        }
-        LogUtils.println(console, "~~~~~~~~~~~~~~~~~~~~~~");
-        LogUtils.println(console, "");
-        LogUtils.println(console, "");
-        
-        
-        exec = Executors.newFixedThreadPool(1);
-        for (final ProcessBuilder pb : processBuilders) {
-            
-            pb.directory(Paths.get(workingDir).toFile());
-            
-            REHandler reHandler;
-            reHandler = new REHandler(new Runnable() {
-                @Override
-                public void run() {
-                    Process process = null;
-                    try {
-                        List<String> command = pb.command();
-                        StringBuilder sb = new StringBuilder("Executing command:\n$> ");
-                        for (String commandPart : command)
-                            sb.append(commandPart).append(" ");
-                        LogUtils.println(console, sb.toString());
-                        process = pb.start();
-//                        int waitFor = process.waitFor();
-//                        submittedProcesses.add(process);
-//                        
-//                        LogUtils.println(console, String.format("Process waitFor result is: [%d]", waitFor));
-//                        
-                        LogUtils.println(console, "Process started");
-                        
-                        InputStream err = process.getErrorStream();
-                        InputStream out = process.getInputStream();
-                        while (true) {
-                            Thread.sleep(200L);
-                            if (err.available() > 0) {
-                                byte[] bytes = new byte[err.available()];
-                                int read = err.read(bytes);
-                                LogUtils.println(console, new String(bytes));
-                            }
-                            if (out.available() > 0) {
-                                byte[] bytes = new byte[out.available()];
-                                int read = out.read(bytes);
-                                LogUtils.println(console, new String(bytes));
-                            }
-                            try {
-                                int exitValue = process.exitValue();
-                                LogUtils.println(console, String.format("Process finished, exit value: %d\n", exitValue));
-                                break;
-                            } catch (IllegalThreadStateException ignore) {
-                            }
-                        }
-                        
-                    } catch (IOException ex) {
-                        LogUtils.println(console, String.format("IOException: Error in process,\n%s", ex.getMessage()));
-                    } catch (InterruptedException ex) {
-                        if (process != null) {
-                            process.destroy();
-                        }
-                        LogUtils.println(console, String.format("InterruptedException: Error in process,\n%s", ex.getMessage()));
-                    } finally {
-                        if (process != null) {
-                            try {
-                                int exitValue = process.exitValue();
-                            } catch (IllegalThreadStateException ignore) {
-                                process.destroy();
-                            }
-                        }
-                    }
+            // this is all wrong I guess
+            String ENV_WEBSERVER_ROOT = "WEBSERVER_ROOT";
+            String webroot = env.get(ENV_WEBSERVER_ROOT);
+            if (webroot == null) {
+                try {
+//                    console.append(String.format("Env var '%s' did not exist, adding it to the session\n", ENV_WEBSERVER_ROOT));
+//                    String value = "D:\\projects\\_garbage_data\\tpp\\fake-www-root";
+//                    env.put(ENV_WEBSERVER_ROOT, value);
+//                    console.append(String.format("Added: %s=%s\n", ENV_WEBSERVER_ROOT, value));
+                    
+                    
+//                    String ENV_XML_ONLY = "XML_ONLY";
+//                    env.put(ENV_XML_ONLY, "1");
+                    
+                    
+                    String ENV_PATH = "PATH";
+                    String envPath = env.get(ENV_PATH);
+                    if (envPath == null)
+                        envPath = "";
+                    console.append(String.format("Original: %s=%s\n", ENV_PATH, envPath));
+                    StringBuilder sbEnvPath = new StringBuilder(envPath);
+                    sbEnvPath.append(";").append("D:\\projects\\_garbage_data\\tpp\\bin");
+                    env.put(ENV_PATH, sbEnvPath.toString());
+                    console.append(String.format("Modified: %s=%s\n", ENV_PATH, sbEnvPath.toString()));
+                    
+                    
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }, console, System.err);
-            exec.submit(reHandler);
-        }
-        
-        final JButton btnStartPtr = btnRun;
-        final JButton btnStopPtr = btnStop;
-        REHandler finalizerTask = new REHandler(new Runnable() {
-            @Override
-            public void run() {
-                submittedProcesses.clear();
-                btnRun.setEnabled(true);
-                btnStop.setEnabled(false);
-                LogUtils.println(console, String.format("========================="));
-                LogUtils.println(console, String.format("==="));
-                LogUtils.println(console, String.format("===        Done"));
-                LogUtils.println(console, String.format("==="));
-                LogUtils.println(console, String.format("========================="));
+            } else {
+                try {
+                    console.append(String.format("Env var '%s' existed, value was '%s', all fine.\n", ENV_WEBSERVER_ROOT, webroot));
+                } catch (IOException ex) {
+                    Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        }, console, System.err);
-        
-        exec.submit(finalizerTask);
-        
-        exec.shutdown();
-    }//GEN-LAST:event_btnRunActionPerformed
-
+//            try {
+//                Path tppBinPath = Paths.get("C", "Inetpub", "tpp-bin");
+//                if (!Files.exists(tppBinPath))
+//                    env.remove();
+//            } catch (Exception notImportant) {
+//                env.remove("WEBSERVER_ROOT");
+//            }
+            return Arrays.asList(pb);
+        }
+        return Collections.emptyList();
+    }
     
     private CometParams collectCometParams() throws ParsingException {
         try {
@@ -2415,8 +2482,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
 
-        if (!txtBinComet.getText().isEmpty()) {
-            File toFile = Paths.get(txtBinComet.getText()).toFile();
+        if (!txtBinProteinProphet.getText().isEmpty()) {
+            File toFile = Paths.get(txtBinProteinProphet.getText()).toFile();
             fileChooser.setCurrentDirectory(toFile);
         }
 
@@ -2425,7 +2492,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             case JFileChooser.APPROVE_OPTION:
 
                 File f = fileChooser.getSelectedFile();
-                txtBinComet.setText(f.getAbsolutePath());
+                txtBinProteinProphet.setText(f.getAbsolutePath());
                 saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
 
                 break;
