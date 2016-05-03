@@ -1575,7 +1575,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             return;
         }
 
-        if (!chkRunUmpire.isSelected() && !chkRunCometSearch.isSelected() && !chkRunPeptideProphet.isSelected()) {
+        if (!chkRunUmpire.isSelected() 
+                && !chkRunCometSearch.isSelected() 
+                && !chkRunPeptideProphet.isSelected() 
+                && !chkRunProteinProphet.isSelected()) {
             JOptionPane.showMessageDialog(this, "Nothing to run.\n"
                     + "Please mark checkboxes in other tabs to run processing tools.", "Error", JOptionPane.WARNING_MESSAGE);
             resetRunButtons(true);
