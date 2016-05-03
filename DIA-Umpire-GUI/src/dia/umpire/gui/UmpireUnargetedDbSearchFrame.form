@@ -1243,7 +1243,7 @@
                                   <Component id="btnSelectCometParamsFile" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <Component id="txtBinPhilosopherComet" pref="383" max="32767" attributes="0"/>
+                                  <Component id="txtBinComet" pref="383" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnSelectPhilosopherBinary" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -1258,7 +1258,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel29" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtBinPhilosopherComet" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtBinComet" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnSelectPhilosopherBinary" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -1279,7 +1279,7 @@
                     <Property name="toolTipText" type="java.lang.String" value="If you&apos;re using Philosopher to run Comet, make sure that &apos;comet&apos; is the first option in &apos;Cmd Line Options&apos;"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtBinPhilosopherComet">
+                <Component class="javax.swing.JTextField" name="txtBinComet">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="philosopher_windows_amd64"/>
                     <Property name="toolTipText" type="java.lang.String" value="If you&apos;re using Philosopher to run Comet, make sure that &apos;comet&apos; is the first option in &apos;Cmd Line Options&apos;"/>
@@ -1370,7 +1370,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel33" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="txtBinPhilosopherPeptideProphet" max="32767" attributes="0"/>
+                          <Component id="txtBinPeptideProphet" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnSelectPeptideProphetBin" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -1384,7 +1384,7 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel33" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnSelectPeptideProphetBin" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtBinPhilosopherPeptideProphet" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtBinPeptideProphet" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -1406,7 +1406,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelectPeptideProphetBinActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtBinPhilosopherPeptideProphet">
+                <Component class="javax.swing.JTextField" name="txtBinPeptideProphet">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="philosopher_windows_amd64"/>
                     <Property name="toolTipText" type="java.lang.String" value="If you&apos;re using Philosopher to run PeptideProhphet, make sure &apos;peptideprophet&apos; is the first command in Cmd Line Options text"/>
@@ -1587,7 +1587,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel38" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTextField1" max="32767" attributes="0"/>
+                          <Component id="txtBinProteinProphet" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnBinProteinProphet" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -1600,7 +1600,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="btnBinProteinProphet" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtBinProteinProphet" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel38" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
@@ -1617,7 +1617,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBinProteinProphetActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField1">
+                <Component class="javax.swing.JTextField" name="txtBinProteinProphet">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="philosopher_windows_amd64"/>
                   </Properties>
@@ -1686,13 +1686,13 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtProteinProphetSeqDb">
                   <Properties>
-                    <Property name="toolTipText" type="java.lang.String" value="If not specified, the value will be taken from PeptideProphet or Comet tabs"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Not Used Now. If not specified, the value will be taken from PeptideProphet or Comet tabs"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel39">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Sequence Database"/>
-                    <Property name="toolTipText" type="java.lang.String" value="If not specified, the value will be taken from PeptideProphet or Comet tabs"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Not Used Now. If not specified, the value will be taken from PeptideProphet or Comet tabs"/>
                   </Properties>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane4">

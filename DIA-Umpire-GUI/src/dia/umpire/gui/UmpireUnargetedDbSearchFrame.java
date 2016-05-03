@@ -9,6 +9,7 @@ import dia.umpire.exceptions.FileWritingException;
 import dia.umpire.exceptions.ParsingException;
 import dia.umpire.params.CometParams;
 import dia.umpire.params.PeptideProphetParams;
+import dia.umpire.params.ProteinProphetParams;
 import dia.umpire.params.ThisAppProps;
 import dia.umpire.params.UmpireParams;
 import dia.umpire.util.LogUtils;
@@ -172,7 +173,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         chkRunCometSearch = new javax.swing.JCheckBox();
         panelCometBinary = new javax.swing.JPanel();
         jLabel29 = new javax.swing.JLabel();
-        txtBinPhilosopherComet = new javax.swing.JTextField();
+        txtBinComet = new javax.swing.JTextField();
         btnSelectPhilosopherBinary = new javax.swing.JButton();
         txtCometParamsFile = new javax.swing.JTextField();
         btnSelectCometParamsFile = new javax.swing.JButton();
@@ -181,7 +182,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         panelPeptideProphetBin = new javax.swing.JPanel();
         jLabel33 = new javax.swing.JLabel();
         btnSelectPeptideProphetBin = new javax.swing.JButton();
-        txtBinPhilosopherPeptideProphet = new javax.swing.JTextField();
+        txtBinPeptideProphet = new javax.swing.JTextField();
         chkRunPeptideProphet = new javax.swing.JCheckBox();
         panelPeptideProphetOptions = new javax.swing.JPanel();
         jLabel34 = new javax.swing.JLabel();
@@ -194,7 +195,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         chkRunProteinProphet = new javax.swing.JCheckBox();
         panelProteinProphetBin = new javax.swing.JPanel();
         btnBinProteinProphet = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtBinProteinProphet = new javax.swing.JTextField();
         jLabel38 = new javax.swing.JLabel();
         panelProteinProphetOptions = new javax.swing.JPanel();
         btnProteinProphetSeqDb = new javax.swing.JButton();
@@ -859,8 +860,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel29.setText("Comet");
         jLabel29.setToolTipText("If you're using Philosopher to run Comet, make sure that 'comet' is the first option in 'Cmd Line Options'");
 
-        txtBinPhilosopherComet.setText("philosopher_windows_amd64");
-        txtBinPhilosopherComet.setToolTipText("If you're using Philosopher to run Comet, make sure that 'comet' is the first option in 'Cmd Line Options'");
+        txtBinComet.setText("philosopher_windows_amd64");
+        txtBinComet.setToolTipText("If you're using Philosopher to run Comet, make sure that 'comet' is the first option in 'Cmd Line Options'");
 
         btnSelectPhilosopherBinary.setText("Browse");
         btnSelectPhilosopherBinary.addActionListener(new java.awt.event.ActionListener() {
@@ -894,7 +895,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSelectCometParamsFile))
                     .addGroup(panelCometBinaryLayout.createSequentialGroup()
-                        .addComponent(txtBinPhilosopherComet, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                        .addComponent(txtBinComet, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSelectPhilosopherBinary)))
                 .addContainerGap())
@@ -905,7 +906,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel29)
-                    .addComponent(txtBinPhilosopherComet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBinComet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSelectPhilosopherBinary))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelCometBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -959,8 +960,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
-        txtBinPhilosopherPeptideProphet.setText("philosopher_windows_amd64");
-        txtBinPhilosopherPeptideProphet.setToolTipText("If you're using Philosopher to run PeptideProhphet, make sure 'peptideprophet' is the first command in Cmd Line Options text");
+        txtBinPeptideProphet.setText("philosopher_windows_amd64");
+        txtBinPeptideProphet.setToolTipText("If you're using Philosopher to run PeptideProhphet, make sure 'peptideprophet' is the first command in Cmd Line Options text");
 
         javax.swing.GroupLayout panelPeptideProphetBinLayout = new javax.swing.GroupLayout(panelPeptideProphetBin);
         panelPeptideProphetBin.setLayout(panelPeptideProphetBinLayout);
@@ -970,7 +971,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel33)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBinPhilosopherPeptideProphet)
+                .addComponent(txtBinPeptideProphet)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSelectPeptideProphetBin)
                 .addContainerGap())
@@ -982,7 +983,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addGroup(panelPeptideProphetBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel33)
                     .addComponent(btnSelectPeptideProphetBin)
-                    .addComponent(txtBinPhilosopherPeptideProphet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBinPeptideProphet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1095,7 +1096,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setText("philosopher_windows_amd64");
+        txtBinProteinProphet.setText("philosopher_windows_amd64");
 
         jLabel38.setText("ProteinProphet");
 
@@ -1107,7 +1108,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel38)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1)
+                .addComponent(txtBinProteinProphet)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBinProteinProphet)
                 .addContainerGap())
@@ -1118,7 +1119,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelProteinProphetBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBinProteinProphet)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtBinProteinProphet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel38))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1127,10 +1128,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         btnProteinProphetSeqDb.setText("Browse");
 
-        txtProteinProphetSeqDb.setToolTipText("If not specified, the value will be taken from PeptideProphet or Comet tabs");
+        txtProteinProphetSeqDb.setToolTipText("Not Used Now. If not specified, the value will be taken from PeptideProphet or Comet tabs");
 
         jLabel39.setText("Sequence Database");
-        jLabel39.setToolTipText("If not specified, the value will be taken from PeptideProphet or Comet tabs");
+        jLabel39.setToolTipText("Not Used Now. If not specified, the value will be taken from PeptideProphet or Comet tabs");
 
         txtProteinProphetCmdLineOpts.setColumns(20);
         txtProteinProphetCmdLineOpts.setRows(5);
@@ -1705,7 +1706,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             try {
                 CometParams collectedCometParams = collectCometParams();
                 
-                String binPhilosopher = txtBinPhilosopherComet.getText();
+                String binPhilosopher = txtBinComet.getText();
                 if (binPhilosopher.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Binary for running Comet can not be an empty string.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -1794,7 +1795,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         
         
         if (chkRunPeptideProphet.isSelected()) {
-            String binPhilosopher = txtBinPhilosopherPeptideProphet.getText();
+            String binPhilosopher = txtBinPeptideProphet.getText();
             if (binPhilosopher.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Philosopher (PeptideProphet) binary can not be an empty string.\n",
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -1867,6 +1868,86 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         }
         // END: PeptideProphet
+        
+        
+        if (chkRunProteinProphet.isSelected()) {
+            String bin = txtBinProteinProphet.getText();
+            if (bin.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "ProteinProphet binary can not be an empty string.\n",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                resetRunButtons(true);
+                return;
+            }
+            bin = testBinaryPath(bin, workingDir);
+            if (bin == null) {
+                JOptionPane.showMessageDialog(this, "ProteinProphet binary not found or could not be launched.\n"
+                        + "Neither on PATH, nor in the working directory",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                resetRunButtons(true);
+                return;
+            }
+
+
+//            String fastaPath = txtProteinProphetSeqDb.getText();
+//            if (fastaPath.isEmpty()) {
+//                fastaPath = txtPeptideProphetSeqDb.getText();
+//                if (fastaPath.isEmpty()) {
+//                    fastaPath = txtCometSeqDb.getText();
+//                    if (fastaPath.isEmpty()) {
+//                        JOptionPane.showMessageDialog(this, "Fasta file (ProteinProphet) path can't be empty",
+//                                "Warning", JOptionPane.WARNING_MESSAGE);
+//                        resetRunButtons(true);
+//                        return;
+//                    }
+//                }
+//            }
+//            String fastaPathOrig = new String(fastaPath);
+//            fastaPath = testFilePath(fastaPath, workingDir);
+//            if (fastaPath == null) {
+//                JOptionPane.showMessageDialog(this, String.format("Could not find fasta file (ProteinProphet) at:\n%s", fastaPathOrig),
+//                        "Errors", JOptionPane.ERROR_MESSAGE);
+//                resetRunButtons(true);
+//                return;
+//            }
+
+            ProteinProphetParams proteinProphetParams = new ProteinProphetParams();
+            proteinProphetParams.setCmdLineParams(txtProteinProphetCmdLineOpts.getText());
+
+
+            List<String> createdInteractFiles = new ArrayList<>();
+            List<String> commands = new ArrayList<>();
+            commands.add(bin);
+            for (String filePath : lcmsFilePaths) {
+                // Comet
+                for (int i = 1; i <= 3; i++) {
+                    //commands.add("peptideprophet"); // this was moved to be a part of commands in {@code txtPeptideProphetCmdLineOptions}
+                    if (!proteinProphetParams.getCmdLineParams().isEmpty()) {
+                        String pepProphFlags = proteinProphetParams.getCmdLineParams();
+                        String[] flags = pepProphFlags.split("\\s+");
+                        commands.addAll(Arrays.asList(flags));
+                    }
+//                    commands.add("--database");
+//                    commands.add(fastaPath);
+
+                    Path curMzXMl = Paths.get(filePath);
+                    Path mzXmlFileName = curMzXMl.getFileName();
+
+                    String s = mzXmlFileName.toString();
+                    int indexOf = s.toLowerCase().indexOf(".mzxml");
+                    String baseName = mzXmlFileName.toString().substring(0, indexOf);
+                    Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), "interact-" + baseName+"_Q"+i+".pep.xml");
+                    commands.add(createdPepXml.toString());
+                    createdInteractFiles.add(createdPepXml.toString());
+                }
+            }
+            ProcessBuilder pb = new ProcessBuilder(commands);
+            Map<String, String> env = pb.environment();
+            // set environment 
+            env.put("WEBSERVER_ROOT", "fake-WEBSERVER_ROOT-var");
+            processBuilders.add(pb);
+        }
+        // END: PeptideProphet
+        
         
         LogUtils.println(console, String.format("Will execute %d commands:", processBuilders.size()));
         for (final ProcessBuilder pb : processBuilders) {
@@ -2205,8 +2286,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
 
-        if (!txtBinPhilosopherComet.getText().isEmpty()) {
-            File toFile = Paths.get(txtBinPhilosopherComet.getText()).toFile();
+        if (!txtBinComet.getText().isEmpty()) {
+            File toFile = Paths.get(txtBinComet.getText()).toFile();
             fileChooser.setCurrentDirectory(toFile);
         }
 
@@ -2215,7 +2296,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             case JFileChooser.APPROVE_OPTION:
 
                 File f = fileChooser.getSelectedFile();
-                txtBinPhilosopherComet.setText(f.getAbsolutePath());
+                txtBinComet.setText(f.getAbsolutePath());
                 saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
 
                 break;
@@ -2259,8 +2340,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
 
-        if (!txtBinPhilosopherPeptideProphet.getText().isEmpty()) {
-            File toFile = Paths.get(txtBinPhilosopherPeptideProphet.getText()).toFile();
+        if (!txtBinPeptideProphet.getText().isEmpty()) {
+            File toFile = Paths.get(txtBinPeptideProphet.getText()).toFile();
             fileChooser.setCurrentDirectory(toFile);
         }
 
@@ -2269,7 +2350,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             case JFileChooser.APPROVE_OPTION:
 
                 File f = fileChooser.getSelectedFile();
-                txtBinPhilosopherPeptideProphet.setText(f.getAbsolutePath());
+                txtBinPeptideProphet.setText(f.getAbsolutePath());
                 saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
 
                 break;
@@ -2316,8 +2397,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
 
-        if (!txtBinPhilosopherComet.getText().isEmpty()) {
-            File toFile = Paths.get(txtBinPhilosopherComet.getText()).toFile();
+        if (!txtBinComet.getText().isEmpty()) {
+            File toFile = Paths.get(txtBinComet.getText()).toFile();
             fileChooser.setCurrentDirectory(toFile);
         }
 
@@ -2326,7 +2407,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             case JFileChooser.APPROVE_OPTION:
 
                 File f = fileChooser.getSelectedFile();
-                txtBinPhilosopherComet.setText(f.getAbsolutePath());
+                txtBinComet.setText(f.getAbsolutePath());
                 saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
 
                 break;
@@ -2563,7 +2644,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblNoMissedScan;
     private javax.swing.JPanel panelCometBinary;
     private javax.swing.JPanel panelCometSequence;
@@ -2585,9 +2665,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JSpinner spinnerThreads;
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JTextArea txtAreaSelectedFiles;
+    private javax.swing.JTextField txtBinComet;
     private javax.swing.JTextField txtBinMsconvert;
-    private javax.swing.JTextField txtBinPhilosopherComet;
-    private javax.swing.JTextField txtBinPhilosopherPeptideProphet;
+    private javax.swing.JTextField txtBinPeptideProphet;
+    private javax.swing.JTextField txtBinProteinProphet;
     private javax.swing.JTextField txtBinUmpire;
     private javax.swing.JTextField txtCometParamsFile;
     private javax.swing.JTextField txtCometSeqDb;
