@@ -54,4 +54,23 @@ public class ThisAppProps extends Properties {
             //log.warn("Could not load properties from temporary directory: {}", ex.getMessage());
         }
     }
+    
+    public static void savePropToCache(String propName, String propVal) {
+        if (propName == null || propVal == null)
+            throw new IllegalArgumentException("Both property name and value must be non-null");
+        ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
+        if (thisAppProps == null)
+            thisAppProps = new ThisAppProps();
+        thisAppProps.setProperty(propName, propVal);
+        thisAppProps.save();
+    }
+    
+    public static String loadPropFromCache(String propName) {
+        if (propName == null)
+            throw new IllegalArgumentException("Property name must be non-null");
+        ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
+        if (thisAppProps == null)
+            return null;
+        return thisAppProps.getProperty(propName);
+    }
 }

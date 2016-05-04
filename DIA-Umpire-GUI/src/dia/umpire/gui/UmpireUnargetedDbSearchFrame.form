@@ -878,11 +878,14 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtBinUmpire">
                   <Properties>
-                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                      <ResourceString bundle="dia/umpire/gui/Bundle.properties" key="default.dia.umpire.se.jar" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="getDefaultTextUmpireSe()" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have Umpire jar in working directory, please specify the full path"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtBinUmpireFocusLost"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnSelectUmpireJar">
                   <Properties>
@@ -900,11 +903,14 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtBinMsconvert">
                   <Properties>
-                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                      <ResourceString bundle="dia/umpire/gui/Bundle.properties" key="default.msconvert" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="getDefaultTextMsconvert()" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have msconvert on your PATH, specify the full path to the executable"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtBinMsconvertFocusLost"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnSelectMSConvertBinay">
                   <Properties>
@@ -1290,10 +1296,13 @@
                 <Component class="javax.swing.JTextField" name="txtBinComet">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="getDefaultPhilosopherBinName()" type="code"/>
+                      <Connection code="getDefaultTextComet()" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value="If you&apos;re using Philosopher to run Comet, make sure that &apos;comet&apos; is the first option in &apos;Cmd Line Options&apos;"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtBinCometFocusLost"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnSelectPhilosopherBinary">
                   <Properties>
@@ -1419,10 +1428,13 @@
                 <Component class="javax.swing.JTextField" name="txtBinPeptideProphet">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="getDefaultPhilosopherBinName()" type="code"/>
+                      <Connection code="getDefaultTextPeptideProphet()" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value="If you&apos;re using Philosopher to run PeptideProhphet, make sure &apos;peptideprophet&apos; is the first command in Cmd Line Options text"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtBinPeptideProphetFocusLost"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -1633,9 +1645,12 @@
                 <Component class="javax.swing.JTextField" name="txtBinProteinProphet">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="getDefaultPhilosopherBinName()" type="code"/>
+                      <Connection code="getDefaultTextProteinProphet()" type="code"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtBinProteinProphetFocusLost"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel38">
                   <Properties>

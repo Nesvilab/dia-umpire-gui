@@ -14,6 +14,7 @@ import dia.umpire.params.ProteinProphetParams;
 import dia.umpire.params.ThisAppProps;
 import dia.umpire.params.UmpireParams;
 import dia.umpire.util.LogUtils;
+import dia.umpire.util.OsUtils;
 import dia.umpire.util.PropertiesUtils;
 import dia.umpire.util.StringUtils;
 
@@ -27,9 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -44,16 +43,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -94,12 +93,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("dia/umpire/gui/Bundle"); // NOI18N
         String winName = bundle.getString("default.philosopher.win"); // NOI18N
         String nixName = bundle.getString("default.philosopher.nix"); // NOI18N
-        String osName = System.getProperty("os.name");
-        if (osName != null && !osName.startsWith("Windows")) { // NOI18N
-            return nixName;
-        }
-        // by default we assume windows
-        return winName;
+        if (OsUtils.isWindows())
+            return winName;
+        return nixName;
     }
 
     /**
@@ -634,9 +630,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel28.setText("Umpire");
         jLabel28.setToolTipText("If you don't have Umpire jar in working directory, please specify the full path");
 
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("dia/umpire/gui/Bundle"); // NOI18N
-        txtBinUmpire.setText(bundle.getString("default.dia.umpire.se.jar")); // NOI18N
+        txtBinUmpire.setText(getDefaultTextUmpireSe());
         txtBinUmpire.setToolTipText("If you don't have Umpire jar in working directory, please specify the full path");
+        txtBinUmpire.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtBinUmpireFocusLost(evt);
+            }
+        });
 
         btnSelectUmpireJar.setText("Browse");
         btnSelectUmpireJar.addActionListener(new java.awt.event.ActionListener() {
@@ -648,8 +648,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel31.setText("msconvert");
         jLabel31.setToolTipText("If you don't have msconvert on your PATH, specify the full path to the executable");
 
-        txtBinMsconvert.setText(bundle.getString("default.msconvert")); // NOI18N
+        txtBinMsconvert.setText(getDefaultTextMsconvert());
         txtBinMsconvert.setToolTipText("If you don't have msconvert on your PATH, specify the full path to the executable");
+        txtBinMsconvert.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtBinMsconvertFocusLost(evt);
+            }
+        });
 
         btnSelectMSConvertBinay.setText("Browse");
         btnSelectMSConvertBinay.addActionListener(new java.awt.event.ActionListener() {
@@ -888,8 +893,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel29.setText("Comet");
         jLabel29.setToolTipText("If you're using Philosopher to run Comet, make sure that 'comet' is the first option in 'Cmd Line Options'");
 
-        txtBinComet.setText(getDefaultPhilosopherBinName());
+        txtBinComet.setText(getDefaultTextComet());
         txtBinComet.setToolTipText("If you're using Philosopher to run Comet, make sure that 'comet' is the first option in 'Cmd Line Options'");
+        txtBinComet.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtBinCometFocusLost(evt);
+            }
+        });
 
         btnSelectPhilosopherBinary.setText("Browse");
         btnSelectPhilosopherBinary.addActionListener(new java.awt.event.ActionListener() {
@@ -988,8 +998,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
-        txtBinPeptideProphet.setText(getDefaultPhilosopherBinName());
+        txtBinPeptideProphet.setText(getDefaultTextPeptideProphet());
         txtBinPeptideProphet.setToolTipText("If you're using Philosopher to run PeptideProhphet, make sure 'peptideprophet' is the first command in Cmd Line Options text");
+        txtBinPeptideProphet.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtBinPeptideProphetFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelPeptideProphetBinLayout = new javax.swing.GroupLayout(panelPeptideProphetBin);
         panelPeptideProphetBin.setLayout(panelPeptideProphetBinLayout);
@@ -1125,7 +1140,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
-        txtBinProteinProphet.setText(getDefaultPhilosopherBinName());
+        txtBinProteinProphet.setText(getDefaultTextProteinProphet());
+        txtBinProteinProphet.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtBinProteinProphetFocusLost(evt);
+            }
+        });
 
         jLabel38.setText("ProteinProphet");
 
@@ -2349,6 +2369,48 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
     }
 
+    private String getDefaultTextUmpireSe() {
+        String value = ThisAppProps.loadPropFromCache(ThisAppProps.PROP_TEXTFIELD_PATH_UMPIRE_SE);
+        if (value != null)
+            return value;
+        ResourceBundle bundle = ResourceBundle.getBundle("dia/umpire/gui/Bundle"); // NOI18N
+        return bundle.getString("default.dia.umpire.se.jar");
+    }
+
+    private String getDefaultTextMsconvert() {
+        String value = ThisAppProps.loadPropFromCache(ThisAppProps.PROP_TEXTFIELD_PATH_MSCONVERT);
+        if (value != null)
+            return value;
+        ResourceBundle bundle = ResourceBundle.getBundle("dia/umpire/gui/Bundle"); // NOI18N
+        if (OsUtils.isWindows()) {
+            return bundle.getString("default.msconvert.win");
+        }
+        return bundle.getString("default.msconvert.nix");
+    }
+
+    private String getDefaultTextComet() {
+        String value = ThisAppProps.loadPropFromCache(ThisAppProps.PROP_TEXTFIELD_PATH_COMET);
+        if (value != null)
+            return value;
+        return getDefaultPhilosopherBinName();
+    }
+
+    private String getDefaultTextPeptideProphet() {
+        String value = ThisAppProps.loadPropFromCache(ThisAppProps.PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET);
+        if (value != null)
+            return value;
+        return getDefaultPhilosopherBinName();
+    }
+
+    private String getDefaultTextProteinProphet() {
+        String value = ThisAppProps.loadPropFromCache(ThisAppProps.PROP_TEXTFIELD_PATH_PROTEIN_PROPHET);
+        if (value != null)
+            return value;
+        return getDefaultPhilosopherBinName();
+    }
+
+    
+
     
     public static class REHandler implements Runnable {
         Runnable delegate;
@@ -2454,7 +2516,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 File f = fileChooser.getSelectedFile();
                 txtBinUmpire.setText(f.getAbsolutePath());
                 saveFilechooserPathToCached(f, ThisAppProps.PROP_JAR_IN);
-
+                saveBinUmpireSe();
                 break;
         }
     }//GEN-LAST:event_btnSelectUmpireJarActionPerformed
@@ -2484,6 +2546,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 File f = fileChooser.getSelectedFile();
                 txtBinMsconvert.setText(f.getAbsolutePath());
                 saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
+                saveBinMsconvert();
 
                 break;
         }
@@ -2515,6 +2578,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 File f = fileChooser.getSelectedFile();
                 txtBinComet.setText(f.getAbsolutePath());
                 saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
+                saveBinComet();
 
                 break;
         }
@@ -2569,7 +2633,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 File f = fileChooser.getSelectedFile();
                 txtBinPeptideProphet.setText(f.getAbsolutePath());
                 saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
-
+                saveBinPeptideProphet();
                 break;
         }
     }//GEN-LAST:event_btnSelectPeptideProphetBinActionPerformed
@@ -2626,7 +2690,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 File f = fileChooser.getSelectedFile();
                 txtBinProteinProphet.setText(f.getAbsolutePath());
                 saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
-
+                saveBinProteinProphet();
                 break;
         }
     }//GEN-LAST:event_btnBinProteinProphetActionPerformed
@@ -2642,6 +2706,61 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chkRunProteinProphetActionPerformed
 
+    private void txtBinUmpireFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBinUmpireFocusLost
+        saveBinUmpireSe();
+    }//GEN-LAST:event_txtBinUmpireFocusLost
+
+    private void txtBinMsconvertFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBinMsconvertFocusLost
+        saveBinMsconvert();
+    }//GEN-LAST:event_txtBinMsconvertFocusLost
+
+    private void txtBinCometFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBinCometFocusLost
+        saveBinComet();
+    }//GEN-LAST:event_txtBinCometFocusLost
+
+    private void txtBinPeptideProphetFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBinPeptideProphetFocusLost
+        saveBinPeptideProphet();
+    }//GEN-LAST:event_txtBinPeptideProphetFocusLost
+
+    private void txtBinProteinProphetFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBinProteinProphetFocusLost
+        saveBinProteinProphet();
+    }//GEN-LAST:event_txtBinProteinProphetFocusLost
+
+    private void saveBinUmpireSe() {
+        saveTextFieldToCache(txtBinUmpire, ThisAppProps.PROP_TEXTFIELD_PATH_UMPIRE_SE);
+    }
+    
+    private void saveBinMsconvert() {
+        saveTextFieldToCache(txtBinMsconvert, ThisAppProps.PROP_TEXTFIELD_PATH_MSCONVERT);
+    }
+    
+    private void saveBinComet() {
+        saveTextFieldToCache(txtBinComet, ThisAppProps.PROP_TEXTFIELD_PATH_COMET);
+    }
+    
+    private void saveBinPeptideProphet() {
+        saveTextFieldToCache(txtBinProteinProphet, ThisAppProps.PROP_TEXTFIELD_PATH_PROTEIN_PROPHET);
+    }
+    
+    private void saveBinProteinProphet() {
+        saveTextFieldToCache(txtBinProteinProphet, ThisAppProps.PROP_TEXTFIELD_PATH_PROTEIN_PROPHET);
+    }
+    
+    private void saveTextFieldToCache(JTextField txt, String propName) {
+        String text = txt.getText().trim();
+        if (!text.isEmpty()) {
+            ThisAppProps.savePropToCache(propName, text);
+        }
+    }
+    
+    private boolean loadTextFieldFromCache(JTextField txt, String propName) {
+        String cached = ThisAppProps.loadPropFromCache(propName);
+        if (cached == null)
+            return false;
+        txt.setText(cached);
+        return true;
+    }
+    
     private CometParams loadCometParamsFile(File file) throws ParsingException {
         try (FileInputStream fis = new FileInputStream(file)) {
             CometParams params = CometParams.parse(fis);
