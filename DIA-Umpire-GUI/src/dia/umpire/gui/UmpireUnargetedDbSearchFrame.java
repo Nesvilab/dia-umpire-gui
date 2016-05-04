@@ -2476,7 +2476,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
         setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_LCMS_FILES_IN);
-        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
+        //setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
 
         if (!txtWorkingDir.getText().isEmpty()) {
             File toFile = Paths.get(txtWorkingDir.getText()).toFile();
@@ -2489,7 +2489,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
                 File f = fileChooser.getSelectedFile();
                 txtWorkingDir.setText(f.getAbsolutePath());
-
+                saveTextFieldToCache(txtWorkingDir, ThisAppProps.PROP_LCMS_FILES_IN);
                 break;
         }
     }//GEN-LAST:event_btnSelectWrkingDirActionPerformed
