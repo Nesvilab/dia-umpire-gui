@@ -1074,11 +1074,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(jLabel35, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelPeptideProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSelectPeptideProphetSeqDbPath, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelPeptideProphetOptionsLayout.createSequentialGroup()
-                        .addComponent(txtPeptideProphetSeqDb, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(82, 82, 82)))
+                        .addComponent(txtPeptideProphetSeqDb)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSelectPeptideProphetSeqDbPath))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelPeptideProphetOptionsLayout.setVerticalGroup(
@@ -1446,7 +1446,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
     private void btnSelectUmpireParamFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUmpireParamFileActionPerformed
         JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Umpire .params files", "params");
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Umpire .params files", "params", "txt");
         fileChooser.setFileFilter(fileNameExtensionFilter);
         fileChooser.setApproveButtonText("Select file");
         fileChooser.setApproveButtonToolTipText("Load params from this file into the GUI");
@@ -1511,7 +1511,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private void btnSelectCometParamsFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectCometParamsFileActionPerformed
 
         JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Comet .params files", "params");
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Comet .params files", "params", "txt");
         fileChooser.setFileFilter(fileNameExtensionFilter);
         fileChooser.setApproveButtonText("Select file");
         fileChooser.setApproveButtonToolTipText("Load params from this file into the GUI");
