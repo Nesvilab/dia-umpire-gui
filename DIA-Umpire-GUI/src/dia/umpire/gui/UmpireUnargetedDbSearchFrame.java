@@ -762,6 +762,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         txtCometCmdLineOpts.setColumns(20);
         txtCometCmdLineOpts.setLineWrap(true);
         txtCometCmdLineOpts.setRows(5);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("dia/umpire/gui/Bundle"); // NOI18N
+        txtCometCmdLineOpts.setText(bundle.getString("comet.cmd.line.opts")); // NOI18N
         txtCometCmdLineOpts.setWrapStyleWord(true);
         jScrollPane3.setViewportView(txtCometCmdLineOpts);
 
@@ -1057,7 +1059,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         txtPeptideProphetCmdLineOptions.setColumns(20);
         txtPeptideProphetCmdLineOptions.setLineWrap(true);
         txtPeptideProphetCmdLineOptions.setRows(5);
-        txtPeptideProphetCmdLineOptions.setText("--nonparam --accmass --decoy rev --decoyprobs");
+        txtPeptideProphetCmdLineOptions.setText(bundle.getString("peptideprophet.cmd.line.opts")); // NOI18N
         txtPeptideProphetCmdLineOptions.setWrapStyleWord(true);
         jScrollPane2.setViewportView(txtPeptideProphetCmdLineOptions);
 
@@ -1185,6 +1187,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         txtProteinProphetCmdLineOpts.setColumns(20);
         txtProteinProphetCmdLineOpts.setLineWrap(true);
         txtProteinProphetCmdLineOpts.setRows(5);
+        txtProteinProphetCmdLineOpts.setText(bundle.getString("proteinprophet.cmd.line.opts")); // NOI18N
         txtProteinProphetCmdLineOpts.setWrapStyleWord(true);
         jScrollPane4.setViewportView(txtProteinProphetCmdLineOpts);
 
