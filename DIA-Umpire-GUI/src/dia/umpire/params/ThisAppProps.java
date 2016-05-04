@@ -22,6 +22,12 @@ public class ThisAppProps extends Properties {
 
     public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
     public static final String TEMP_FILE_NAME = "diaumpiregui.cache";
+    
+    public static final String PROP_TEXTFIELD_PATH_UMPIRE_SE = "path.textfield.dia-umpire-se";
+    public static final String PROP_TEXTFIELD_PATH_MSCONVERT = "path.textfield.msconvert";
+    public static final String PROP_TEXTFIELD_PATH_COMET = "path.textfield.comet";
+    public static final String PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET = "path.textfield.peptide-prophet";
+    public static final String PROP_TEXTFIELD_PATH_PROTEIN_PROPHET = "path.textfield.protein-prophet";
 
     public static ThisAppProps loadFromTemp()  {
         Path path = Paths.get(TEMP_DIR, TEMP_FILE_NAME);

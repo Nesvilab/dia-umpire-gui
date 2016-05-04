@@ -1602,6 +1602,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
         resetRunButtons(false);
         
+        
+        
         final TextConsole textConsole = console;
         String workingDir = txtWorkingDir.getText();
         if (workingDir.isEmpty()) {
