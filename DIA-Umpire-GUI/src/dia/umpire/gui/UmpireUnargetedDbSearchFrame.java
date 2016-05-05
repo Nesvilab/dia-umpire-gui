@@ -2252,12 +2252,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             return null;
         } else {
             Path combinedProtFileFullPath = Paths.get(workingDir, combinedProtFile).toAbsolutePath();
-            if (!Files.exists(combinedProtFileFullPath)) {
-                JOptionPane.showMessageDialog(this, String.format("Could not find combined protxml file (for Umpire Quant).\n"
-                        + "Location: %s", combinedProtFileFullPath.toString()),
-                    "Errors", JOptionPane.ERROR_MESSAGE);
-                return null;
-            }
+            // can't check if file exists beforehand
+//            if (!Files.exists(combinedProtFileFullPath)) {
+//                JOptionPane.showMessageDialog(this, String.format("Could not find combined protxml file (for Umpire Quant).\n"
+//                        + "Location: %s", combinedProtFileFullPath.toString()),
+//                    "Errors", JOptionPane.ERROR_MESSAGE);
+//                return null;
+//            }
             return combinedProtFileFullPath;
         }
     }
