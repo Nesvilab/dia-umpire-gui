@@ -50,4 +50,14 @@ public class StringUtils {
         return list;
     }
     
+    public static String join(String[] strings, String sep) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < strings.length; i++) {
+            String string = strings[i];
+            sb.append(string);
+            if (i < strings.length - 1)
+                sb.append(sep);
+        }
+        return sb.toString();
+    }
 }
