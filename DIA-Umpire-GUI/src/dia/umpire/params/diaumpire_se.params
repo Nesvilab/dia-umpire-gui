@@ -11,7 +11,7 @@ CorrThreshold = 0.2
 DeltaApex = 0.6
 RTOverlap = 0.3
 AdjustFragIntensity = true
-BoostComplementaryIon = true
+BoostComplementaryIon = false
 
 #Report peak
 ExportPrecursorPeak = false

@@ -5,6 +5,7 @@
  */
 package dia.umpire.gui;
 
+import dia.umpire.params.UmpireQuantParams;
 import dia.umpire.exceptions.FileWritingException;
 import dia.umpire.exceptions.ParsingException;
 import dia.umpire.params.CometParams;
@@ -64,6 +65,9 @@ import javax.swing.text.DefaultCaret;
  */
 public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
+    /** In MB. */
+    protected static int MIN_RAM = 512;
+    
     protected ExecutorService exec;
     private final List<Process> submittedProcesses = new ArrayList<>(100);
 
@@ -208,7 +212,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         btnSelectPeptideProphetSeqDbPath = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtPeptideProphetCmdLineOptions = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
+        panelProteinProphet = new javax.swing.JPanel();
         chkRunProteinProphet = new javax.swing.JCheckBox();
         panelProteinProphetBin = new javax.swing.JPanel();
         btnBinProteinProphet = new javax.swing.JButton();
@@ -224,6 +228,16 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         chkProteinProphetAddInteractPepXmlsSeparately = new javax.swing.JCheckBox();
         jLabel41 = new javax.swing.JLabel();
         txtProteinProphetOutputFile = new javax.swing.JTextField();
+        panelUmpireQuant = new javax.swing.JPanel();
+        chkRunUmpireQuant = new javax.swing.JCheckBox();
+        panelUmpireQuantBin = new javax.swing.JPanel();
+        btnSelectUmpireQuantJar = new javax.swing.JButton();
+        jLabel42 = new javax.swing.JLabel();
+        txtBinUmpireQuant = new javax.swing.JTextField();
+        btnSelectUmpireConfig = new javax.swing.JButton();
+        jLabel43 = new javax.swing.JLabel();
+        txtUmpireQuantConfig = new javax.swing.JTextField();
+        panelumpireQuantOpts = new javax.swing.JPanel();
         panelRun = new javax.swing.JPanel();
         btnRun = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
@@ -275,7 +289,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(btnSelectRawFiles)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -287,7 +301,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSelectRawFiles)
@@ -743,7 +757,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addComponent(panelUmpireSeParams, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelUmpireSwathParams, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         tabPane.addTab("DIA-Umpire SE", panelInTabSeParams);
@@ -935,7 +949,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSelectCometParamsFile))
                     .addGroup(panelCometBinaryLayout.createSequentialGroup()
-                        .addComponent(txtBinComet, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+                        .addComponent(txtBinComet, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSelectPhilosopherBinary)))
                 .addContainerGap())
@@ -982,7 +996,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addComponent(panelCometSequence, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelCometTolerance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
 
         tabPane.addTab("Comet", panelInTabCometParams);
@@ -1078,7 +1092,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addComponent(txtPeptideProphetSeqDb)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSelectPeptideProphetSeqDbPath))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelPeptideProphetOptionsLayout.setVerticalGroup(
@@ -1120,7 +1134,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addComponent(panelPeptideProphetBin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelPeptideProphetOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(302, Short.MAX_VALUE))
+                .addContainerGap(305, Short.MAX_VALUE))
         );
 
         tabPane.addTab("PeptideProphet", panelPeptideProphet);
@@ -1230,7 +1244,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addGap(8, 8, 8)
                         .addComponent(jScrollPane4))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addGap(0, 88, Short.MAX_VALUE)
+                        .addGap(0, 107, Short.MAX_VALUE)
                         .addComponent(chkProteinProphetAddInteractPepXmlsSeparately)))
                 .addContainerGap())
         );
@@ -1258,33 +1272,139 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelProteinProphetLayout = new javax.swing.GroupLayout(panelProteinProphet);
+        panelProteinProphet.setLayout(panelProteinProphetLayout);
+        panelProteinProphetLayout.setHorizontalGroup(
+            panelProteinProphetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelProteinProphetLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelProteinProphetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelProteinProphetBin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(panelProteinProphetLayout.createSequentialGroup()
                         .addComponent(chkRunProteinProphet)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(panelProteinProphetOptions, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        panelProteinProphetLayout.setVerticalGroup(
+            panelProteinProphetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelProteinProphetLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(chkRunProteinProphet)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelProteinProphetBin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelProteinProphetOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(264, Short.MAX_VALUE))
+                .addContainerGap(267, Short.MAX_VALUE))
         );
 
-        tabPane.addTab("ProteinProphet", jPanel1);
+        tabPane.addTab("ProteinProphet", panelProteinProphet);
+
+        chkRunUmpireQuant.setSelected(true);
+        chkRunUmpireQuant.setText("Run DIA-Umpire Quant");
+        chkRunUmpireQuant.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkRunUmpireQuantActionPerformed(evt);
+            }
+        });
+
+        panelUmpireQuantBin.setBorder(javax.swing.BorderFactory.createTitledBorder("DIA-Umpire Quant"));
+
+        btnSelectUmpireQuantJar.setText("Browse");
+        btnSelectUmpireQuantJar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectUmpireQuantJarActionPerformed(evt);
+            }
+        });
+
+        jLabel42.setText("DIA-Umpire Quant jar");
+
+        txtBinUmpireQuant.setText(getDefaultTextUmpireQuant());
+
+        btnSelectUmpireConfig.setText("Browse");
+        btnSelectUmpireConfig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectUmpireConfigActionPerformed(evt);
+            }
+        });
+
+        jLabel43.setText("Config");
+
+        javax.swing.GroupLayout panelUmpireQuantBinLayout = new javax.swing.GroupLayout(panelUmpireQuantBin);
+        panelUmpireQuantBin.setLayout(panelUmpireQuantBinLayout);
+        panelUmpireQuantBinLayout.setHorizontalGroup(
+            panelUmpireQuantBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUmpireQuantBinLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelUmpireQuantBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel42)
+                    .addComponent(jLabel43))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelUmpireQuantBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtBinUmpireQuant, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                    .addComponent(txtUmpireQuantConfig))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelUmpireQuantBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSelectUmpireConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSelectUmpireQuantJar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        panelUmpireQuantBinLayout.setVerticalGroup(
+            panelUmpireQuantBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelUmpireQuantBinLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelUmpireQuantBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSelectUmpireQuantJar)
+                    .addComponent(jLabel42)
+                    .addComponent(txtBinUmpireQuant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelUmpireQuantBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSelectUmpireConfig)
+                    .addComponent(jLabel43)
+                    .addComponent(txtUmpireQuantConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panelumpireQuantOpts.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
+
+        javax.swing.GroupLayout panelumpireQuantOptsLayout = new javax.swing.GroupLayout(panelumpireQuantOpts);
+        panelumpireQuantOpts.setLayout(panelumpireQuantOptsLayout);
+        panelumpireQuantOptsLayout.setHorizontalGroup(
+            panelumpireQuantOptsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panelumpireQuantOptsLayout.setVerticalGroup(
+            panelumpireQuantOptsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 422, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout panelUmpireQuantLayout = new javax.swing.GroupLayout(panelUmpireQuant);
+        panelUmpireQuant.setLayout(panelUmpireQuantLayout);
+        panelUmpireQuantLayout.setHorizontalGroup(
+            panelUmpireQuantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelUmpireQuantLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelUmpireQuantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelUmpireQuantBin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panelUmpireQuantLayout.createSequentialGroup()
+                        .addComponent(chkRunUmpireQuant)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(panelumpireQuantOpts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        panelUmpireQuantLayout.setVerticalGroup(
+            panelUmpireQuantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelUmpireQuantLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chkRunUmpireQuant)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelUmpireQuantBin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelumpireQuantOpts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        tabPane.addTab("DIA-Umpire Quant", panelUmpireQuant);
 
         btnRun.setText("Run");
         btnRun.addActionListener(new java.awt.event.ActionListener() {
@@ -1312,7 +1432,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel24.setText("RAM");
 
-        spinnerRam.setModel(new javax.swing.SpinnerNumberModel(1000, 128, null, 200));
+        spinnerRam.setModel(new javax.swing.SpinnerNumberModel(1000, 512, null, 200));
         spinnerRam.setMinimumSize(new java.awt.Dimension(40, 20));
         spinnerRam.setPreferredSize(new java.awt.Dimension(40, 20));
 
@@ -1357,7 +1477,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addComponent(jLabel25)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
                         .addComponent(btnClearConsole))
                     .addGroup(panelRunLayout.createSequentialGroup()
                         .addComponent(jLabel32)
@@ -1386,7 +1506,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel26))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1630,7 +1750,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
         resetRunButtons(false);
         
-        
+        Integer ramVal = (Integer)spinnerRam.getModel().getValue();
+        if (ramVal < MIN_RAM) {
+            String msg = String.format("Minimum amount of RAM required is %d", MIN_RAM);
+            JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.WARNING_MESSAGE);
+            resetRunButtons(true);
+            return;
+        }
+            
         
         final TextConsole textConsole = console;
         String workingDir = txtWorkingDir.getText();
@@ -1656,7 +1783,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         if (!chkRunUmpire.isSelected() 
                 && !chkRunCometSearch.isSelected() 
                 && !chkRunPeptideProphet.isSelected() 
-                && !chkRunProteinProphet.isSelected()) {
+                && !chkRunProteinProphet.isSelected()
+                && !chkRunUmpireQuant.isSelected()) {
             JOptionPane.showMessageDialog(this, "Nothing to run.\n"
                     + "Please mark checkboxes in other tabs to run processing tools.", "Error", JOptionPane.WARNING_MESSAGE);
             resetRunButtons(true);
@@ -1704,6 +1832,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
         processBuilders.addAll(processBuildersProteinProphet);
         
+        
+        List<ProcessBuilder> processBuildersUmpireQuant = processBuildersUmpireQuant(workingDir, lcmsFilePaths, dateString);
+        if (processBuildersUmpireQuant == null) {
+            resetRunButtons(true);
+            return;
+        }
+        processBuilders.addAll(processBuildersUmpireQuant);
         
         
         LogUtils.println(console, String.format("Will execute %d commands:", processBuilders.size()));
@@ -1863,8 +1998,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 // run umpire for each file
                 Object value = spinnerRam.getModel().getValue();
                 int ram = (Integer)spinnerRam.getModel().getValue();
-                if (ram < 1)
-                    ram = 1;
+                if (ram < MIN_RAM)
+                    ram = MIN_RAM;
                 
                 List<String> createdMgfFiles = new ArrayList<>();
                 List<String> createdMzXmlFiles = new ArrayList<>();
@@ -1909,6 +2044,80 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         createdMgfFiles.add(createdMzXml.toString());
                         createdMzXmlFiles.add(createdMzXml.toString());
                     }
+                }
+                
+            } catch (ParsingException ex) {
+                JOptionPane.showMessageDialog(this, "Error collecting user variables for Umpire.\n",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            } catch (FileNotFoundException | FileWritingException ex) {
+                JOptionPane.showMessageDialog(this, "Error writing Umpire parameters file to working dir.\n",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+        }
+        return processBuilders;
+    }
+    
+    private List<ProcessBuilder> processBuildersUmpireQuant(String workingDir, String[] lcmsFilePaths, String dateStr) {
+        List<ProcessBuilder> processBuilders = new LinkedList<>();
+        if (chkRunUmpireQuant.isSelected()) {
+            
+            String binJava = "java";
+            binJava = testBinaryPath(binJava, workingDir);
+            if (binJava == null) {
+                JOptionPane.showMessageDialog(this, "Java could not be found.\n"
+                        + "please make sure you have it installed \n"
+                        + "and that java.exe can be found on PATH", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            
+            
+            String binUmpire = txtBinUmpireQuant.getText();
+            if (binUmpire.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "DIA Umpire Quant jar can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            binUmpire = testFilePath(binUmpire, workingDir);
+            if (binUmpire == null) {
+                JOptionPane.showMessageDialog(this, "Could not locate DIA-Umpire Quant jar", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            
+            
+            try {
+                // Running Umpire
+                UmpireQuantParams collectedParams = collectUmpireQuantParams();
+                
+                // writing umpire params file
+                String paramsFileName = UmpireQuantParams.FILE_BASE_NAME + "_" + dateStr + "." + UmpireQuantParams.FILE_BASE_EXT;
+                Path paramsFilePath = Paths.get(workingDir, paramsFileName);
+                FileOutputStream fos = new FileOutputStream(paramsFilePath.toFile());
+                PropertiesUtils.writePropertiesContent(collectedParams, fos);
+                
+                // run umpire for each file
+                Object value = spinnerRam.getModel().getValue();
+                int ram = (Integer)spinnerRam.getModel().getValue();
+                if (ram < MIN_RAM)
+                    ram = MIN_RAM;
+                
+                List<String> createdMgfFiles = new ArrayList<>();
+                List<String> createdMzXmlFiles = new ArrayList<>();
+                for (String lcMsFilePathStr : lcmsFilePaths) {
+                    // umpire
+                    //  java -jar -Xmx8G DIA_Umpire_SE.jar mzMXL_file diaumpire_se.params
+                    List<String> commands = new ArrayList<>();
+                    commands.add("java");
+                    //commands.add("-d64");
+                    commands.add("-jar");
+                    StringBuilder sb = new StringBuilder().append("-Xmx").append(ram).append("m");
+                    commands.add(sb.toString());
+                    commands.add(binUmpire);
+                    commands.add(Paths.get(lcMsFilePathStr).toAbsolutePath().toString());
+                    commands.add(paramsFilePath.toString());
+                    
+                    ProcessBuilder pb = new ProcessBuilder(commands);
+                    processBuilders.add(pb);
                 }
                 
             } catch (ParsingException ex) {
@@ -2363,7 +2572,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             
             // load deafaults
             UmpireParams params = null;
-            String userSpecifiedFileLoc = txtUmpireConfigFile.getText();
+            String userSpecifiedFileLoc = txtUmpireConfigFile.getText().trim();
             if (userSpecifiedFileLoc.isEmpty()) {
                 params = UmpireParams.parseDefault();
             } else {
@@ -2404,7 +2613,57 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             
             return params;
         } catch (FileNotFoundException ex) {
-            throw new ParsingException("Error collecting user-specified params for Umpire", ex);
+            throw new ParsingException("Error collecting user-specified params for Umpire SE", ex);
+        }
+    }
+    
+    public UmpireQuantParams collectUmpireQuantParams() throws ParsingException {
+        try {
+            
+            // load deafaults
+            UmpireQuantParams params = null;
+            String userSpecifiedFileLoc = txtUmpireQuantConfig.getText().trim();
+            if (userSpecifiedFileLoc.isEmpty()) {
+                params = UmpireQuantParams.parseDefault();
+            } else {
+                params = UmpireQuantParams.parse(new FileInputStream(userSpecifiedFileLoc));
+            }
+            
+            // now fill in the values from the UI
+            DecimalFormat fmt = new DecimalFormat("#.####");
+            Properties props = params.getProps();
+            props.setProperty(UmpireParams.PROP_AdjustFragIntensity, Boolean.toString(chkAdjustFragIntensity.isSelected()));
+            props.setProperty(UmpireParams.PROP_BoostComplementaryIon, Boolean.toString(chkBoostComplementaryIon.isSelected()));
+            props.setProperty(UmpireParams.PROP_CorrThreshold, fmtCorrThreshold.getText());
+            props.setProperty(UmpireParams.PROP_DeltaApex, fmtDeltaApex.getText());
+            props.setProperty(UmpireParams.PROP_EstimateBG, Boolean.toString(chkEstimateBG.isSelected()));
+            props.setProperty(UmpireParams.PROP_MS1PPM, fmtMS1PPM.getText());
+            props.setProperty(UmpireParams.PROP_MS2PPM, fmtMS2PPM.getText());
+            props.setProperty(UmpireParams.PROP_MS2SN, fmtMS2SN.getText());
+            props.setProperty(UmpireParams.PROP_MaxCurveRTRange, fmtMaxCurveRTRange.getText());
+            props.setProperty(UmpireParams.PROP_MaxNoPeakCluster, fmtMaxNoPeakCluster.getText());
+            props.setProperty(UmpireParams.PROP_MinFrag, fmtMinFrag.getText());
+            props.setProperty(UmpireParams.PROP_MinMSIntensity, fmtMinMSIntensity.getText());
+            props.setProperty(UmpireParams.PROP_MinMSMSIntensity, fmtMinMSMSIntensity.getText());
+            props.setProperty(UmpireParams.PROP_NoMissedScan, fmtNoMissedScan.getText());
+            props.setProperty(UmpireParams.PROP_RFmax, fmtRFmax.getText());
+            props.setProperty(UmpireParams.PROP_RPmax, fmtRPmax.getText());
+            props.setProperty(UmpireParams.PROP_RTOverlap, fmtRTOverlap.getText());
+            props.setProperty(UmpireParams.PROP_SN, fmtSN.getText());
+            props.setProperty(UmpireParams.PROP_WindowSize, fmtWindowSize.getText());
+            Object selectedWindowType = comboWindowType.getSelectedItem();
+            props.setProperty(UmpireParams.PROP_WindowType, (String)selectedWindowType);
+            //props.setProperty(UmpireParams.PROP_, fmt.getText());
+            
+            //adding the number of threads
+            int numThreads = (Integer)spinnerThreads.getValue();
+            if (numThreads == 0)
+                numThreads = Runtime.getRuntime().availableProcessors();
+            props.setProperty(UmpireParams.PROP_Threads, Integer.toString(numThreads));
+            
+            return params;
+        } catch (FileNotFoundException ex) {
+            throw new ParsingException("Error collecting user-specified params for Umpire Quant", ex);
         }
     }
 
@@ -2414,6 +2673,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             return value;
         ResourceBundle bundle = ResourceBundle.getBundle("dia/umpire/gui/Bundle"); // NOI18N
         return bundle.getString("default.dia.umpire.se.jar");
+    }
+    
+    private String getDefaultTextUmpireQuant() {
+        String value = ThisAppProps.loadPropFromCache(ThisAppProps.PROP_TEXTFIELD_PATH_UMPIRE_QUANT);
+        if (value != null)
+            return value;
+        ResourceBundle bundle = ResourceBundle.getBundle("dia/umpire/gui/Bundle"); // NOI18N
+        return bundle.getString("default.dia.umpire.quant.jar");
     }
 
     private String getDefaultTextMsconvert() {
@@ -2532,9 +2799,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
     private void btnSelectUmpireJarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUmpireJarActionPerformed
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setApproveButtonText("Select DIA-Umpire jar");
-        fileChooser.setApproveButtonToolTipText("Select");
-        fileChooser.setDialogTitle("Select DIA-Umpire jar");
+        fileChooser.setApproveButtonText("Select");
+        fileChooser.setApproveButtonToolTipText("Select DIA-Umpire SE jar");
+        fileChooser.setDialogTitle("Select DIA-Umpire SE jar");
         fileChooser.setMultiSelectionEnabled(false);
         FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
         fileChooser.setFileFilter(fileNameExtensionFilter);
@@ -2792,6 +3059,68 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnProteinProphetSeqDbActionPerformed
 
+    private void btnSelectUmpireQuantJarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUmpireQuantJarActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select");
+        fileChooser.setApproveButtonToolTipText("Select DIA-Umpire Quant jar");
+        fileChooser.setDialogTitle("Select DIA-Umpire Quant jar");
+        fileChooser.setMultiSelectionEnabled(false);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+        
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_JAR_IN);
+
+        if (!txtBinUmpire.getText().isEmpty()) {
+            File toFile = Paths.get(txtBinUmpire.getText()).toFile();
+            fileChooser.setCurrentDirectory(toFile);
+        }
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+
+                File f = fileChooser.getSelectedFile();
+                txtBinUmpire.setText(f.getAbsolutePath());
+                saveFilechooserPathToCached(f, ThisAppProps.PROP_JAR_IN);
+                saveBinUmpireSe();
+                break;
+        }
+    }//GEN-LAST:event_btnSelectUmpireQuantJarActionPerformed
+
+    private void btnSelectUmpireConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectUmpireConfigActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Umpire .params files", "params", "txt");
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+        fileChooser.setApproveButtonText("Select");
+        fileChooser.setApproveButtonToolTipText("Load params from this file into the GUI");
+        fileChooser.setDialogTitle("Choose Umpire Quant config file");
+        fileChooser.setMultiSelectionEnabled(false);
+
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
+
+        int openDialog = fileChooser.showOpenDialog(this);
+        switch (openDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                File file = fileChooser.getSelectedFile();
+                txtUmpireQuantConfig.setText(Paths.get(file.getAbsolutePath()).toString());
+                saveFilechooserPathToCached(file, ThisAppProps.PROP_PARAMS_FILE_IN);
+                break;
+        }
+    }//GEN-LAST:event_btnSelectUmpireConfigActionPerformed
+
+    private void chkRunUmpireQuantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRunUmpireQuantActionPerformed
+        boolean selected = chkRunProteinProphet.isSelected();
+        Container[] comps = new Container[] {
+            panelUmpireQuantBin,
+            panelumpireQuantOpts
+        };
+        for (Container c : comps) {
+            enableComponents(c, selected);
+        }
+    }//GEN-LAST:event_chkRunUmpireQuantActionPerformed
+
     private void saveBinUmpireSe() {
         saveTextFieldToCache(txtBinUmpire, ThisAppProps.PROP_TEXTFIELD_PATH_UMPIRE_SE);
     }
@@ -2963,8 +3292,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnSelectPeptideProphetSeqDbPath;
     private javax.swing.JButton btnSelectPhilosopherBinary;
     private javax.swing.JButton btnSelectRawFiles;
+    private javax.swing.JButton btnSelectUmpireConfig;
     private javax.swing.JButton btnSelectUmpireJar;
     private javax.swing.JButton btnSelectUmpireParamFile;
+    private javax.swing.JButton btnSelectUmpireQuantJar;
     private javax.swing.JButton btnSelectWrkingDir;
     private javax.swing.JButton btnStop;
     private javax.swing.JCheckBox chkAdjustFragIntensity;
@@ -2975,6 +3306,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkRunPeptideProphet;
     private javax.swing.JCheckBox chkRunProteinProphet;
     private javax.swing.JCheckBox chkRunUmpire;
+    private javax.swing.JCheckBox chkRunUmpireQuant;
     private javax.swing.JComboBox<String> comboWindowType;
     private dia.umpire.gui.TextConsole console;
     private javax.swing.JScrollPane consoleScrollPane;
@@ -3036,12 +3368,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -3057,13 +3390,17 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JPanel panelPeptideProphet;
     private javax.swing.JPanel panelPeptideProphetBin;
     private javax.swing.JPanel panelPeptideProphetOptions;
+    private javax.swing.JPanel panelProteinProphet;
     private javax.swing.JPanel panelProteinProphetBin;
     private javax.swing.JPanel panelProteinProphetOptions;
     private javax.swing.JPanel panelRun;
     private javax.swing.JPanel panelUmpireBinary;
     private javax.swing.JPanel panelUmpireFragGroup;
+    private javax.swing.JPanel panelUmpireQuant;
+    private javax.swing.JPanel panelUmpireQuantBin;
     private javax.swing.JPanel panelUmpireSeParams;
     private javax.swing.JPanel panelUmpireSwathParams;
+    private javax.swing.JPanel panelumpireQuantOpts;
     private javax.swing.JSpinner spinnerRam;
     private javax.swing.JSpinner spinnerThreads;
     private javax.swing.JTabbedPane tabPane;
@@ -3073,6 +3410,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtBinPeptideProphet;
     private javax.swing.JTextField txtBinProteinProphet;
     private javax.swing.JTextField txtBinUmpire;
+    private javax.swing.JTextField txtBinUmpireQuant;
     private javax.swing.JTextArea txtCometCmdLineOpts;
     private javax.swing.JTextField txtCometParamsFile;
     private javax.swing.JTextField txtCometSeqDb;
@@ -3082,6 +3420,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtProteinProphetOutputFile;
     private javax.swing.JTextField txtProteinProphetSeqDb;
     private javax.swing.JTextField txtUmpireConfigFile;
+    private javax.swing.JTextField txtUmpireQuantConfig;
     private javax.swing.JTextField txtWorkingDir;
     // End of variables declaration//GEN-END:variables
 

@@ -43,6 +43,7 @@ public class ThisAppProps extends Properties {
     public static final String PROP_TEXTFIELD_PATH_COMET = "path.textfield.comet";
     public static final String PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET = "path.textfield.peptide-prophet";
     public static final String PROP_TEXTFIELD_PATH_PROTEIN_PROPHET = "path.textfield.protein-prophet";
+    public static final String PROP_TEXTFIELD_PATH_UMPIRE_QUANT = "path.textfield.dia-umpire-quant";
 
     public static ThisAppProps loadFromTemp()  {
         Path path = Paths.get(TEMP_DIR, TEMP_FILE_NAME);
