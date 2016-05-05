@@ -356,16 +356,16 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel2.setText("RFmax");
         jLabel2.setToolTipText("");
 
-        jLabel3.setText("CorrThreshold");
+        jLabel3.setText("Corr Threshold");
 
-        jLabel4.setText("DeltaApex");
+        jLabel4.setText("Delta Apex");
 
-        jLabel5.setText("RTOverlap");
+        jLabel5.setText("RT Overlap");
 
-        chkAdjustFragIntensity.setText("AdjustFragIntensity");
+        chkAdjustFragIntensity.setText("Adjust Frag Intensity");
         chkAdjustFragIntensity.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
 
-        chkBoostComplementaryIon.setText("BoostComplementaryIon");
+        chkBoostComplementaryIon.setText("Boost Complementary Ions");
         chkBoostComplementaryIon.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
 
         fmtRPmax.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
@@ -449,43 +449,43 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         panelUmpireSeParams.setBorder(javax.swing.BorderFactory.createTitledBorder("Singnal Extraction (SE) params"));
 
-        jLabel6.setText("MS1PPM");
+        jLabel6.setText("MS1 PPM");
 
         fmtMS1PPM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         fmtMS1PPM.setMinimumSize(new java.awt.Dimension(50, 24));
         fmtMS1PPM.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        jLabel7.setText("MS2PPM");
+        jLabel7.setText("MS2 PPM");
 
         fmtMS2PPM.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         fmtMS2PPM.setMinimumSize(new java.awt.Dimension(50, 24));
         fmtMS2PPM.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        jLabel8.setText("SN");
+        jLabel8.setText("S/N");
 
         fmtSN.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         fmtSN.setMinimumSize(new java.awt.Dimension(50, 24));
         fmtSN.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        jLabel9.setText("MS2SN");
+        jLabel9.setText("MS2 S/N");
 
         fmtMS2SN.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         fmtMS2SN.setMinimumSize(new java.awt.Dimension(50, 24));
         fmtMS2SN.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        jLabel10.setText("MinMSIntensity");
+        jLabel10.setText("Min MS Intensity");
 
         fmtMinMSIntensity.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         fmtMinMSIntensity.setMinimumSize(new java.awt.Dimension(50, 24));
         fmtMinMSIntensity.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        jLabel11.setText("MinMSMSIntensity");
+        jLabel11.setText("Min MS/MS Intensity");
 
         fmtMinMSMSIntensity.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         fmtMinMSMSIntensity.setMinimumSize(new java.awt.Dimension(50, 24));
         fmtMinMSMSIntensity.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        jLabel12.setText("MaxCurveRTRange");
+        jLabel12.setText("Max Curve RT Range");
 
         fmtMaxCurveRTRange.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
         fmtMaxCurveRTRange.setMinimumSize(new java.awt.Dimension(50, 24));
@@ -497,13 +497,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         fmtNoMissedScan.setMinimumSize(new java.awt.Dimension(50, 24));
         fmtNoMissedScan.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        jLabel13.setText("MinFrag");
+        jLabel13.setText("Min Frag");
 
         fmtMinFrag.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         fmtMinFrag.setMinimumSize(new java.awt.Dimension(50, 24));
         fmtMinFrag.setPreferredSize(new java.awt.Dimension(50, 24));
 
-        jLabel15.setText("MinNoPeakCluster");
+        jLabel15.setText("Min N PeakCluster");
 
         fmtMinNoPeakCluster.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         fmtMinNoPeakCluster.setMinimumSize(new java.awt.Dimension(50, 24));
@@ -514,7 +514,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel16.setText("MaxNoPeakCluster");
+        jLabel16.setText("Max N PeakCluster");
 
         fmtMaxNoPeakCluster.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         fmtMaxNoPeakCluster.setToolTipText("");
@@ -524,7 +524,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         chkEstimateBG.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         chkEstimateBG.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
 
-        jLabel19.setText("EstimateBG");
+        jLabel19.setText("Estimate Background");
 
         javax.swing.GroupLayout panelUmpireSeParamsLayout = new javax.swing.GroupLayout(panelUmpireSeParams);
         panelUmpireSeParams.setLayout(panelUmpireSeParamsLayout);
@@ -662,7 +662,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel27.setText("Config file");
 
-        jLabel28.setText("Umpire");
+        jLabel28.setText("DIA-Umpire SE jar");
         jLabel28.setToolTipText("If you don't have Umpire jar in working directory, please specify the full path");
 
         txtBinUmpire.setText(getDefaultTextUmpireSe());
@@ -1399,10 +1399,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel45.setText("Decoy Prefix");
 
-        chkInternalLibSearch.setText("InternalLibSearch");
+        chkInternalLibSearch.setText("Internal Lib Search");
         chkInternalLibSearch.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
 
-        jLabel46.setText("PeptideFDR");
+        jLabel46.setText("Peptide FDR");
 
         fmtPeptideFDR.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("0.0##"))));
         fmtPeptideFDR.setMinimumSize(new java.awt.Dimension(50, 22));
@@ -1413,46 +1413,46 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel47.setText("ProteinFDR");
+        jLabel47.setText("Protein FDR");
 
         fmtProteinFDR.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("0.00#"))));
-        fmtProteinFDR.setMinimumSize(new java.awt.Dimension(50, 22));
-        fmtProteinFDR.setPreferredSize(new java.awt.Dimension(50, 22));
+        fmtProteinFDR.setMinimumSize(new java.awt.Dimension(60, 22));
+        fmtProteinFDR.setPreferredSize(new java.awt.Dimension(60, 22));
         fmtProteinFDR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fmtProteinFDRActionPerformed(evt);
             }
         });
 
-        chkDataSetLevelPepFDR.setText("DataSetLevelPepFDR");
+        chkDataSetLevelPepFDR.setText("Data Set Level Pep FDR");
         chkDataSetLevelPepFDR.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
 
-        jLabel48.setText("FilterWeight");
+        jLabel48.setText("Filter Weight");
 
         comboFilterWeight.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "GW", "PepW" }));
 
-        jLabel49.setText("MinWeight");
+        jLabel49.setText("Min Weight");
 
         fmtMinWeight.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-        fmtMinWeight.setMinimumSize(new java.awt.Dimension(50, 22));
-        fmtMinWeight.setPreferredSize(new java.awt.Dimension(50, 22));
+        fmtMinWeight.setMinimumSize(new java.awt.Dimension(60, 22));
+        fmtMinWeight.setPreferredSize(new java.awt.Dimension(60, 22));
 
-        jLabel50.setText("TopNFrag");
+        jLabel50.setText("Top N Frag");
 
         fmtTopNFrag.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         fmtTopNFrag.setMinimumSize(new java.awt.Dimension(50, 22));
         fmtTopNFrag.setName(""); // NOI18N
         fmtTopNFrag.setPreferredSize(new java.awt.Dimension(50, 22));
 
-        jLabel51.setText("TopNPep");
+        jLabel51.setText("Top N Pep");
 
-        fmtTopNPep.setMinimumSize(new java.awt.Dimension(50, 22));
-        fmtTopNPep.setPreferredSize(new java.awt.Dimension(50, 22));
+        fmtTopNPep.setMinimumSize(new java.awt.Dimension(60, 22));
+        fmtTopNPep.setPreferredSize(new java.awt.Dimension(60, 22));
 
         jLabel52.setText("Freq");
 
-        fmtFreq.setMinimumSize(new java.awt.Dimension(50, 22));
-        fmtFreq.setPreferredSize(new java.awt.Dimension(50, 22));
+        fmtFreq.setMinimumSize(new java.awt.Dimension(60, 22));
+        fmtFreq.setPreferredSize(new java.awt.Dimension(60, 22));
 
         javax.swing.GroupLayout panelumpireQuantOptsLayout = new javax.swing.GroupLayout(panelumpireQuantOpts);
         panelumpireQuantOpts.setLayout(panelumpireQuantOptsLayout);
@@ -1469,43 +1469,41 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addComponent(jButton2))
                     .addGroup(panelumpireQuantOptsLayout.createSequentialGroup()
                         .addGroup(panelumpireQuantOptsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel45, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel46, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel48, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel50, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(panelumpireQuantOptsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelumpireQuantOptsLayout.createSequentialGroup()
-                                .addComponent(jLabel45)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtDecoyPrefix, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panelumpireQuantOptsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(comboFilterWeight, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(fmtPeptideFDR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(fmtTopNFrag, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(chkInternalLibSearch))
+                                .addGroup(panelumpireQuantOptsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel47, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel49, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel51, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelumpireQuantOptsLayout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(txtDecoyPrefix, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelumpireQuantOptsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelumpireQuantOptsLayout.createSequentialGroup()
-                                .addComponent(jLabel46)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fmtPeptideFDR, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(19, 19, 19)
-                                .addComponent(jLabel47)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(fmtProteinFDR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(chkDataSetLevelPepFDR))
-                            .addGroup(panelumpireQuantOptsLayout.createSequentialGroup()
-                                .addComponent(jLabel48)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(comboFilterWeight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel49)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fmtMinWeight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelumpireQuantOptsLayout.createSequentialGroup()
-                                .addComponent(jLabel50)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fmtTopNFrag, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25)
-                                .addComponent(jLabel51)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(fmtTopNPep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel52)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fmtFreq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 121, Short.MAX_VALUE)))
+                                .addComponent(fmtFreq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelumpireQuantOptsLayout.createSequentialGroup()
+                                .addGroup(panelumpireQuantOptsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(fmtProteinFDR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(fmtMinWeight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addComponent(chkDataSetLevelPepFDR))
+                            .addComponent(chkInternalLibSearch))
+                        .addGap(0, 85, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelumpireQuantOptsLayout.setVerticalGroup(
@@ -2130,12 +2128,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             
             String binUmpire = txtBinUmpire.getText();
             if (binUmpire.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "DIA Umpire binary can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "DIA Umpire SE binary can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
             binUmpire = testFilePath(binUmpire, workingDir);
             if (binUmpire == null) {
-                JOptionPane.showMessageDialog(this, "Could not locate DIA-Umpire.jar", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Could not locate DIA-Umpire SE jar", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
             
@@ -2214,16 +2212,54 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 }
                 
             } catch (ParsingException ex) {
-                JOptionPane.showMessageDialog(this, "Error collecting user variables for Umpire.\n",
+                JOptionPane.showMessageDialog(this, "Error collecting user variables for Umpire SE.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             } catch (FileNotFoundException | FileWritingException ex) {
-                JOptionPane.showMessageDialog(this, "Error writing Umpire parameters file to working dir.\n",
+                JOptionPane.showMessageDialog(this, "Error writing Umpire SE parameters file to working dir.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
         }
         return processBuilders;
+    }
+    
+    private String getUmpireQuantFastaPath() {
+        String fastaPath = txtUmpireQuantSeqDb.getText().trim();
+        if (fastaPath.isEmpty()) {
+            fastaPath = txtProteinProphetSeqDb.getText().trim();
+            if (fastaPath.isEmpty()) {
+                fastaPath = txtPeptideProphetSeqDb.getText().trim();
+                if (fastaPath.isEmpty()) {
+                    fastaPath = txtCometSeqDb.getText().trim();
+                    if (fastaPath.isEmpty()) {
+                        return null;
+                    }
+                }       
+            }
+        }
+        return fastaPath.isEmpty() ? null : fastaPath;
+    }
+    
+    private Path getCombinedProtFilePath(String workingDir) {
+        String combinedProtFile = txtProteinProphetOutputFile.getText().trim();
+        if (combinedProtFile.isEmpty()) {
+            JOptionPane.showMessageDialog(this, String.format("Please specify ProteinProphet output path on ProteinProphet tab.\n"
+                    + "This is needed even if you're not running ProteinProphet right now.\n"
+                    + "In which case check the box to run it, add the filename and uncheck the filebox.\n"
+                    + "Sorry for the inconvenience."),
+                    "Errors", JOptionPane.ERROR_MESSAGE);
+            return null;
+        } else {
+            Path combinedProtFileFullPath = Paths.get(workingDir, combinedProtFile).toAbsolutePath();
+            if (!Files.exists(combinedProtFileFullPath)) {
+                JOptionPane.showMessageDialog(this, String.format("Could not find combined protxml file (for Umpire Quant).\n"
+                        + "Location: %s", combinedProtFileFullPath.toString()),
+                    "Errors", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            return combinedProtFileFullPath;
+        }
     }
     
     private List<ProcessBuilder> processBuildersUmpireQuant(String workingDir, String[] lcmsFilePaths, String dateStr) {
@@ -2240,33 +2276,24 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
             
             
-            String binUmpire = txtBinUmpireQuant.getText().trim();
-            if (binUmpire.isEmpty()) {
+            String jarUmpireQuant = txtBinUmpireQuant.getText().trim();
+            if (jarUmpireQuant.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "DIA Umpire Quant jar can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            binUmpire = testFilePath(binUmpire, workingDir);
-            if (binUmpire == null) {
+            jarUmpireQuant = testFilePath(jarUmpireQuant, workingDir);
+            if (jarUmpireQuant == null) {
                 JOptionPane.showMessageDialog(this, "Could not locate DIA-Umpire Quant jar", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
             
-            
-            String fastaPath = txtUmpireQuantSeqDb.getText().trim();
-            if (fastaPath.isEmpty()) {
-                fastaPath = txtProteinProphetSeqDb.getText().trim();
-                if (fastaPath.isEmpty()) {
-                    fastaPath = txtPeptideProphetSeqDb.getText().trim();
-                    if (fastaPath.isEmpty()) {
-                        fastaPath = txtCometSeqDb.getText().trim();
-                        if (fastaPath.isEmpty()) {
-                            JOptionPane.showMessageDialog(this, "Fasta file (DIA-Umpire Quant) path can't be empty",
+            String fastaPath = getUmpireQuantFastaPath();
+            if (fastaPath == null) {
+                JOptionPane.showMessageDialog(this, "Fasta file (DIA-Umpire Quant) path can't be empty",
                                 "Warning", JOptionPane.WARNING_MESSAGE);
-                            return null;
-                        }
-                    }       
-                }
+                return null;
             }
+            
             String fastaPathOrig = new String(fastaPath);
             fastaPath = testFilePath(fastaPath, workingDir);
             if (fastaPath == null) {
@@ -2276,16 +2303,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
             
             
-            String combinedProtFile = txtProteinProphetOutputFile.getText().trim();
-            if (combinedProtFile.isEmpty()) {
-                JOptionPane.showMessageDialog(this, String.format("Please specify ProteinProphet output path on ProteinProphet tab.\n"
-                        + "This is needed even if you're not running ProteinProphet right now.\n"
-                        + "In which case check the box to run it, add the filename and uncheck the filebox.\n"
-                        + "Sorry for the inconvenience."),
-                        "Errors", JOptionPane.ERROR_MESSAGE);
-                return null;
-            } else {
-                
+            Path combinedProtFilePath = getCombinedProtFilePath(workingDir);
+            if (combinedProtFilePath == null) {
+                return null; // all popus are already shown by getCombinedProtFilePath()
             }
             
             
@@ -2293,6 +2313,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             try {
                 // Running Umpire Quant
                 UmpireQuantParams collectedParams = collectUmpireQuantParams();
+                Properties props = collectedParams.getProps();
+                
                 
                 // writing umpire params file
                 String paramsFileName = UmpireQuantParams.FILE_BASE_NAME + "_" + dateStr + "." + UmpireQuantParams.FILE_BASE_EXT;
@@ -2312,19 +2334,18 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 commands.add("-jar");
                 StringBuilder sb = new StringBuilder().append("-Xmx").append(ram).append("m");
                 commands.add(sb.toString());
-                commands.add(binUmpire);
-                //commands.add(Paths.get(lcMsFilePathStr).toAbsolutePath().toString());
+                commands.add(jarUmpireQuant);
                 commands.add(paramsFilePath.toString());
 
                 ProcessBuilder pb = new ProcessBuilder(commands);
                 processBuilders.add(pb);
                 
             } catch (ParsingException ex) {
-                JOptionPane.showMessageDialog(this, "Error collecting user variables for Umpire.\n",
+                JOptionPane.showMessageDialog(this, "Error collecting user variables for Umpire Quant.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             } catch (FileNotFoundException | FileWritingException ex) {
-                JOptionPane.showMessageDialog(this, "Error writing Umpire parameters file to working dir.\n",
+                JOptionPane.showMessageDialog(this, "Error writing Umpire Quant parameters file to working dir.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
@@ -2831,34 +2852,35 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             // now fill in the values from the UI
             DecimalFormat fmt = new DecimalFormat("#.####");
             Properties props = params.getProps();
-            props.setProperty(UmpireParams.PROP_AdjustFragIntensity, Boolean.toString(chkAdjustFragIntensity.isSelected()));
-            props.setProperty(UmpireParams.PROP_BoostComplementaryIon, Boolean.toString(chkBoostComplementaryIon.isSelected()));
-            props.setProperty(UmpireParams.PROP_CorrThreshold, fmtCorrThreshold.getText());
-            props.setProperty(UmpireParams.PROP_DeltaApex, fmtDeltaApex.getText());
-            props.setProperty(UmpireParams.PROP_EstimateBG, Boolean.toString(chkEstimateBG.isSelected()));
-            props.setProperty(UmpireParams.PROP_MS1PPM, fmtMS1PPM.getText());
-            props.setProperty(UmpireParams.PROP_MS2PPM, fmtMS2PPM.getText());
-            props.setProperty(UmpireParams.PROP_MS2SN, fmtMS2SN.getText());
-            props.setProperty(UmpireParams.PROP_MaxCurveRTRange, fmtMaxCurveRTRange.getText());
-            props.setProperty(UmpireParams.PROP_MaxNoPeakCluster, fmtMaxNoPeakCluster.getText());
-            props.setProperty(UmpireParams.PROP_MinFrag, fmtMinFrag.getText());
-            props.setProperty(UmpireParams.PROP_MinMSIntensity, fmtMinMSIntensity.getText());
-            props.setProperty(UmpireParams.PROP_MinMSMSIntensity, fmtMinMSMSIntensity.getText());
-            props.setProperty(UmpireParams.PROP_NoMissedScan, fmtNoMissedScan.getText());
-            props.setProperty(UmpireParams.PROP_RFmax, fmtRFmax.getText());
-            props.setProperty(UmpireParams.PROP_RPmax, fmtRPmax.getText());
-            props.setProperty(UmpireParams.PROP_RTOverlap, fmtRTOverlap.getText());
-            props.setProperty(UmpireParams.PROP_SN, fmtSN.getText());
-            props.setProperty(UmpireParams.PROP_WindowSize, fmtWindowSize.getText());
-            Object selectedWindowType = comboWindowType.getSelectedItem();
-            props.setProperty(UmpireParams.PROP_WindowType, (String)selectedWindowType);
-            //props.setProperty(UmpireParams.PROP_, fmt.getText());
+            props.setProperty(UmpireQuantParams.PROP_DecoyPrefix, txtDecoyPrefix.getText());
+            props.setProperty(UmpireQuantParams.PROP_InternalLibSearch, Boolean.toString(chkInternalLibSearch.isSelected()));
+            props.setProperty(UmpireQuantParams.PROP_PeptideFDR, fmtPeptideFDR.getText());
+            props.setProperty(UmpireQuantParams.PROP_ProteinFDR, fmtProteinFDR.getText());
+            props.setProperty(UmpireQuantParams.PROP_DataSetLevelPepFDR, Boolean.toString(chkDataSetLevelPepFDR.isSelected()));
+            String filterWeightString = (String)comboFilterWeight.getSelectedItem();
+            props.setProperty(UmpireQuantParams.PROP_FilterWeight, filterWeightString);
+            props.setProperty(UmpireQuantParams.PROP_MinWeight, fmtMinWeight.getText());
+            props.setProperty(UmpireQuantParams.PROP_TopNFrag, fmtTopNFrag.getText());
+            props.setProperty(UmpireQuantParams.PROP_TopNPep, fmtTopNPep.getText());
+            props.setProperty(UmpireQuantParams.PROP_Freq, fmtFreq.getText());
             
             //adding the number of threads
             int numThreads = (Integer)spinnerThreads.getValue();
             if (numThreads == 0)
                 numThreads = Runtime.getRuntime().availableProcessors();
-            props.setProperty(UmpireParams.PROP_Threads, Integer.toString(numThreads));
+            props.setProperty(UmpireQuantParams.PROP_Thread, Integer.toString(numThreads));
+            
+            // setting Path param to working dir
+            String workdir = txtWorkingDir.getText().trim();
+            props.setProperty(UmpireQuantParams.PROP_Path, workdir);
+            
+            // setting fasta
+            String fastaPath = getUmpireQuantFastaPath();
+            props.setProperty(UmpireQuantParams.PROP_Fasta, fastaPath);
+            
+            // setting combined prot file (the value is taken from ProteinProphet)
+            Path combinedProtFilePath = getCombinedProtFilePath(workdir);
+            props.setProperty(UmpireQuantParams.PROP_Combined_Prot, combinedProtFilePath.toString());
             
             return params;
         } catch (FileNotFoundException ex) {
@@ -3516,7 +3538,20 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     }
     
     private void fillInUmpireQuantParams(UmpireQuantParams params) {
-        
+        Properties p = params.getProps();
+        txtDecoyPrefix.setText(p.getProperty(UmpireQuantParams.PROP_DecoyPrefix));
+        Boolean doInternalSearch = Boolean.valueOf(p.getProperty(UmpireQuantParams.PROP_InternalLibSearch));
+        chkInternalLibSearch.setSelected(doInternalSearch);
+        fmtPeptideFDR.setText(p.getProperty(UmpireQuantParams.PROP_PeptideFDR));
+        fmtProteinFDR.setText(p.getProperty(UmpireQuantParams.PROP_ProteinFDR));
+        Boolean datasetFdr = Boolean.valueOf(p.getProperty(UmpireQuantParams.PROP_DataSetLevelPepFDR));
+        chkDataSetLevelPepFDR.setSelected(datasetFdr);
+        String filterWeightName = p.getProperty(UmpireQuantParams.PROP_FilterWeight);
+        comboFilterWeight.getModel().setSelectedItem(filterWeightName);
+        fmtMinWeight.setText(p.getProperty(UmpireQuantParams.PROP_MinWeight));
+        fmtTopNFrag.setText(p.getProperty(UmpireQuantParams.PROP_TopNFrag));
+        fmtTopNPep.setText(p.getProperty(UmpireQuantParams.PROP_TopNPep));
+        fmtFreq.setText(p.getProperty(UmpireQuantParams.PROP_Freq));
     }
 
     /**

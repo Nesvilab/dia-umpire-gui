@@ -60,7 +60,7 @@ public class PropLine {
             return "TextLine{" + justALine + "}";
 
         return "PropLine{" +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", value='" + value + '\'' +
                 ", comment='" + comment + '\'' +
                 '}';
