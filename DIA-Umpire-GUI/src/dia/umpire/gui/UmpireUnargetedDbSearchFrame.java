@@ -1178,6 +1178,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         panelProteinProphetOptions.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
 
         btnProteinProphetSeqDb.setText("Browse");
+        btnProteinProphetSeqDb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProteinProphetSeqDbActionPerformed(evt);
+            }
+        });
 
         txtProteinProphetSeqDb.setToolTipText("If not specified, the value will be taken from PeptideProphet or Comet tabs");
 
@@ -2173,18 +2178,38 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             List<String> commands = new ArrayList<>();
             commands.add(bin);
             boolean isPhilosopher = isPhilosopherBin(bin);
-            if (isPhilosopher)
-                commands.add(Philosopher.CMD_PROTEIN_PROPHET);
             
-            String cmdLineOpts = proteinProphetParams.getCmdLineParams().trim();
-            if (!cmdLineOpts.isEmpty()) {
-                List<String> opts = StringUtils.splitCommandLine(cmdLineOpts);
-                commands.addAll(opts);
-            }
-            if (isPhilosopher && chkProteinProphetAddInteractPepXmlsSeparately.isSelected()) {
-                commands.add("interact-*.pep.xml");
+            
+            if (isPhilosopher) {
+                commands.add(Philosopher.CMD_PROTEIN_PROPHET);
+                commands.add("--output");
+                commands.add(txtProteinProphetOutputFile.getText());
+                
+                // for Philosopher command line flags go before files
+                String cmdLineOpts = proteinProphetParams.getCmdLineParams().trim();
+                if (!cmdLineOpts.isEmpty()) {
+                    List<String> opts = StringUtils.splitCommandLine(cmdLineOpts);
+                    commands.addAll(opts);
+                }
+                
+                if (chkProteinProphetAddInteractPepXmlsSeparately.isSelected()) {
+                    commands.add("interact-*.pep.xml");
+                } else {
+                    for (String filePath : lcmsFilePaths) {
+                        for (int i = 1; i <= 3; i++) {
+                            Path curMzXMl = Paths.get(filePath);
+                            Path mzXmlFileName = curMzXMl.getFileName();
+                            String s = mzXmlFileName.toString();
+                            int indexOf = s.toLowerCase().indexOf(".mzxml");
+                            String baseName = mzXmlFileName.toString().substring(0, indexOf);
+                            //Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), "interact-" + baseName + "_Q" + i + ".pep.xml");
+                            Path createdPepXml = Paths.get("interact-" + baseName + "_Q" + i + ".pep.xml");
+                            commands.add(createdPepXml.toString());
+                            createdInteractFiles.add(createdPepXml.toString());
+                        }
+                    }
+                }
             } else {
-
                 for (String filePath : lcmsFilePaths) {
                     for (int i = 1; i <= 3; i++) {
                         Path curMzXMl = Paths.get(filePath);
@@ -2198,17 +2223,28 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         createdInteractFiles.add(createdPepXml.toString());
                     }
                 }
+                
+                // output file
+                commands.add(txtProteinProphetOutputFile.getText());
+                
+                // for native ProteinProphet command line flags go in the end
+                String cmdLineOpts = proteinProphetParams.getCmdLineParams().trim();
+                if (!cmdLineOpts.isEmpty()) {
+                    List<String> opts = StringUtils.splitCommandLine(cmdLineOpts);
+                    commands.addAll(opts);
+                }
             }
-            if (!isPhilosopher)
-                commands.add(outputFileName);
+            
             
             ProcessBuilder pb = new ProcessBuilder(commands);
             pb.directory(Paths.get(workingDir).toFile());
             Map<String, String> env = pb.environment();
             
+            // add this variable so that TPP didn't try to use webserver stuff
             String ENV_XML_ONLY = "XML_ONLY";
             env.put(ENV_XML_ONLY, "1");
 
+            // collect variables from system
             StringBuilder pathEnv = new StringBuilder();
             Set<String> mergedKeys = new HashSet<>();
             Set<String> envKeys = env.keySet();
@@ -2728,6 +2764,33 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private void txtBinProteinProphetFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBinProteinProphetFocusLost
         saveBinProteinProphet();
     }//GEN-LAST:event_txtBinProteinProphetFocusLost
+
+    private void btnProteinProphetSeqDbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProteinProphetSeqDbActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("FASTA files", "fa", "fasta");
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+        fileChooser.setApproveButtonText("Select file");
+        fileChooser.setApproveButtonToolTipText("Select");
+        fileChooser.setDialogTitle("Choose FASTA file");
+        fileChooser.setMultiSelectionEnabled(false);
+
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
+
+        if (!txtProteinProphetSeqDb.getText().isEmpty()) {
+            File toFile = Paths.get(txtProteinProphetSeqDb.getText()).toFile();
+            fileChooser.setCurrentDirectory(toFile);
+        }
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+
+                File f = fileChooser.getSelectedFile();
+                txtProteinProphetSeqDb.setText(f.getAbsolutePath());
+
+                break;
+        }
+    }//GEN-LAST:event_btnProteinProphetSeqDbActionPerformed
 
     private void saveBinUmpireSe() {
         saveTextFieldToCache(txtBinUmpire, ThisAppProps.PROP_TEXTFIELD_PATH_UMPIRE_SE);
