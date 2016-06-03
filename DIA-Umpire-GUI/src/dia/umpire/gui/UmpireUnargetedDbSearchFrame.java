@@ -2956,73 +2956,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         if (value != null)
             return value;
 
-        if (OsUtils.isWindows()) {
-            // on Windows try to find MSConvert in a few predefined locations
-            List<String> paths = Arrays.asList(
-                    "program files (x64)",
-                    "program files"
-            );
-            String folder = "proteowizard";
-            String folder2 = "pwiz";
-            final String toSearch = "msconvert.exe";
-            
-            final Holder<Path> foundPathHolder = new Holder<>();
-            
-            FileVisitor<Path> fileVisitor = new FileVisitor<Path>() {
-                @Override
-                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    if (file.getFileName().toString().toLowerCase().equals(toSearch)) {
-                        foundPathHolder.obj = file;
-                        return FileVisitResult.TERMINATE;
-                    }
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                    return FileVisitResult.CONTINUE;
-                }
-            };
-            
-            
-            Iterable<Path> rootDirs = FileSystems.getDefault().getRootDirectories();
-            for (Path rootDir: rootDirs) {
-                try {
-                    DirectoryStream<Path> dirStream = Files.newDirectoryStream(rootDir);
-                    for (Path file: dirStream) {
-                        for (String path : paths) {
-                            if (file.getFileName().toString().toLowerCase().startsWith(path)) {
-                                // search for proteowizard
-                                DirectoryStream<Path> dirStream2 = Files.newDirectoryStream(file);
-                                for (Path file2 : dirStream2) {
-                                    String toLowerCase = file2.getFileName().toString().toLowerCase();
-                                    if (toLowerCase.startsWith(folder) || toLowerCase.startsWith(folder2)) {
-                                        // this might be a proteo wizard folder, recursively search it
-                                        Files.walkFileTree(file2, fileVisitor);
-                                        if (foundPathHolder.obj != null) {
-                                            return foundPathHolder.obj.toAbsolutePath().toString();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch (IOException ex) {
-                    // doesn't matter
-                }
-            }
-        }
-        
         String binaryName;
         ResourceBundle bundle = ResourceBundle.getBundle("dia/umpire/gui/Bundle"); // NOI18N
         if (OsUtils.isWindows()) {
@@ -3031,7 +2964,81 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             binaryName = bundle.getString("default.msconvert.nix");
         }
         String testedBinaryPath = testBinaryPath(binaryName, null);
-        return testedBinaryPath == null ? "" : testedBinaryPath;
+        if (testedBinaryPath != null && !testedBinaryPath.isEmpty())
+            return testedBinaryPath;
+        
+        
+        if (OsUtils.isWindows()) {
+            try {
+                // on Windows try to find MSConvert in a few predefined locations
+                List<String> paths = Arrays.asList(
+                        "program files (x64)",
+                        "program files"
+                );
+                String folder = "proteowizard";
+                String folder2 = "pwiz";
+                final String toSearch = "msconvert.exe";
+
+                final Holder<Path> foundPathHolder = new Holder<>();
+
+                FileVisitor<Path> fileVisitor = new FileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        if (file.getFileName().toString().toLowerCase().equals(toSearch)) {
+                            foundPathHolder.obj = file;
+                            return FileVisitResult.TERMINATE;
+                        }
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    @Override
+                    public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    @Override
+                    public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                        return FileVisitResult.CONTINUE;
+                    }
+                };
+
+
+                Iterable<Path> rootDirs = FileSystems.getDefault().getRootDirectories();
+                for (Path rootDir: rootDirs) {
+                    try {
+                        DirectoryStream<Path> dirStream = Files.newDirectoryStream(rootDir);
+                        for (Path file: dirStream) {
+                            for (String path : paths) {
+                                if (file.getFileName().toString().toLowerCase().startsWith(path)) {
+                                    // search for proteowizard
+                                    DirectoryStream<Path> dirStream2 = Files.newDirectoryStream(file);
+                                    for (Path file2 : dirStream2) {
+                                        String toLowerCase = file2.getFileName().toString().toLowerCase();
+                                        if (toLowerCase.startsWith(folder) || toLowerCase.startsWith(folder2)) {
+                                            // this might be a proteo wizard folder, recursively search it
+                                            Files.walkFileTree(file2, fileVisitor);
+                                            if (foundPathHolder.obj != null) {
+                                                return foundPathHolder.obj.toAbsolutePath().toString();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } catch (IOException ex) {
+                        // doesn't matter
+                    }
+                }
+            } catch (Exception e) {
+                // we don't care if anything within this block breaks
+            }
+        }
+        return "";
     }
     private class Holder<T> {
         T obj;
