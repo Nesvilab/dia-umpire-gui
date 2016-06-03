@@ -1638,6 +1638,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
+        txtProgramsDir.setText(getDefaultTextProgramsDir());
+
         jLabel53.setText("Programs dir");
         jLabel53.setToolTipText("The JAR files and executables will be searched here (as well as using system PATH variable)");
 
@@ -2169,7 +2171,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "[DIA Umpire SE tab]\nDIA Umpire SE binary can't be an empty string", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            binUmpire = testFilePath(binUmpire, workingDir);
+            binUmpire = testFilePath(binUmpire, programsDir);
             if (binUmpire == null) {
                 JOptionPane.showMessageDialog(this, "[DIA Umpire SE tab]\nCould not locate DIA-Umpire SE jar", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
@@ -2320,7 +2322,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "[DIA Umpire Quant tab]\nDIA Umpire Quant jar can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            jarUmpireQuant = testFilePath(jarUmpireQuant, workingDir);
+            jarUmpireQuant = testFilePath(jarUmpireQuant, programsDir);
             if (jarUmpireQuant == null) {
                 JOptionPane.showMessageDialog(this, "[DIA Umpire Quant tab]\nCould not locate DIA-Umpire Quant jar", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;

@@ -2427,6 +2427,11 @@
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txtProgramsDir">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="getDefaultTextProgramsDir()" type="code"/>
+                </Property>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel53">
               <Properties>
