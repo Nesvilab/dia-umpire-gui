@@ -29,9 +29,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -48,6 +54,8 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JButton;
@@ -275,6 +283,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel32 = new javax.swing.JLabel();
         btnSelectWrkingDir = new javax.swing.JButton();
         txtWorkingDir = new javax.swing.JTextField();
+        btnBrowseProgramsDir = new javax.swing.JButton();
+        txtProgramsDir = new javax.swing.JTextField();
+        jLabel53 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -322,7 +333,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSelectRawFiles)
@@ -778,7 +789,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addComponent(panelUmpireSeParams, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelUmpireSwathParams, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         tabPane.addTab("DIA-Umpire SE", panelInTabSeParams);
@@ -1017,7 +1028,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addComponent(panelCometSequence, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelCometTolerance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
 
         tabPane.addTab("Comet", panelInTabCometParams);
@@ -1155,7 +1166,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addComponent(panelPeptideProphetBin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelPeptideProphetOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(305, Short.MAX_VALUE))
+                .addContainerGap(322, Short.MAX_VALUE))
         );
 
         tabPane.addTab("PeptideProphet", panelPeptideProphet);
@@ -1282,7 +1293,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(txtProteinProphetOutputFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                         .addComponent(jLabel40)
                         .addGap(123, 123, 123))
                     .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
@@ -1315,8 +1326,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelProteinProphetBin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelProteinProphetOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addComponent(panelProteinProphetOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(277, Short.MAX_VALUE))
         );
 
         tabPane.addTab("ProteinProphet", panelProteinProphet);
@@ -1540,7 +1551,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(fmtTopNPep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel52)
                     .addComponent(fmtFreq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(239, Short.MAX_VALUE))
+                .addContainerGap(268, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelUmpireQuantLayout = new javax.swing.GroupLayout(panelUmpireQuant);
@@ -1597,7 +1608,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel24.setText("RAM");
 
-        spinnerRam.setModel(new javax.swing.SpinnerNumberModel(1000, 512, null, 200));
+        spinnerRam.setModel(new javax.swing.SpinnerNumberModel(1600, 512, null, 200));
         spinnerRam.setMinimumSize(new java.awt.Dimension(40, 20));
         spinnerRam.setPreferredSize(new java.awt.Dimension(40, 20));
 
@@ -1611,7 +1622,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         jLabel26.setText("(MB)");
 
-        jLabel32.setText("Working dir");
+        jLabel32.setText("Output dir");
 
         btnSelectWrkingDir.setText("Browse");
         btnSelectWrkingDir.addActionListener(new java.awt.event.ActionListener() {
@@ -1619,6 +1630,16 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 btnSelectWrkingDirActionPerformed(evt);
             }
         });
+
+        btnBrowseProgramsDir.setText("Browse");
+        btnBrowseProgramsDir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBrowseProgramsDirActionPerformed(evt);
+            }
+        });
+
+        jLabel53.setText("Programs dir");
+        jLabel53.setToolTipText("The JAR files and executables will be searched here (as well as using system PATH variable)");
 
         javax.swing.GroupLayout panelRunLayout = new javax.swing.GroupLayout(panelRun);
         panelRun.setLayout(panelRunLayout);
@@ -1642,20 +1663,33 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addComponent(jLabel25)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
                         .addComponent(btnClearConsole))
                     .addGroup(panelRunLayout.createSequentialGroup()
-                        .addComponent(jLabel32)
+                        .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel32)
+                            .addComponent(jLabel53))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtWorkingDir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSelectWrkingDir)))
+                        .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRunLayout.createSequentialGroup()
+                                .addComponent(txtProgramsDir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBrowseProgramsDir))
+                            .addGroup(panelRunLayout.createSequentialGroup()
+                                .addComponent(txtWorkingDir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSelectWrkingDir)))))
                 .addContainerGap())
         );
         panelRunLayout.setVerticalGroup(
             panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRunLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBrowseProgramsDir)
+                    .addComponent(txtProgramsDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel53))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel32)
                     .addComponent(btnSelectWrkingDir)
@@ -1670,8 +1704,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(jLabel25)
                     .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel26))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(consoleScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 494, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1856,7 +1890,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBrowseDatabasePathActionPerformed
 
     /**
-     * Returns the value for the program, that will work with process builder.
+     * Returns the value for the program, that will work with process builder.<br/>
+     * Null if no working combo could be found.
      */
     private String testBinaryPath(String programName, String workingDir) {
         
@@ -1871,6 +1906,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         } catch (Exception e1) {
             // could not run the program, it was not on PATH
             // Try running the program using absolute path
+            if (workingDir == null || workingDir.isEmpty())
+                return null;
             try {
                 commands = new LinkedList<>();
                 String absolutePathProgramName = Paths.get(workingDir, programName).toString();
@@ -1962,19 +1999,20 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String dateString = df.format(new Date());
         
+        String programsDir = txtProgramsDir.getText().trim();
         
         // we will now compose parameter objects for running processes.
         // at first we will try to load the base parameter files, if the file paths
         // in the GUI are not empty. If empty, we will load the defaults and
         // add params from the GUI to it.
-        List<ProcessBuilder> processBuildersUmpire = processBuildersUmpire(workingDir, lcmsFilePaths, dateString);
+        List<ProcessBuilder> processBuildersUmpire = processBuildersUmpire(programsDir, workingDir, lcmsFilePaths, dateString);
         if (processBuildersUmpire == null) {
             resetRunButtons(true);
             return;
         }
         processBuilders.addAll(processBuildersUmpire);
         
-        List<ProcessBuilder> processBuildersComet = processBuildersComet(workingDir, lcmsFilePaths, dateString);
+        List<ProcessBuilder> processBuildersComet = processBuildersComet(programsDir, workingDir, lcmsFilePaths, dateString);
         if (processBuildersComet == null) {
             resetRunButtons(true);
             return;
@@ -1982,7 +2020,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         processBuilders.addAll(processBuildersComet);
         
         
-        List<ProcessBuilder> processBuildersPeptideProphet = processBuildersPeptideProphet(workingDir, lcmsFilePaths);
+        List<ProcessBuilder> processBuildersPeptideProphet = processBuildersPeptideProphet(programsDir, workingDir, lcmsFilePaths);
         if (processBuildersPeptideProphet == null) {
             resetRunButtons(true);
             return;
@@ -1990,7 +2028,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         processBuilders.addAll(processBuildersPeptideProphet);
         
         
-        List<ProcessBuilder> processBuildersProteinProphet = processBuildersProteinProphet(workingDir, lcmsFilePaths);
+        List<ProcessBuilder> processBuildersProteinProphet = processBuildersProteinProphet(programsDir, workingDir, lcmsFilePaths);
         if (processBuildersProteinProphet == null) {
             resetRunButtons(true);
             return;
@@ -1998,7 +2036,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         processBuilders.addAll(processBuildersProteinProphet);
         
         
-        List<ProcessBuilder> processBuildersUmpireQuant = processBuildersUmpireQuant(workingDir, lcmsFilePaths, dateString);
+        List<ProcessBuilder> processBuildersUmpireQuant = processBuildersUmpireQuant(programsDir, workingDir, lcmsFilePaths, dateString);
         if (processBuildersUmpireQuant == null) {
             resetRunButtons(true);
             return;
@@ -2112,12 +2150,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRunActionPerformed
 
     
-    private List<ProcessBuilder> processBuildersUmpire(String workingDir, String[] lcmsFilePaths, String dateStr) {
+    private List<ProcessBuilder> processBuildersUmpire(String programsDir, String workingDir, String[] lcmsFilePaths, String dateStr) {
         List<ProcessBuilder> processBuilders = new LinkedList<>();
         if (chkRunUmpire.isSelected()) {
             
             String binJava = "java";
-            binJava = testBinaryPath(binJava, workingDir);
+            binJava = testBinaryPath(binJava, programsDir);
             if (binJava == null) {
                 JOptionPane.showMessageDialog(this, "Java could not be found.\n"
                         + "please make sure you have it installed \n"
@@ -2128,21 +2166,21 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             
             String binUmpire = txtBinUmpire.getText();
             if (binUmpire.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "DIA Umpire SE binary can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "[DIA Umpire SE tab]\nDIA Umpire SE binary can't be an empty string", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
             binUmpire = testFilePath(binUmpire, workingDir);
             if (binUmpire == null) {
-                JOptionPane.showMessageDialog(this, "Could not locate DIA-Umpire SE jar", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "[DIA Umpire SE tab]\nCould not locate DIA-Umpire SE jar", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
             
             String binMsconvert = txtBinMsconvert.getText();
             if (binMsconvert.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "MSConvert binary can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "[DIA Umpire SE tab]\nMSConvert binary can't be an empty string", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            binMsconvert = testBinaryPath(binMsconvert, workingDir);
+            binMsconvert = testBinaryPath(binMsconvert, programsDir);
             if (binMsconvert == null) {
                 JOptionPane.showMessageDialog(this, "MSConvert binary could not be found \n"
                         + "on PATH or in the working directory", "Error", JOptionPane.ERROR_MESSAGE);
@@ -2263,12 +2301,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
     }
     
-    private List<ProcessBuilder> processBuildersUmpireQuant(String workingDir, String[] lcmsFilePaths, String dateStr) {
+    private List<ProcessBuilder> processBuildersUmpireQuant(String programsDir, String workingDir, String[] lcmsFilePaths, String dateStr) {
         List<ProcessBuilder> processBuilders = new LinkedList<>();
         if (chkRunUmpireQuant.isSelected()) {
             
             String binJava = "java";
-            binJava = testBinaryPath(binJava, workingDir);
+            binJava = testBinaryPath(binJava, programsDir);
             if (binJava == null) {
                 JOptionPane.showMessageDialog(this, "Java could not be found.\n"
                         + "please make sure you have it installed \n"
@@ -2279,12 +2317,12 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             
             String jarUmpireQuant = txtBinUmpireQuant.getText().trim();
             if (jarUmpireQuant.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "DIA Umpire Quant jar can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "[DIA Umpire Quant tab]\nDIA Umpire Quant jar can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
             jarUmpireQuant = testFilePath(jarUmpireQuant, workingDir);
             if (jarUmpireQuant == null) {
-                JOptionPane.showMessageDialog(this, "Could not locate DIA-Umpire Quant jar", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "[DIA Umpire Quant tab]\nCould not locate DIA-Umpire Quant jar", "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
             
@@ -2360,7 +2398,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         return matcher.find();
     }
     
-    private List<ProcessBuilder> processBuildersComet(String workingDir, String[] lcmsFilePaths, String dateStr) {
+    private List<ProcessBuilder> processBuildersComet(String programsDir, String workingDir, String[] lcmsFilePaths, String dateStr) {
         List<ProcessBuilder> processBuilders = new LinkedList<>();
         if (chkRunCometSearch.isSelected()) {
             try {
@@ -2372,7 +2410,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         "Error", JOptionPane.ERROR_MESSAGE);
                     return null;
                 }
-                bin = testBinaryPath(bin, workingDir);
+                bin = testBinaryPath(bin, programsDir);
                 if (bin == null) {
                     JOptionPane.showMessageDialog(this, "Binary for running Comet not found or could not be run.\n"
                             + "Neither on PATH, nor in the working directory",
@@ -2473,7 +2511,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
      * @param lcmsFilePaths
      * @return null in case of errors, or a list of process builders.
      */
-    private List<ProcessBuilder> processBuildersPeptideProphet(String workingDir, String[] lcmsFilePaths) {
+    private List<ProcessBuilder> processBuildersPeptideProphet(String programsDir, String workingDir, String[] lcmsFilePaths) {
         List<ProcessBuilder> processBuilders = new LinkedList<>();
         if (chkRunPeptideProphet.isSelected()) {
             String bin = txtBinPeptideProphet.getText().trim();
@@ -2482,7 +2520,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            bin = testBinaryPath(bin, workingDir);
+            bin = testBinaryPath(bin, programsDir);
             if (bin == null) {
                 JOptionPane.showMessageDialog(this, "Philosopher (PeptideProphet) binary not found.\n"
                         + "Neither on PATH, nor in the working directory",
@@ -2566,7 +2604,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
      * Creates the processBuilders for running ProteinProphet.
      * @return null in case of error, empty list if nothing needs to be added.
      */
-    private List<ProcessBuilder> processBuildersProteinProphet(String workingDir, String[] lcmsFilePaths) {
+    private List<ProcessBuilder> processBuildersProteinProphet(String programsDir, String workingDir, String[] lcmsFilePaths) {
         if (chkRunProteinProphet.isSelected()) {
             String bin = txtBinProteinProphet.getText().trim();
             if (bin.isEmpty()) {
@@ -2574,7 +2612,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            bin = testBinaryPath(bin, workingDir);
+            bin = testBinaryPath(bin, programsDir);
             if (bin == null) {
                 JOptionPane.showMessageDialog(this, "ProteinProphet binary not found or could not be launched.\n"
                         + "Neither on PATH, nor in the working directory",
@@ -2873,7 +2911,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             
             // setting Path param to working dir
             String workdir = txtWorkingDir.getText().trim();
-            props.setProperty(UmpireQuantParams.PROP_Path, workdir);
+            String wdPath = Paths.get(workdir).toString();
+            if (!wdPath.endsWith(File.separator))
+                wdPath = wdPath + File.separator;
+            props.setProperty(UmpireQuantParams.PROP_Path, wdPath);
             
             // setting fasta
             String fastaPath = getUmpireQuantFastaPath();
@@ -2904,16 +2945,96 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         ResourceBundle bundle = ResourceBundle.getBundle("dia/umpire/gui/Bundle"); // NOI18N
         return bundle.getString("default.dia.umpire.quant.jar");
     }
+    
+    private String getDefaultTextProgramsDir() {
+        String value = ThisAppProps.loadPropFromCache(ThisAppProps.PROP_BINARIES_IN);
+        return value == null ? "" : value;
+    }
 
     private String getDefaultTextMsconvert() {
         String value = ThisAppProps.loadPropFromCache(ThisAppProps.PROP_TEXTFIELD_PATH_MSCONVERT);
         if (value != null)
             return value;
+
+        if (OsUtils.isWindows()) {
+            // on Windows try to find MSConvert in a few predefined locations
+            List<String> paths = Arrays.asList(
+                    "program files (x64)",
+                    "program files"
+            );
+            String folder = "proteowizard";
+            String folder2 = "pwiz";
+            final String toSearch = "msconvert.exe";
+            
+            final Holder<Path> foundPathHolder = new Holder<>();
+            
+            FileVisitor<Path> fileVisitor = new FileVisitor<Path>() {
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    if (file.getFileName().toString().toLowerCase().equals(toSearch)) {
+                        foundPathHolder.obj = file;
+                        return FileVisitResult.TERMINATE;
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                    return FileVisitResult.CONTINUE;
+                }
+            };
+            
+            
+            Iterable<Path> rootDirs = FileSystems.getDefault().getRootDirectories();
+            for (Path rootDir: rootDirs) {
+                try {
+                    DirectoryStream<Path> dirStream = Files.newDirectoryStream(rootDir);
+                    for (Path file: dirStream) {
+                        for (String path : paths) {
+                            if (file.getFileName().toString().toLowerCase().startsWith(path)) {
+                                // search for proteowizard
+                                DirectoryStream<Path> dirStream2 = Files.newDirectoryStream(file);
+                                for (Path file2 : dirStream2) {
+                                    String toLowerCase = file2.getFileName().toString().toLowerCase();
+                                    if (toLowerCase.startsWith(folder) || toLowerCase.startsWith(folder2)) {
+                                        // this might be a proteo wizard folder, recursively search it
+                                        Files.walkFileTree(file2, fileVisitor);
+                                        if (foundPathHolder.obj != null) {
+                                            return foundPathHolder.obj.toAbsolutePath().toString();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (IOException ex) {
+                    // doesn't matter
+                }
+            }
+        }
+        
+        String binaryName;
         ResourceBundle bundle = ResourceBundle.getBundle("dia/umpire/gui/Bundle"); // NOI18N
         if (OsUtils.isWindows()) {
-            return bundle.getString("default.msconvert.win");
+            binaryName = bundle.getString("default.msconvert.win");
+        } else {
+            binaryName = bundle.getString("default.msconvert.nix");
         }
-        return bundle.getString("default.msconvert.nix");
+        String testedBinaryPath = testBinaryPath(binaryName, null);
+        return testedBinaryPath == null ? "" : testedBinaryPath;
+    }
+    private class Holder<T> {
+        T obj;
     }
 
     private String getDefaultTextComet() {
@@ -3410,6 +3531,40 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fmtPeptideFDRActionPerformed
 
+    private void btnBrowseProgramsDirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseProgramsDirActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select directory");
+        fileChooser.setApproveButtonToolTipText("Select directory with Umpire, Philosopher etc");
+        fileChooser.setDialogTitle("Select DIA-Umpire and Philosopher directory");
+        fileChooser.setMultiSelectionEnabled(false);
+//        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
+//        fileChooser.setFileFilter(fileNameExtensionFilter);
+        
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
+
+        if (!txtProgramsDir.getText().isEmpty()) {
+            File toFile = Paths.get(txtProgramsDir.getText()).toFile();
+            fileChooser.setCurrentDirectory(toFile);
+        }
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+
+                File f = fileChooser.getSelectedFile();
+                txtProgramsDir.setText(f.getAbsolutePath());
+                saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
+                saveProgramsDir();
+                break;
+        }
+    }//GEN-LAST:event_btnBrowseProgramsDirActionPerformed
+
+    private void saveProgramsDir() {
+        saveTextFieldToCache(txtProgramsDir, ThisAppProps.PROP_BINARIES_IN);
+    }
+    
     private void saveBinUmpireSe() {
         saveTextFieldToCache(txtBinUmpire, ThisAppProps.PROP_TEXTFIELD_PATH_UMPIRE_SE);
     }
@@ -3600,6 +3755,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBinProteinProphet;
     private javax.swing.JButton btnBrowseDatabasePath;
+    private javax.swing.JButton btnBrowseProgramsDir;
     private javax.swing.JButton btnClearConsole;
     private javax.swing.JButton btnProteinProphetSeqDb;
     private javax.swing.JButton btnRun;
@@ -3707,6 +3863,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -3753,6 +3910,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtDecoyPrefix;
     private javax.swing.JTextArea txtPeptideProphetCmdLineOptions;
     private javax.swing.JTextField txtPeptideProphetSeqDb;
+    private javax.swing.JTextField txtProgramsDir;
     private javax.swing.JTextArea txtProteinProphetCmdLineOpts;
     private javax.swing.JTextField txtProteinProphetOutputFile;
     private javax.swing.JTextField txtProteinProphetSeqDb;
