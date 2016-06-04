@@ -2479,7 +2479,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         String s = mzXmlFileName.toString();
                         int indexOf = s.toLowerCase().indexOf(".mzxml");
                         String baseName = mzXmlFileName.toString().substring(0, indexOf);
-                        Path createdMzXml = Paths.get(curMzXMl.getParent().toString(), baseName+"_Q"+i+".mzXML");
+                        Path createdMzXml = Paths.get(workingDir, baseName+"_Q"+i+".mzXML");
                         commands.add(createdMzXml.toString());
                         ProcessBuilder pb = new ProcessBuilder(commands);
                         Map<String, String> env = pb.environment();
@@ -2584,7 +2584,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     String s = mzXmlFileName.toString();
                     int indexOf = s.toLowerCase().indexOf(".mzxml");
                     String baseName = mzXmlFileName.toString().substring(0, indexOf);
-                    Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), baseName+"_Q"+i+".pep.xml");
+                    Path createdPepXml = Paths.get(workingDir, baseName+"_Q"+i+".pep.xml");
                     commands.add(createdPepXml.toString());
                     ProcessBuilder pb = new ProcessBuilder(commands);
                     Map<String, String> env = pb.environment();
@@ -2673,7 +2673,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                             int indexOf = s.toLowerCase().indexOf(".mzxml");
                             String baseName = mzXmlFileName.toString().substring(0, indexOf);
                             //Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), "interact-" + baseName + "_Q" + i + ".pep.xml");
-                            Path createdPepXml = Paths.get("interact-" + baseName + "_Q" + i + ".pep.xml");
+                            Path createdPepXml = Paths.get(workingDir, "interact-" + baseName + "_Q" + i + ".pep.xml");
                             commands.add(createdPepXml.toString());
                             createdInteractFiles.add(createdPepXml.toString());
                         }
@@ -2688,7 +2688,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         int indexOf = s.toLowerCase().indexOf(".mzxml");
                         String baseName = mzXmlFileName.toString().substring(0, indexOf);
                         //Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), "interact-" + baseName + "_Q" + i + ".pep.xml");
-                        Path createdPepXml = Paths.get("interact-" + baseName + "_Q" + i + ".pep.xml");
+                        Path createdPepXml = Paths.get(workingDir, "interact-" + baseName + "_Q" + i + ".pep.xml");
                         commands.add(createdPepXml.toString());
                         createdInteractFiles.add(createdPepXml.toString());
                     }
