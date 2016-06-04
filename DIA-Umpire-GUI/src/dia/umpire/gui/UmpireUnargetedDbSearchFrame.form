@@ -109,7 +109,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" pref="512" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" pref="514" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="btnSelectRawFiles" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -177,7 +177,8 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="chkRunUmpire" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnUmpireSeCleanup" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="panelUmpireBinary" max="32767" attributes="0"/>
                           <Component id="panelUmpireSeParams" alignment="1" max="32767" attributes="0"/>
@@ -192,7 +193,10 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="chkRunUmpire" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="chkRunUmpire" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnUmpireSeCleanup" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelUmpireBinary" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
@@ -201,7 +205,7 @@
                       <Component id="panelUmpireSeParams" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelUmpireSwathParams" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="68" max="32767" attributes="0"/>
+                      <EmptySpace pref="62" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -447,7 +451,7 @@
                               <Component id="fmtMS2SN" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="chkEstimateBG" min="-2" pref="21" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="79" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -931,6 +935,15 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkRunUmpireActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JButton" name="btnUmpireSeCleanup">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Clean Up"/>
+                <Property name="toolTipText" type="java.lang.String" value="When you&apos;ve selected some files in &quot;Select Raw Files&quot; tab, this action will delete all the Umpire SE generated files in the same directory for those files"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUmpireSeCleanupActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="panelInTabCometParams">
@@ -971,7 +984,7 @@
                       <Component id="panelCometSequence" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelCometTolerance" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="138" max="32767" attributes="0"/>
+                      <EmptySpace pref="140" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1369,7 +1382,7 @@
                       <Component id="panelPeptideProphetBin" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelPeptideProphetOptions" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="322" max="32767" attributes="0"/>
+                      <EmptySpace pref="324" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1586,7 +1599,7 @@
                       <Component id="panelProteinProphetBin" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelProteinProphetOptions" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="277" max="32767" attributes="0"/>
+                      <EmptySpace pref="279" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -2062,7 +2075,7 @@
                               <Component id="jLabel52" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="fmtFreq" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="268" max="32767" attributes="0"/>
+                          <EmptySpace pref="270" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2249,7 +2262,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="consoleScrollPane" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="btnRun" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnStop" min="-2" max="-2" attributes="0"/>
@@ -2267,23 +2280,18 @@
                               <Component id="btnClearConsole" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="jLabel32" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel53" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="lblOutputDir" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="txtProgramsDir" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btnBrowseProgramsDir" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="txtWorkingDir" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btnSelectWrkingDir" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <Component id="txtWorkingDir" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnSelectWrkingDir" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="lblProgramsDir" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtProgramsDir" pref="445" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnBrowseProgramsDir" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -2293,15 +2301,15 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnBrowseProgramsDir" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtProgramsDir" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel53" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblProgramsDir" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel32" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblOutputDir" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnSelectWrkingDir" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtWorkingDir" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -2317,7 +2325,7 @@
                           <Component id="jLabel26" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="consoleScrollPane" min="-2" pref="494" max="-2" attributes="0"/>
+                      <Component id="consoleScrollPane" pref="496" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -2403,9 +2411,10 @@
                 <Property name="text" type="java.lang.String" value="(MB)"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel32">
+            <Component class="javax.swing.JLabel" name="lblOutputDir">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Output dir"/>
+                <Property name="toolTipText" type="java.lang.String" value="All the output (except Umpire SE) will be placed into this directory"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnSelectWrkingDir">
@@ -2417,6 +2426,11 @@
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txtWorkingDir">
+              <Properties>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection component="lblOutputDir" name="toolTipText" type="property"/>
+                </Property>
+              </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnBrowseProgramsDir">
               <Properties>
@@ -2431,9 +2445,12 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="getDefaultTextProgramsDir()" type="code"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection component="lblProgramsDir" name="toolTipText" type="property"/>
+                </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel53">
+            <Component class="javax.swing.JLabel" name="lblProgramsDir">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Programs dir"/>
                 <Property name="toolTipText" type="java.lang.String" value="The JAR files and executables will be searched here (as well as using system PATH variable)"/>

@@ -5,6 +5,13 @@
  */
 package dia.umpire.util;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.CodeSource;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Dmitry Avtonomov
@@ -17,5 +24,16 @@ public class OsUtils {
         if (osName == null)
             return true; // just the default
         return osName.toLowerCase().startsWith("win");
+    }
+    
+    public static URI getCurrentJarPath() {
+        try {
+            CodeSource codeSource = OsUtils.class.getProtectionDomain().getCodeSource();
+            URL location = codeSource.getLocation();
+            return location.toURI();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(OsUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
