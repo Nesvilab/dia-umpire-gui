@@ -16,19 +16,28 @@
 package dia.umpire.util;
 
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import static java.nio.file.FileVisitResult.CONTINUE;
+import static java.nio.file.FileVisitResult.TERMINATE;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This exists for a single purpose: when we create ProcessBuilders for running
- * Umpire from GUI, UmpireSE generated stuff must be moved to the working directory.
- * To not be dependent on system's copy/move commands, we have this convenience
- * class.
+ * Umpire from GUI, UmpireSE generated stuff must be moved to the working
+ * directory. To not be dependent on system's copy/move commands, we have this
+ * convenience class.
+ *
  * @author Dmitry Avtonomov
  */
 public class FileCopy {
+
     public static void main(String[] args) throws IOException {
         if (args.length != 2) {
             throw new IllegalArgumentException("Input must be exactly 2 arguments: origin and destination");
@@ -36,6 +45,39 @@ public class FileCopy {
         Path origin = Paths.get(args[0]);
         Path destination = Paths.get(args[1]);
         Files.move(origin, destination, StandardCopyOption.REPLACE_EXISTING);
-            
+
     }
+
+    public static void deleteFileOrFolder(final Path path) throws IOException {
+        Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs)
+                    throws IOException {
+                Files.delete(file);
+                return CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFileFailed(final Path file, final IOException e) {
+                return handleException(e);
+            }
+
+            private FileVisitResult handleException(final IOException e) {
+                Logger.getLogger(FileCopy.class.getCanonicalName()).log(Level.SEVERE, String.format(
+                        "Error traversing directory for deletion.", e.getMessage()));
+                return TERMINATE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(final Path dir, final IOException e)
+                    throws IOException {
+                if (e != null) {
+                    return handleException(e);
+                }
+                Files.delete(dir);
+                return CONTINUE;
+            }
+        });
+    }
+;
 }

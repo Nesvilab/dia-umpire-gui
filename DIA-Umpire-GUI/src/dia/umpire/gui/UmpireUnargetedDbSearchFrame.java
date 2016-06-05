@@ -14,6 +14,7 @@ import dia.umpire.params.Philosopher;
 import dia.umpire.params.ProteinProphetParams;
 import dia.umpire.params.ThisAppProps;
 import dia.umpire.params.UmpireParams;
+import dia.umpire.util.FileCopy;
 import dia.umpire.util.LogUtils;
 import dia.umpire.util.OsUtils;
 import dia.umpire.util.PropertiesUtils;
@@ -1609,6 +1610,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         tabPane.addTab("DIA-Umpire Quant", panelUmpireQuant);
 
+        btnRun.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnRun.setText("Run");
         btnRun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1703,7 +1705,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addComponent(jLabel25)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                         .addComponent(btnAbout)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClearConsole))
@@ -2108,101 +2110,112 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         LogUtils.println(console, "");
         LogUtils.println(console, "");
         
+        FileOutputStream fos = null;
+        try {
+            String logFileName = "dia-umpire-gui_" + dateString + ".log";
+                Path logFilePath = Paths.get(workingDir, logFileName);
+                if (Files.exists(logFilePath))
+                    Files.delete(logFilePath);
+            fos = new FileOutputStream(logFilePath.toFile());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
+        final PrintWriter pw = new PrintWriter(
+                    new OutputStreamWriter(new BufferedOutputStream(fos), Charset.forName("UTF-8")), true);
         
         try // create a log file and run everything
         {
-            String logFileName = "dia-umpire-gui_" + dateString + ".log";
-            Path logFilePath = Paths.get(workingDir, logFileName);
-            if (Files.exists(logFilePath))
-                Files.delete(logFilePath);
+            exec = Executors.newFixedThreadPool(1);
+            for (final ProcessBuilder pb : processBuilders) {
 
-            try (final PrintWriter pw = new PrintWriter(
-                    new OutputStreamWriter(new BufferedOutputStream(
-                                    new FileOutputStream(logFilePath.toFile())), Charset.forName("UTF-8")), true)) {
-                
-                exec = Executors.newFixedThreadPool(1);
-                for (final ProcessBuilder pb : processBuilders) {
+                pb.directory(Paths.get(workingDir).toFile());
 
-                    pb.directory(Paths.get(workingDir).toFile());
+                REHandler reHandler;
+                reHandler = new REHandler(new Runnable() {
+                    @Override
+                    public void run() {
+                        Process process = null;
+                        try {
+                            List<String> command = pb.command();
+                            StringBuilder sb = new StringBuilder("Executing command:\n$> ");
+                            for (String commandPart : command)
+                                sb.append(commandPart).append(" ");
+                            String toAppend = sb.toString();
+                            LogUtils.println(console, toAppend);
+                            LogUtils.println(pw, toAppend);
+                            pw.flush();
+                            process = pb.start();
+                            //                        int waitFor = process.waitFor();
+                            //                        submittedProcesses.add(process);
+                            //
+                            //                        LogUtils.println(console, String.format("Process waitFor result is: [%d]", waitFor));
+                            //
+                            toAppend = "Process started";
+                            LogUtils.println(console, toAppend);
+                            LogUtils.println(pw, toAppend);
+                            pw.flush();
 
-                    REHandler reHandler;
-                    reHandler = new REHandler(new Runnable() {
-                        @Override
-                        public void run() {
-                            Process process = null;
-                            try {
-                                List<String> command = pb.command();
-                                StringBuilder sb = new StringBuilder("Executing command:\n$> ");
-                                for (String commandPart : command)
-                                    sb.append(commandPart).append(" ");
-                                String toAppend = sb.toString();
-                                LogUtils.println(console, toAppend);
-                                pw.append(toAppend);
-                                process = pb.start();
-                                //                        int waitFor = process.waitFor();
-                                //                        submittedProcesses.add(process);
-                                //
-                                //                        LogUtils.println(console, String.format("Process waitFor result is: [%d]", waitFor));
-                                //
-                                toAppend = "Process started";
-                                LogUtils.println(console, toAppend);
-                                pw.append(toAppend);
-
-                                InputStream err = process.getErrorStream();
-                                InputStream out = process.getInputStream();
-                                while (true) {
-                                    Thread.sleep(200L);
-                                    int errAvailable = err.available();
-                                    if (errAvailable > 0) {
-                                        byte[] bytes = new byte[errAvailable];
-                                        int read = err.read(bytes);
-                                        toAppend = new String(bytes);
-                                        LogUtils.println(console, toAppend);
-                                        pw.append(toAppend);
-                                    }
-                                    int outAvailable = out.available();
-                                    if (outAvailable > 0) {
-                                        byte[] bytes = new byte[outAvailable];
-                                        int read = out.read(bytes);
-                                        toAppend = new String(bytes);
-                                        LogUtils.println(console, toAppend);
-                                        pw.append(toAppend);
-                                    }
-                                    try {
-                                        int exitValue = process.exitValue();
-                                        toAppend = String.format("Process finished, exit value: %d\n", exitValue);
-                                        LogUtils.println(console, toAppend);
-                                        pw.append(toAppend);
-                                        break;
-                                    } catch (IllegalThreadStateException ignore) {
-                                        // this error is thrown by process.exitValue() if the underlying process has not yet finished
-                                        //LogUtils.println(console, String.format("IllegalThreadStateException: \n", ignore.getMessage()));
-                                    }
+                            InputStream err = process.getErrorStream();
+                            InputStream out = process.getInputStream();
+                            while (true) {
+                                Thread.sleep(200L);
+                                int errAvailable = err.available();
+                                if (errAvailable > 0) {
+                                    byte[] bytes = new byte[errAvailable];
+                                    int read = err.read(bytes);
+                                    toAppend = new String(bytes);
+                                    LogUtils.println(console, toAppend);
+                                    LogUtils.println(pw, toAppend);
+                                    pw.flush();
                                 }
-
-                            } catch (IOException ex) {
-                                String toAppend = String.format("IOException: Error in process,\n%s", ex.getMessage());
-                                LogUtils.println(console, toAppend);
-                                pw.append(toAppend);
-                            } catch (InterruptedException ex) {
-                                if (process != null) {
-                                    process.destroy();
+                                int outAvailable = out.available();
+                                if (outAvailable > 0) {
+                                    byte[] bytes = new byte[outAvailable];
+                                    int read = out.read(bytes);
+                                    toAppend = new String(bytes);
+                                    LogUtils.println(console, toAppend);
+                                    LogUtils.println(pw, toAppend);
+                                    pw.flush();
                                 }
-                                String toAppend = String.format("InterruptedException: Error in process,\n%s", ex.getMessage());
-                                LogUtils.println(console, toAppend);
-                                pw.append(toAppend);
-                            } 
-                        }
-                    }, console, System.err);
-                    exec.submit(reHandler);
-                }
-            } finally {
-                
+                                try {
+                                    int exitValue = process.exitValue();
+                                    toAppend = String.format("Process finished, exit value: %d\n", exitValue);
+                                    LogUtils.println(console, toAppend);
+                                    LogUtils.println(pw, toAppend);
+                                    pw.flush();
+                                    break;
+                                } catch (IllegalThreadStateException ignore) {
+                                    // this error is thrown by process.exitValue() if the underlying process has not yet finished
+                                    //LogUtils.println(console, String.format("IllegalThreadStateException: \n", ignore.getMessage()));
+                                }
+                            }
+
+                        } catch (IOException ex) {
+                            String toAppend = String.format("IOException: Error in process,\n%s", ex.getMessage());
+                            LogUtils.println(console, toAppend);
+                            LogUtils.println(pw, toAppend);
+                            pw.flush();
+                        } catch (InterruptedException ex) {
+                            if (process != null) {
+                                process.destroy();
+                            }
+                            String toAppend = String.format("InterruptedException: Error in process,\n%s", ex.getMessage());
+                            LogUtils.println(console, toAppend);
+                            LogUtils.println(pw, toAppend);
+                            pw.flush();
+                        } 
+                    }
+                }, console, System.err);
+                exec.submit(reHandler);
             }
-        }   catch (IOException ex) {
-            Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (pw != null)
+                pw.close();
         }
+        
         
         
         final JButton btnStartPtr = btnRun;
@@ -2242,22 +2255,31 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
      * @param path Path to lcms file
      * @return file paths resolved using lcmsFilePath's parent
      */
-    private List<String> getUmpireSeGarbageFiles(Path lcmsFilePath) {
-        List<String> filesToMove = Arrays.asList("diaumpire_se.log");
-        List<String> fileNameSuffixesToMove = Arrays.asList(
+    private UmpireGarbageFiles getUmpireSeGarbageFiles(Path lcmsFilePath) {
+        UmpireGarbageFiles umpireGarbageFiles = new UmpireGarbageFiles();
+        String fileNameLessSuffix = getFileNameLessSuffix(lcmsFilePath, ".mzxml");
+        Path fileOriginDir = lcmsFilePath.getParent();
+        
+        for (String fileToMove : UmpireGarbageFiles.filesToMove) {
+            umpireGarbageFiles.toMove.add(fileOriginDir.resolve(fileToMove).toString());
+        }
+        
+        for (String suffix : UmpireGarbageFiles.fileNameSuffixesToMove) {
+            String filenameToMove = fileNameLessSuffix + suffix;
+            String file = fileOriginDir.resolve(filenameToMove).toString();
+            umpireGarbageFiles.toMove.add(file);
+        }
+        return umpireGarbageFiles;
+    }
+    
+    private static class UmpireGarbageFiles {
+        static List<String> filesToMove = Arrays.asList("diaumpire_se.log");
+        static List<String> fileNameSuffixesToMove = Arrays.asList(
                 "_Peak", ".DIAWindowsFS", ".RTidxFS", 
                 ".ScanClusterMapping_Q1", ".ScanClusterMapping_Q2", ".ScanClusterMapping_Q3",
                 ".ScanidxFS", ".ScanPosFS", ".ScanRTFS", "_diasetting.ser", "_params.ser",
                 "_Q1.mgf", "_Q2.mgf", "_Q3.mgf");
-        List<String> result = new ArrayList<>();
-        String fileNameLessSuffix = getFileNameLessSuffix(lcmsFilePath, ".mzxml");
-        Path fileOriginDir = lcmsFilePath.getParent();
-        for (String suffix : fileNameSuffixesToMove) {
-            String filenameToMove = fileNameLessSuffix + suffix;
-            String file = fileOriginDir.resolve(filenameToMove).toString();
-            result.add(file);
-        }
-        return result;
+        List<String> toMove = new ArrayList<>();
     }
     
     private List<ProcessBuilder> processBuildersUmpire(String programsDir, String workingDir, List<String> lcmsFilePaths, String dateStr) {
@@ -2349,16 +2371,16 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         
                         
                         // working dir is different from mzXML file location, need to copy output
-                        List<String> umpireSeGarbageFiles = getUmpireSeGarbageFiles(curMzxmlPath);
+                        UmpireGarbageFiles umpireGarbageFiles = getUmpireSeGarbageFiles(curMzxmlPath);
                         
-                        for (String path : umpireSeGarbageFiles) {
+                        for (String path : umpireGarbageFiles.toMove) {
                             List<String> commandsFileMove = new ArrayList<>();
                             commandsFileMove.add("java");
                             commandsFileMove.add("-cp");
                             commandsFileMove.add(currentJarPath);
                             commandsFileMove.add("dia.umpire.util.FileCopy");
-                            String origin = Paths.get(curMzxmlFileDir.toString(), Paths.get(path).getFileName().toString()).toString();
-                            String destination = wdPath.resolve(path).toString();
+                            String origin = curMzxmlFileDir.resolve(Paths.get(path).getFileName()).toString();
+                            String destination = wdPath.resolve(Paths.get(path).getFileName()).toString();
                             commandsFileMove.add(origin);
                             commandsFileMove.add(destination);
                             ProcessBuilder pbFileMove = new ProcessBuilder(commandsFileMove);
@@ -3729,10 +3751,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         List<Path> existingFilesToDelete = new ArrayList<>();
         
         for (String path : paths) {
-            List<String> umpireSeGarbageFiles = getUmpireSeGarbageFiles(Paths.get(path));
+            UmpireGarbageFiles umpireGarbageFiles = getUmpireSeGarbageFiles(Paths.get(path));
             String garbageFile = "";
-            for (int i = 0; i < umpireSeGarbageFiles.size(); i++) {
-                garbageFile = umpireSeGarbageFiles.get(i);
+            for (int i = 0; i < umpireGarbageFiles.toMove.size(); i++) {
+                garbageFile = umpireGarbageFiles.toMove.get(i);
                 Path garbagePath = Paths.get(garbageFile);
                 if (Files.exists(garbagePath))
                     existingFilesToDelete.add(garbagePath);
@@ -3741,9 +3763,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         
         if (existingFilesToDelete.isEmpty()) {
             // nothing to delete
+            String msg = String.format("Nothing to delete.\n"
+                    + "The surroundings of selected files look clean.");
+            JOptionPane.showMessageDialog(this, msg, "Nothing to delete", JOptionPane.INFORMATION_MESSAGE);
             return;
-        } else {
-            
         }
         
         String msgConfirmDeletion = String.format("You are about to delete %d files.\nAre you sure?", existingFilesToDelete.size());
@@ -3754,13 +3777,17 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         
         for (Path path : existingFilesToDelete) {
             try {
-                Files.deleteIfExists(path);
+                if (Files.isDirectory(path)) {
+                    FileCopy.deleteFileOrFolder(path);
+                } else {
+                    Files.deleteIfExists(path);
+                }
             } catch (IOException ex) {
                 Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
                 String msg = String.format("Something awful happened while trying to delete file:\n"
                         + "%s", path);
-                JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.INFORMATION_MESSAGE);
-                return;
+                JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+                //return;
             }
         }
         
@@ -3782,10 +3809,19 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         
         
         JEditorPane ep = new JEditorPane("text/html", "<html><body style=\"" + style + "\">"
-                + "DIA-Umpire GUI wrapper<br/>"
+                + "<a href=\"http://diaumpire.sourceforge.net/\">DIA-Umpire GUI</a> wrapper<br/>"
                 + "By <a href=\"http://batmass.org\">Dmitry Avtonomov</a><br/>"
                 + "University of Michigan, 2016<br/>"
-                + "<a href=\"http://nesvilab.org/\">Alexey Nesvizhskii lab</a>"
+                + "<a href=\"http://nesvilab.org/\">Alexey Nesvizhskii lab</a><br/>&nbsp;<br/>&nbsp;"
+//                + "DIA-Umpire authors and contributors:<br/>"
+//                + "<ul>"
+//                + "<li>Chih Chiang Tsou</li>"
+//                + "<li>Dmitry Avtonomov</li>"
+//                + "<li>Guo Ci Teo</li>"
+//                + "<li>Alexey Nesvizhskii</li>"
+//                + "</ul>"
+                + "<a href=\"http://www.nature.com/nmeth/journal/v12/n3/full/nmeth.3255.html\">Original DIA-Umpire paper link</a><br/>"
+                + "Reference: <b>doi:10.1038/nmeth.3255</b>"
                 + "</body></html>");
 
         // handle link events
