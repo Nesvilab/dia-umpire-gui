@@ -183,7 +183,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel28 = new javax.swing.JLabel();
         txtBinUmpire = new javax.swing.JTextField();
         btnSelectUmpireJar = new javax.swing.JButton();
-        jLabel31 = new javax.swing.JLabel();
+        lblMsconvertBin = new javax.swing.JLabel();
         txtBinMsconvert = new javax.swing.JTextField();
         btnSelectMSConvertBinay = new javax.swing.JButton();
         chkRunUmpire = new javax.swing.JCheckBox();
@@ -698,11 +698,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel31.setText("msconvert");
-        jLabel31.setToolTipText("If you don't have msconvert on your PATH, specify the full path to the executable");
+        lblMsconvertBin.setText("msconvert");
+        lblMsconvertBin.setToolTipText("<html>If you don't have msconvert on your PATH, specify the full path to the executable.<br/>\nOn Windows this GUI also checks \"Program Files\" for exising installations of ProteoWizard.");
 
         txtBinMsconvert.setText(getDefaultTextMsconvert());
-        txtBinMsconvert.setToolTipText("If you don't have msconvert on your PATH, specify the full path to the executable");
+        txtBinMsconvert.setToolTipText(lblMsconvertBin.getToolTipText());
         txtBinMsconvert.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtBinMsconvertFocusLost(evt);
@@ -724,7 +724,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel27, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel31, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblMsconvertBin, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel28, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -748,7 +748,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(btnSelectUmpireJar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelUmpireBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel31)
+                    .addComponent(lblMsconvertBin)
                     .addComponent(txtBinMsconvert, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSelectMSConvertBinay))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -768,7 +768,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         });
 
         btnUmpireSeCleanup.setText("Clean Up");
-        btnUmpireSeCleanup.setToolTipText("When you've selected some files in \"Select Raw Files\" tab, this action will delete all the Umpire SE generated files in the same directory for those files");
+        btnUmpireSeCleanup.setToolTipText("<html>When you've selected some files in \"Select Raw Files\" tab, <br/>this action will delete all the Umpire SE generated files in the same directory for those files."); // NOI18N
         btnUmpireSeCleanup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUmpireSeCleanupActionPerformed(evt);
@@ -957,10 +957,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         panelCometBinary.setToolTipText("If you're using Philosopher to run Comet, make sure that 'comet' is the first option in 'Cmd Line Options'");
 
         jLabel29.setText("Comet");
-        jLabel29.setToolTipText("If you're using Philosopher to run Comet, make sure that 'comet' is the first option in 'Cmd Line Options'");
+        jLabel29.setToolTipText("");
 
         txtBinComet.setText(getDefaultTextComet());
-        txtBinComet.setToolTipText("If you're using Philosopher to run Comet, make sure that 'comet' is the first option in 'Cmd Line Options'");
+        txtBinComet.setToolTipText("");
         txtBinComet.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtBinCometFocusLost(evt);
@@ -1055,7 +1055,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         panelPeptideProphetBin.setToolTipText("If you're using Philosopher to run PeptideProhphet, make sure 'peptideprophet' is the first command in Cmd Line Options text");
 
         jLabel33.setText("PeptideProphet");
-        jLabel33.setToolTipText("If you're using Philosopher to run PeptideProhphet, make sure 'peptideprophet' is the first command in Cmd Line Options text");
+        jLabel33.setToolTipText("");
 
         btnSelectPeptideProphetBin.setText("Browse");
         btnSelectPeptideProphetBin.addActionListener(new java.awt.event.ActionListener() {
@@ -1065,7 +1065,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         });
 
         txtBinPeptideProphet.setText(getDefaultTextPeptideProphet());
-        txtBinPeptideProphet.setToolTipText("If you're using Philosopher to run PeptideProhphet, make sure 'peptideprophet' is the first command in Cmd Line Options text");
+        txtBinPeptideProphet.setToolTipText("");
         txtBinPeptideProphet.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtBinPeptideProphetFocusLost(evt);
@@ -1641,7 +1641,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         jLabel26.setText("(MB)");
 
         lblOutputDir.setText("Output dir");
-        lblOutputDir.setToolTipText("All the output (except Umpire SE) will be placed into this directory");
+        lblOutputDir.setToolTipText("<html>All the output will be placed into this directory.<br/>\nUmpire-SE always generates output near mzXML files, <br/>\nif you stop processing early, then these files might not have been<br/>\nmoved to the Output Dir yet. For this case there is a button<br/>\non \"DIA-Umpire SE\" tab to Clean Up the generated files."); // NOI18N
 
         btnSelectWrkingDir.setText("Browse");
         btnSelectWrkingDir.addActionListener(new java.awt.event.ActionListener() {
@@ -1663,7 +1663,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         txtProgramsDir.setToolTipText(lblProgramsDir.getToolTipText());
 
         lblProgramsDir.setText("Programs dir");
-        lblProgramsDir.setToolTipText("The JAR files and executables will be searched here (as well as using system PATH variable)");
+        lblProgramsDir.setToolTipText("The .jar files and executables will be searched here. <br/>\nExecutables (e.g. msconvert.exe) will also be searched using system's PATH variable.");
 
         javax.swing.GroupLayout panelRunLayout = new javax.swing.GroupLayout(panelRun);
         panelRun.setLayout(panelRunLayout);
@@ -4028,7 +4028,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
@@ -4060,6 +4059,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lblMsconvertBin;
     private javax.swing.JLabel lblNoMissedScan;
     private javax.swing.JLabel lblOutputDir;
     private javax.swing.JLabel lblProgramsDir;

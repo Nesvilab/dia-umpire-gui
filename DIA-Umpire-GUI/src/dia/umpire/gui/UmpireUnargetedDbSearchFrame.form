@@ -813,7 +813,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel27" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel31" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblMsconvertBin" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel28" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -843,7 +843,7 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel31" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblMsconvertBin" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtBinMsconvert" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnSelectMSConvertBinay" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -899,10 +899,10 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelectUmpireJarActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel31">
+                <Component class="javax.swing.JLabel" name="lblMsconvertBin">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="msconvert"/>
-                    <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have msconvert on your PATH, specify the full path to the executable"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;If you don&apos;t have msconvert on your PATH, specify the full path to the executable.&lt;br/&gt;&#xa;On Windows this GUI also checks &quot;Program Files&quot; for exising installations of ProteoWizard."/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtBinMsconvert">
@@ -910,7 +910,9 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="getDefaultTextMsconvert()" type="code"/>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value="If you don&apos;t have msconvert on your PATH, specify the full path to the executable"/>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="lblMsconvertBin" name="toolTipText" type="property"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtBinMsconvertFocusLost"/>
@@ -938,7 +940,7 @@
             <Component class="javax.swing.JButton" name="btnUmpireSeCleanup">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Clean Up"/>
-                <Property name="toolTipText" type="java.lang.String" value="When you&apos;ve selected some files in &quot;Select Raw Files&quot; tab, this action will delete all the Umpire SE generated files in the same directory for those files"/>
+                <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;When you&apos;ve selected some files in &quot;Select Raw Files&quot; tab, &lt;br/&gt;this action will delete all the Umpire SE generated files in the same directory for those files." noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUmpireSeCleanupActionPerformed"/>
@@ -1306,7 +1308,7 @@
                 <Component class="javax.swing.JLabel" name="jLabel29">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Comet"/>
-                    <Property name="toolTipText" type="java.lang.String" value="If you&apos;re using Philosopher to run Comet, make sure that &apos;comet&apos; is the first option in &apos;Cmd Line Options&apos;"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtBinComet">
@@ -1314,7 +1316,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="getDefaultTextComet()" type="code"/>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value="If you&apos;re using Philosopher to run Comet, make sure that &apos;comet&apos; is the first option in &apos;Cmd Line Options&apos;"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                   <Events>
                     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtBinCometFocusLost"/>
@@ -1430,7 +1432,7 @@
                 <Component class="javax.swing.JLabel" name="jLabel33">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="PeptideProphet"/>
-                    <Property name="toolTipText" type="java.lang.String" value="If you&apos;re using Philosopher to run PeptideProhphet, make sure &apos;peptideprophet&apos; is the first command in Cmd Line Options text"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnSelectPeptideProphetBin">
@@ -1446,7 +1448,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="getDefaultTextPeptideProphet()" type="code"/>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value="If you&apos;re using Philosopher to run PeptideProhphet, make sure &apos;peptideprophet&apos; is the first command in Cmd Line Options text"/>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                   <Events>
                     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtBinPeptideProphetFocusLost"/>
@@ -2419,7 +2421,7 @@
             <Component class="javax.swing.JLabel" name="lblOutputDir">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Output dir"/>
-                <Property name="toolTipText" type="java.lang.String" value="All the output (except Umpire SE) will be placed into this directory"/>
+                <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;All the output will be placed into this directory.&lt;br/&gt;&#xa;Umpire-SE always generates output near mzXML files, &lt;br/&gt;&#xa;if you stop processing early, then these files might not have been&lt;br/&gt;&#xa;moved to the Output Dir yet. For this case there is a button&lt;br/&gt;&#xa;on &quot;DIA-Umpire SE&quot; tab to Clean Up the generated files." noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnSelectWrkingDir">
@@ -2458,7 +2460,7 @@
             <Component class="javax.swing.JLabel" name="lblProgramsDir">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Programs dir"/>
-                <Property name="toolTipText" type="java.lang.String" value="The JAR files and executables will be searched here (as well as using system PATH variable)"/>
+                <Property name="toolTipText" type="java.lang.String" value="The .jar files and executables will be searched here. &lt;br/&gt;&#xa;Executables (e.g. msconvert.exe) will also be searched using system&apos;s PATH variable."/>
               </Properties>
             </Component>
           </SubComponents>
