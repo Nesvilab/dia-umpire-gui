@@ -1689,18 +1689,20 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
                         .addComponent(btnClearConsole))
-                    .addGroup(panelRunLayout.createSequentialGroup()
-                        .addComponent(lblOutputDir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtWorkingDir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSelectWrkingDir))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRunLayout.createSequentialGroup()
-                        .addComponent(lblProgramsDir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtProgramsDir, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBrowseProgramsDir)))
+                        .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblOutputDir)
+                            .addComponent(lblProgramsDir))
+                        .addGap(7, 7, 7)
+                        .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRunLayout.createSequentialGroup()
+                                .addComponent(txtProgramsDir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBrowseProgramsDir))
+                            .addGroup(panelRunLayout.createSequentialGroup()
+                                .addComponent(txtWorkingDir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSelectWrkingDir)))))
                 .addContainerGap())
         );
         panelRunLayout.setVerticalGroup(
@@ -2214,7 +2216,29 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private String getFileNameLessSuffix(Path path, String suffix) {
         String name = path.getFileName().toString();
         int indexOf = name.toLowerCase().indexOf(suffix);
-        return name.substring(0, indexOf);
+        return indexOf >= 0 ? name.substring(0, indexOf) : name;
+    }
+    
+    /**
+     * @param path Path to lcms file
+     * @return file paths resolved using lcmsFilePath's parent
+     */
+    private List<String> getUmpireSeGarbageFiles(Path lcmsFilePath) {
+        List<String> filesToMove = Arrays.asList("diaumpire_se.log");
+        List<String> fileNameSuffixesToMove = Arrays.asList(
+                "_Peak", ".DIAWindowsFS", ".RTidxFS", 
+                ".ScanClusterMapping_Q1", ".ScanClusterMapping_Q2", ".ScanClusterMapping_Q3",
+                ".ScanidxFS", ".ScanPosFS", ".ScanRTFS", "_diasetting.ser", "_params.ser",
+                "_Q1.mgf", "_Q2.mgf", "_Q3.mgf");
+        List<String> result = new ArrayList<>();
+        String fileNameLessSuffix = getFileNameLessSuffix(lcmsFilePath, ".mzxml");
+        Path fileOriginDir = lcmsFilePath.getParent();
+        for (String suffix : fileNameSuffixesToMove) {
+            String filenameToMove = fileNameLessSuffix + suffix;
+            String file = fileOriginDir.resolve(filenameToMove).toString();
+            result.add(file);
+        }
+        return result;
     }
     
     private List<ProcessBuilder> processBuildersUmpire(String programsDir, String workingDir, List<String> lcmsFilePaths, String dateStr) {
@@ -2306,42 +2330,20 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         
                         
                         // working dir is different from mzXML file location, need to copy output
-                        List<String> filesToMove = Arrays.asList("diaumpire_se.log");
-                        List<String> fileNameSuffixesToMove = Arrays.asList(
-                                "_Peak", ".DIAWindowsFS", ".RTidxFS", 
-                                ".ScanClusterMapping_Q1", ".ScanClusterMapping_Q2", ".ScanClusterMapping_Q3",
-                                ".ScanidxFS", ".ScanPosFS", ".ScanRTFS", "_diasetting.ser", "_params.ser",
-                                "_Q1.mgf", "_Q2.mgf", "_Q3.mgf");
+                        List<String> umpireSeGarbageFiles = getUmpireSeGarbageFiles(curMzxmlPath);
                         
-                        for (String path : filesToMove) {
+                        for (String path : umpireSeGarbageFiles) {
                             List<String> commandsFileMove = new ArrayList<>();
                             commandsFileMove.add("java");
                             commandsFileMove.add("-cp");
                             commandsFileMove.add(currentJarPath);
                             commandsFileMove.add("dia.umpire.util.FileCopy");
-                            String origin = Paths.get(curMzxmlFileDir.toString(), path).toString();
+                            String origin = Paths.get(curMzxmlFileDir.toString(), Paths.get(path).getFileName().toString()).toString();
                             String destination = wdPath.resolve(path).toString();
                             commandsFileMove.add(origin);
                             commandsFileMove.add(destination);
                             ProcessBuilder pbFileMove = new ProcessBuilder(commandsFileMove);
                             processBuilders.add(pbFileMove);
-                        }
-                        
-                        String fileNameLessSuffix = getFileNameLessSuffix(curMzxmlFileName, ".mzxml");
-                        for (String suffix : fileNameSuffixesToMove) {
-                            String filenameToMove = fileNameLessSuffix + suffix;
-                            String origin = Paths.get(curMzxmlFileDir.toString(), filenameToMove).toString();
-                            String destination = wdPath.resolve(filenameToMove).toString();
-                            
-                            List<String> commandsSuffixMove = new ArrayList<>();
-                            commandsSuffixMove.add("java");
-                            commandsSuffixMove.add("-cp");
-                            commandsSuffixMove.add(currentJarPath);
-                            commandsSuffixMove.add("dia.umpire.util.FileCopy");
-                            commandsSuffixMove.add(origin);
-                            commandsSuffixMove.add(destination);
-                            ProcessBuilder pbSuffixMove = new ProcessBuilder(commandsSuffixMove);
-                            processBuilders.add(pbSuffixMove);
                         }
                     }
                     
@@ -3697,6 +3699,53 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBrowseProgramsDirActionPerformed
 
     private void btnUmpireSeCleanupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUmpireSeCleanupActionPerformed
+        List<String> paths = getLcmsFilePaths();
+        if (paths.isEmpty()) {
+            String msg = String.format("No LC/MS files selected in 'Select Raw Files' tab");
+            JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.INFORMATION_MESSAGE);
+            resetRunButtons(true);
+            return;
+        }
+        
+        List<Path> existingFilesToDelete = new ArrayList<>();
+        
+        for (String path : paths) {
+            List<String> umpireSeGarbageFiles = getUmpireSeGarbageFiles(Paths.get(path));
+            String garbageFile = "";
+            for (int i = 0; i < umpireSeGarbageFiles.size(); i++) {
+                garbageFile = umpireSeGarbageFiles.get(i);
+                Path garbagePath = Paths.get(garbageFile);
+                if (Files.exists(garbagePath))
+                    existingFilesToDelete.add(garbagePath);
+            }
+        }
+        
+        if (existingFilesToDelete.isEmpty()) {
+            // nothing to delete
+            return;
+        } else {
+            
+        }
+        
+        String msgConfirmDeletion = String.format("You are about to delete %d files.\nAre you sure?", existingFilesToDelete.size());
+        int fileDeletionChoice = JOptionPane.showConfirmDialog(this, msgConfirmDeletion, 
+                "Deleting files", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (fileDeletionChoice != JOptionPane.OK_OPTION)
+            return;
+        
+        for (Path path : existingFilesToDelete) {
+            try {
+                Files.deleteIfExists(path);
+            } catch (IOException ex) {
+                Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
+                String msg = String.format("Something awful happened while trying to delete file:\n"
+                        + "%s", path);
+                JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+        }
+        
+        
         
     }//GEN-LAST:event_btnUmpireSeCleanupActionPerformed
 
