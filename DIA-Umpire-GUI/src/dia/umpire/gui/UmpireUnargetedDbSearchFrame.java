@@ -21,7 +21,9 @@ import dia.umpire.util.StringUtils;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -34,6 +36,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
@@ -65,11 +68,15 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultCaret;
 
@@ -293,8 +300,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         btnBrowseProgramsDir = new javax.swing.JButton();
         txtProgramsDir = new javax.swing.JTextField();
         lblProgramsDir = new javax.swing.JLabel();
+        btnAbout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("DIA-Umpire GUI");
 
         tabPane.setToolTipText("");
         tabPane.setName(""); // NOI18N
@@ -1665,6 +1674,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         lblProgramsDir.setText("Programs dir");
         lblProgramsDir.setToolTipText("The .jar files and executables will be searched here. <br/>\nExecutables (e.g. msconvert.exe) will also be searched using system's PATH variable.");
 
+        btnAbout.setText("About");
+        btnAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAboutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelRunLayout = new javax.swing.GroupLayout(panelRun);
         panelRun.setLayout(panelRunLayout);
         panelRunLayout.setHorizontalGroup(
@@ -1687,7 +1703,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         .addComponent(jLabel25)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                        .addComponent(btnAbout)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClearConsole))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRunLayout.createSequentialGroup()
                         .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1727,7 +1745,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     .addComponent(spinnerRam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel25)
                     .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel26))
+                    .addComponent(jLabel26)
+                    .addComponent(btnAbout))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                 .addContainerGap())
@@ -3749,6 +3768,47 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnUmpireSeCleanupActionPerformed
 
+    private void btnAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAboutActionPerformed
+
+        // for copying style
+        JLabel label = new JLabel();
+        Font font = label.getFont();
+        
+        // create some css from the label's font
+        StringBuilder style = new StringBuilder("font-family:" + font.getFamily() + ";");
+        style.append("font-weight:").append(font.isBold() ? "bold" : "normal").append(";");
+        style.append("font-size:").append(font.getSize()).append("pt;");
+        
+        
+        
+        JEditorPane ep = new JEditorPane("text/html", "<html><body style=\"" + style + "\">"
+                + "DIA-Umpire GUI wrapper<br/>"
+                + "By <a href=\"http://batmass.org\">Dmitry Avtonomov</a><br/>"
+                + "University of Michigan, 2016<br/>"
+                + "<a href=\"http://nesvilab.org/\">Alexey Nesvizhskii lab</a>"
+                + "</body></html>");
+
+        // handle link events
+        ep.addHyperlinkListener(new HyperlinkListener()
+        {
+            @Override
+            public void hyperlinkUpdate(HyperlinkEvent e) {
+                if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
+                    try {
+                        Desktop.getDesktop().browse(e.getURL().toURI());
+                    } catch (URISyntaxException | IOException ex) {
+                        Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        ep.setEditable(false);
+        ep.setBackground(label.getBackground());
+
+        // show
+        JOptionPane.showMessageDialog(this, ep, "About", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btnAboutActionPerformed
+
     private void saveProgramsDir() {
         saveTextFieldToCache(txtProgramsDir, ThisAppProps.PROP_BINARIES_IN);
     }
@@ -3941,6 +4001,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAbout;
     private javax.swing.JButton btnBinProteinProphet;
     private javax.swing.JButton btnBrowseDatabasePath;
     private javax.swing.JButton btnBrowseProgramsDir;
