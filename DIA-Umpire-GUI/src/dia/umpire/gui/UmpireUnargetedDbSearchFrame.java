@@ -2363,6 +2363,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     // check if the working dir is the dir where the mzXML file was
                     // if it is, then don't do anything, if it is not, then copy
                     // UmpireSE outputs to the working directory
+                    // and also create symlinks to the original files
                     
                     if (!wdPath.equals(curMzxmlFileDir)) {
                         // find the curernt gui JAR location
@@ -2386,6 +2387,19 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                             ProcessBuilder pbFileMove = new ProcessBuilder(commandsFileMove);
                             processBuilders.add(pbFileMove);
                         }
+                        
+                        // creating symlink
+                        List<String> commandsSymlink = new ArrayList<>();
+                        commandsSymlink.add("java");
+                        commandsSymlink.add("-cp");
+                        commandsSymlink.add(currentJarPath);
+                        commandsSymlink.add("dia.umpire.util.FileSymlink");
+                        String origin = curMzxmlPath.toString();
+                        String symlink = wdPath.resolve(curMzxmlFileName).toString();
+                        commandsSymlink.add(origin);
+                        commandsSymlink.add(symlink);
+                        ProcessBuilder pbSymlink = new ProcessBuilder(commandsSymlink);
+                        processBuilders.add(pbSymlink);
                     }
                     
                     
