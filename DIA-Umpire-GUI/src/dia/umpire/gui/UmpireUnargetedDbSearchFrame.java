@@ -40,6 +40,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.DirectoryStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -2007,6 +2008,45 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         return paths;
     }
     
+    private List<Path> getLcmsFileSymlinks(Path workDir) {
+        List<String> lcmsFilePaths = getLcmsFilePaths();
+        ArrayList<Path> result = new ArrayList<>();
+        for (String lcmsFilePath : lcmsFilePaths) {
+            result.add(workDir.resolve(Paths.get(lcmsFilePath).getFileName()));
+        }
+        return result;
+    }
+    
+    private void createLcmsFileSymlinks(Path workDir) throws IOException {
+        List<String> lcmsFilePaths = getLcmsFilePaths();
+        List<Path> paths = new ArrayList<>();
+        for (String s : lcmsFilePaths) {
+            paths.add(Paths.get(s));
+        }
+        
+        List<Path> links = getLcmsFileSymlinks(workDir);
+        for (int i = 0; i < paths.size(); i++) {
+            Path lcmsPath = paths.get(i);
+            Path link = links.get(i);
+            if (Files.exists(link)) {
+                // if that link already exists we need to make sure it points to
+                // the same file
+                if (!Files.isSymbolicLink(link)) {
+                    throw new FileAlreadyExistsException(link.toString(), null, "A file already exists and is not a symbolic link");
+                }
+                Path linkTarget = Files.readSymbolicLink(link);
+                if(!linkTarget.equals(lcmsPath)) {
+                    String msg = String.format("A symblic link to mzXML file already exists, but points to a different file: %s", link);
+                    throw new FileAlreadyExistsException(link.toString(), null, msg);
+                }
+            } else {
+                if (!Files.isSameFile(link, lcmsPath)) {
+                    Files.createSymbolicLink(link, lcmsPath);
+                }
+            }
+        }
+    }
+    
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
         resetRunButtons(false);
         
@@ -2097,6 +2137,16 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
         processBuilders.addAll(processBuildersUmpireQuant);
         
+        // create symlinks to mzXML files
+        try {
+            createLcmsFileSymlinks(Paths.get(workingDir));
+        } catch (IOException ex) {
+            String msg = String.format("Something went wronng when creating symlinks to LCMS files.\n%s", ex.getMessage());
+            JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+            
+            resetRunButtons(true);
+            return;
+        }
         
         LogUtils.println(console, String.format("Will execute %d commands:", processBuilders.size()));
         for (final ProcessBuilder pb : processBuilders) {
@@ -2123,8 +2173,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        final PrintWriter pw = new PrintWriter(
-                    new OutputStreamWriter(new BufferedOutputStream(fos), Charset.forName("UTF-8")), true);
+        final OutputStreamWriter pw = new OutputStreamWriter(new BufferedOutputStream(fos), Charset.forName("UTF-8"));
         
         try // create a log file and run everything
         {
@@ -2145,7 +2194,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                                 sb.append(commandPart).append(" ");
                             String toAppend = sb.toString();
                             LogUtils.println(console, toAppend);
-                            LogUtils.println(pw, toAppend);
+                            LogUtils.println(pw, toAppend, false);
                             pw.flush();
                             process = pb.start();
                             //                        int waitFor = process.waitFor();
@@ -2155,7 +2204,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                             //
                             toAppend = "Process started";
                             LogUtils.println(console, toAppend);
-                            LogUtils.println(pw, toAppend);
+                            LogUtils.println(pw, toAppend, false);
                             pw.flush();
 
                             InputStream err = process.getErrorStream();
@@ -2168,7 +2217,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                                     int read = err.read(bytes);
                                     toAppend = new String(bytes);
                                     LogUtils.println(console, toAppend);
-                                    LogUtils.println(pw, toAppend);
+                                    LogUtils.println(pw, toAppend, false);
                                     pw.flush();
                                 }
                                 int outAvailable = out.available();
@@ -2177,14 +2226,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                                     int read = out.read(bytes);
                                     toAppend = new String(bytes);
                                     LogUtils.println(console, toAppend);
-                                    LogUtils.println(pw, toAppend);
+                                    LogUtils.println(pw, toAppend, false);
                                     pw.flush();
                                 }
                                 try {
                                     int exitValue = process.exitValue();
                                     toAppend = String.format("Process finished, exit value: %d\n", exitValue);
                                     LogUtils.println(console, toAppend);
-                                    LogUtils.println(pw, toAppend);
+                                    LogUtils.println(pw, toAppend, false);
                                     pw.flush();
                                     break;
                                 } catch (IllegalThreadStateException ignore) {
@@ -2196,16 +2245,24 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         } catch (IOException ex) {
                             String toAppend = String.format("IOException: Error in process,\n%s", ex.getMessage());
                             LogUtils.println(console, toAppend);
-                            LogUtils.println(pw, toAppend);
-                            pw.flush();
+                            LogUtils.println(pw, toAppend, false);
+                            try {
+                                pw.flush();
+                            } catch (IOException ex1) {
+                                Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex1);
+                            }
                         } catch (InterruptedException ex) {
                             if (process != null) {
                                 process.destroy();
                             }
                             String toAppend = String.format("InterruptedException: Error in process,\n%s", ex.getMessage());
                             LogUtils.println(console, toAppend);
-                            LogUtils.println(pw, toAppend);
-                            pw.flush();
+                            LogUtils.println(pw, toAppend, false);
+                            try {
+                                pw.flush();
+                            } catch (IOException ex1) {
+                                Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex1);
+                            }
                         } 
                     }
                 }, console, System.err);
@@ -2213,7 +2270,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             }
         } finally {
             if (pw != null)
-                pw.close();
+                try {
+                    pw.close();
+            } catch (IOException ex) {
+                Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         
@@ -2339,8 +2400,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                 List<String> createdMgfFiles = new ArrayList<>();
                 List<String> createdMzXmlFiles = new ArrayList<>();
                 Path wdPath = Paths.get(workingDir).toAbsolutePath();
-                for (String lcMsFilePathStr : lcmsFilePaths) {
-                    Path curMzxmlPath = Paths.get(lcMsFilePathStr);
+                List<Path> lcmsFileSymlinks = getLcmsFileSymlinks(wdPath);
+                for (Path lcmsSymlink : lcmsFileSymlinks) {
+                    Path curMzxmlPath = lcmsSymlink;
                     Path curMzxmlFileName = curMzxmlPath.getFileName();
                     Path curMzxmlFileDir = curMzxmlPath.getParent();
                     
@@ -2353,7 +2415,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     StringBuilder sb = new StringBuilder().append("-Xmx").append(ram).append("m");
                     commands.add(sb.toString());
                     commands.add(binUmpire);
-                    commands.add(Paths.get(lcMsFilePathStr).toAbsolutePath().toString());
+                    commands.add(curMzxmlPath.toString());
                     commands.add(umpireParamsFilePath.toString());
                     
                     ProcessBuilder pb = new ProcessBuilder(commands);
@@ -2388,18 +2450,18 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                             processBuilders.add(pbFileMove);
                         }
                         
-                        // creating symlink
-                        List<String> commandsSymlink = new ArrayList<>();
-                        commandsSymlink.add("java");
-                        commandsSymlink.add("-cp");
-                        commandsSymlink.add(currentJarPath);
-                        commandsSymlink.add("dia.umpire.util.FileSymlink");
-                        String origin = curMzxmlPath.toString();
-                        String symlink = wdPath.resolve(curMzxmlFileName).toString();
-                        commandsSymlink.add(origin);
-                        commandsSymlink.add(symlink);
-                        ProcessBuilder pbSymlink = new ProcessBuilder(commandsSymlink);
-                        processBuilders.add(pbSymlink);
+//                        // creating symlink
+//                        List<String> commandsSymlink = new ArrayList<>();
+//                        commandsSymlink.add("java");
+//                        commandsSymlink.add("-cp");
+//                        commandsSymlink.add(currentJarPath);
+//                        commandsSymlink.add("dia.umpire.util.FileSymlink");
+//                        String origin = curMzxmlPath.toString();
+//                        String symlink = wdPath.resolve(curMzxmlFileName).toString();
+//                        commandsSymlink.add(origin);
+//                        commandsSymlink.add(symlink);
+//                        ProcessBuilder pbSymlink = new ProcessBuilder(commandsSymlink);
+//                        processBuilders.add(pbSymlink);
                     }
                     
                     
