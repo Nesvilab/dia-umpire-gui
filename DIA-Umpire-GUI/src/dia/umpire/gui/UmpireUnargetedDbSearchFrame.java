@@ -2028,6 +2028,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         for (int i = 0; i < paths.size(); i++) {
             Path lcmsPath = paths.get(i);
             Path link = links.get(i);
+            if (link.equals(lcmsPath))
+                return;
             if (Files.exists(link)) {
                 // if that link already exists we need to make sure it points to
                 // the same file
@@ -2039,11 +2041,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     String msg = String.format("A symblic link to mzXML file already exists, but points to a different file: %s", link);
                     throw new FileAlreadyExistsException(link.toString(), null, msg);
                 }
-            } else {
-                if (!Files.isSameFile(link, lcmsPath)) {
-                    Files.createSymbolicLink(link, lcmsPath);
-                }
+                return;
             }
+            Files.createSymbolicLink(link, lcmsPath);
         }
     }
     
@@ -2183,22 +2183,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         LogUtils.println(console, "");
         LogUtils.println(console, "");
         
-//        FileOutputStream fos = null;
-//        try {
-//            String logFileName = "dia-umpire-gui_" + dateString + ".log";
-//                Path logFilePath = Paths.get(workingDir, logFileName);
-//                if (Files.exists(logFilePath))
-//                    Files.delete(logFilePath);
-//            fos = new FileOutputStream(logFilePath.toFile());
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        final OutputStreamWriter pw = new OutputStreamWriter(new BufferedOutputStream(fos), Charset.forName("UTF-8"));
-        
-        try // create a log file and run everything
+        try // run everything
         {
             exec = Executors.newFixedThreadPool(1);
             for (final ProcessBuilder pb : processBuilders) {
@@ -2217,18 +2202,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                                 sb.append(commandPart).append(" ");
                             String toAppend = sb.toString();
                             LogUtils.println(console, toAppend);
-//                            LogUtils.println(pw, toAppend, false);
-//                            pw.flush();
                             process = pb.start();
-                            //                        int waitFor = process.waitFor();
-                            //                        submittedProcesses.add(process);
-                            //
-                            //                        LogUtils.println(console, String.format("Process waitFor result is: [%d]", waitFor));
-                            //
                             toAppend = "Process started";
                             LogUtils.println(console, toAppend);
-//                            LogUtils.println(pw, toAppend, false);
-//                            pw.flush();
 
                             InputStream err = process.getErrorStream();
                             InputStream out = process.getInputStream();
@@ -2240,8 +2216,6 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                                     int read = err.read(bytes);
                                     toAppend = new String(bytes);
                                     LogUtils.println(console, toAppend);
-//                                    LogUtils.println(pw, toAppend, false);
-//                                    pw.flush();
                                 }
                                 int outAvailable = out.available();
                                 if (outAvailable > 0) {
@@ -2249,70 +2223,54 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                                     int read = out.read(bytes);
                                     toAppend = new String(bytes);
                                     LogUtils.println(console, toAppend);
-//                                    LogUtils.println(pw, toAppend, false);
-//                                    pw.flush();
                                 }
                                 try {
                                     int exitValue = process.exitValue();
                                     toAppend = String.format("Process finished, exit value: %d\n", exitValue);
                                     LogUtils.println(console, toAppend);
-//                                    LogUtils.println(pw, toAppend, false);
-//                                    pw.flush();
                                     break;
                                 } catch (IllegalThreadStateException ignore) {
                                     // this error is thrown by process.exitValue() if the underlying process has not yet finished
-                                    //LogUtils.println(console, String.format("IllegalThreadStateException: \n", ignore.getMessage()));
                                 }
                             }
 
                         } catch (IOException ex) {
                             String toAppend = String.format("IOException: Error in process,\n%s", ex.getMessage());
                             LogUtils.println(console, toAppend);
-//                            LogUtils.println(pw, toAppend, false);
-//                            try {
-//                                pw.flush();
-//                            } catch (IOException ex1) {
-//                                Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex1);
-//                            }
                         } catch (InterruptedException ex) {
                             if (process != null) {
                                 process.destroy();
                             }
                             String toAppend = String.format("InterruptedException: Error in process,\n%s", ex.getMessage());
                             LogUtils.println(console, toAppend);
-//                            LogUtils.println(pw, toAppend, false);
-//                            try {
-//                                pw.flush();
-//                            } catch (IOException ex1) {
-//                                Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex1);
-//                            }
                         } 
                     }
                 }, console, System.err);
                 exec.submit(reHandler);
                 
-                
+                // On windows try to schedule copied mzXML file deletion
                 if (OsUtils.isWindows()) {
-                    // On windows try to schedule copied mzXML file deletion
                     REHandler deleteTask = new REHandler(new Runnable() {
                         @Override
                         public void run() {
+                            List<String> lcmsFiles = getLcmsFilePaths();
                             List<Path> copiedFiles = getLcmsFilePathsInWorkdir(Paths.get(workingDir));
-                            for (Path copiedFile : copiedFiles) {
-                                copiedFile.toFile().deleteOnExit();
+                            if (lcmsFiles.size() != copiedFiles.size())
+                                throw new IllegalStateException("LCMS file list sizes should be equal.");
+                            for (int i = 0; i < lcmsFiles.size(); i++) {
+                                Path origPath = Paths.get(lcmsFiles.get(i));
+                                Path linkPath = copiedFiles.get(i);
+                                if (!linkPath.getParent().equals(origPath.getParent()))
+                                    linkPath.toFile().deleteOnExit();
                             }
+                            
                         }
                     }, console, System.err);
                     exec.submit(deleteTask);
                 }
             }
         } finally {
-//            if (pw != null)
-//                try {
-//                    pw.close();
-//            } catch (IOException ex) {
-//                Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            
         }
         
         
@@ -2386,8 +2344,14 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         
         URI currentJarUri = OsUtils.getCurrentJarPath();
         String currentJarPath = Paths.get(currentJarUri).toAbsolutePath().toString();
+        Path wd = Paths.get(workingDir);
         
         for (String lcmsFilePath : lcmsFilePaths) {
+            
+            Path fileIn = Paths.get(lcmsFilePath);
+            if (fileIn.getParent().equals(wd))
+                continue;
+            
             List<String> commands = new ArrayList<>();
             commands.add("java");
             commands.add("-cp");
@@ -2402,13 +2366,25 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         return processBuilders;
     }
     
+    private boolean checkLcmsFileForDeletion(String workingDir, String lcmsFilePath) {
+        Path wd = Paths.get(workingDir);
+        Path file = Paths.get(lcmsFilePath);
+        return !wd.equals(file.getParent());
+    }
+    
     private List<ProcessBuilder> processBuildersDeleteFiles(String workingDir, List<String> lcmsFilePaths) {
         List<ProcessBuilder> processBuilders = new LinkedList<>();
         
         URI currentJarUri = OsUtils.getCurrentJarPath();
         String currentJarPath = Paths.get(currentJarUri).toAbsolutePath().toString();
         
+        Path wd = Paths.get(workingDir);
+        
         for (String lcmsFilePath : lcmsFilePaths) {
+            
+            if (wd.equals(Paths.get(lcmsFilePath).getParent()))
+                continue;
+            
             List<String> commands = new ArrayList<>();
             commands.add("java");
             commands.add("-cp");
