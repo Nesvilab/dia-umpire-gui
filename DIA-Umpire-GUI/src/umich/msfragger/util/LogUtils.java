@@ -1,4 +1,4 @@
-package dia.umpire.util;
+package umich.msfragger.util;
 
 import javax.swing.*;
 import java.io.BufferedInputStream;

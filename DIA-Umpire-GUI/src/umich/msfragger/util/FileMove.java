@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dia.umpire.util;
+package umich.msfragger.util;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,16 +22,23 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 /**
+ * This exists for a single purpose: when we create ProcessBuilders for running
+ * Umpire from GUI, UmpireSE generated stuff must be moved to the working
+ * directory. To not be dependent on system's copy/move commands, we have this
+ * convenience class.
  *
  * @author Dmitry Avtonomov
  */
-public class FileCopy {
+public class FileMove {
+
     public static void main(String[] args) throws IOException {
         if (args.length != 2) {
             throw new IllegalArgumentException("Input must be exactly 2 arguments: origin and destination");
         }
         Path origin = Paths.get(args[0]);
         Path destination = Paths.get(args[1]);
-        Files.copy(origin, destination, StandardCopyOption.REPLACE_EXISTING);
+        Files.move(origin, destination, StandardCopyOption.REPLACE_EXISTING);
     }
+
+
 }

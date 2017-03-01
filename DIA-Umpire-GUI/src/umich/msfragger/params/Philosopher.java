@@ -13,22 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dia.umpire.params;
+package umich.msfragger.params;
 
 /**
  *
- * @author dmitriya
+ * @author Dmitry Avtonomov
  */
-public class PeptideProphetParams {
-    private String cmdLineParams = "";
-
-    public String getCmdLineParams() {
-        return cmdLineParams;
-    }
-
-    public void setCmdLineParams(String cmdLineParams) {
-        this.cmdLineParams = cmdLineParams;
-    }
+public class Philosopher {
+    public static final String CMD_COMET = "comet";
+    public static final String CMD_PEPTIDE_PROPHET = "peptideprophet";
+    public static final String CMD_PROTEIN_PROPHET = "proteinprophet";
     
-    
+    public static final String PROTEIN_PROPHET_OUTPUT_FILE = "interact.prot.xml";
 }

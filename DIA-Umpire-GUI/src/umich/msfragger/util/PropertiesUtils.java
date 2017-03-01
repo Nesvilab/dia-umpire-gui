@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dia.umpire.util;
+package umich.msfragger.util;
 
-import dia.umpire.exceptions.FileWritingException;
-import dia.umpire.params.PropLine;
-import dia.umpire.params.PropertyFileContent;
+import umich.msfragger.exceptions.FileWritingException;
+import umich.msfragger.params.PropLine;
+import umich.msfragger.params.PropertyFileContent;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +30,7 @@ public class PropertiesUtils {
      * file, keeping the formatting as close to original as possible.
      * @param pfc modified contents of the file
      * @param out The stream should be connected to a file. The stream will be closed after this call.
-     * @throws dia.umpire.exceptions.FileWritingException
+     * @throws umich.msfragger.exceptions.FileWritingException
      */
     public static void writePropertiesContent(PropertyFileContent pfc, OutputStream out) throws FileWritingException {
         try (PrintWriter pw = new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8), true)) {

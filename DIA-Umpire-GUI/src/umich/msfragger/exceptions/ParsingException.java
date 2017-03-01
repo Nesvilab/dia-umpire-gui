@@ -1,4 +1,4 @@
-package dia.umpire.exceptions;
+package umich.msfragger.exceptions;
 
 /**
  * Created by Dmitry Avtonomov on 2016-04-27.

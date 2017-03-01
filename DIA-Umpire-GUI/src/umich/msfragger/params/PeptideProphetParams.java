@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dia.umpire.params;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+package umich.msfragger.params;
 
 /**
  *
  * @author dmitriya
  */
-public interface PropertyFileContent {
+public class PeptideProphetParams {
+    private String cmdLineParams = "";
 
-    List<String> getLinesInOriginalFile();
+    public String getCmdLineParams() {
+        return cmdLineParams;
+    }
 
-    Map<Integer, PropLine> getMapLines();
-
-    Map<String, Integer> getMapProps();
-
-    Properties getProps();
+    public void setCmdLineParams(String cmdLineParams) {
+        this.cmdLineParams = cmdLineParams;
+    }
+    
     
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dia.umpire.gui;
+package umich.msfragger.gui;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -12,7 +12,7 @@ import javax.swing.JFrame;
  *
  * @author dattam
  */
-public class DIAUmpireGUI {
+public class MsFraggerGui {
 
     /**
      * @param args the command line arguments
