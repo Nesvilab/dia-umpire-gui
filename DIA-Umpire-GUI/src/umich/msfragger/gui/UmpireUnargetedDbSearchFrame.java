@@ -136,11 +136,15 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         btnSelectRawFiles = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         panelMsFragger = new javax.swing.JPanel();
-        panelFraggerParams = new javax.swing.JPanel();
+        panelMsfraggerParams = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtFraggerDb = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        txtMsfraggerDb = new javax.swing.JTextField();
+        btnSelectMsfraggerDb = new javax.swing.JButton();
         chkRunMsfragger = new javax.swing.JCheckBox();
+        panelMsfraggerBin = new javax.swing.JPanel();
+        btnSelectMsfraggerBin = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtBinMsfragger = new javax.swing.JTextField();
         panelPeptideProphet = new javax.swing.JPanel();
         panelPeptideProphetBin = new javax.swing.JPanel();
         jLabel33 = new javax.swing.JLabel();
@@ -265,56 +269,99 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         tabPane.addTab("Select Raw Files", panelInTabSelectFiles);
 
-        panelFraggerParams.setBorder(javax.swing.BorderFactory.createTitledBorder("MSFragger parameters"));
+        panelMsfraggerParams.setBorder(javax.swing.BorderFactory.createTitledBorder("MSFragger parameters"));
 
         jLabel1.setText("Sequence Database");
 
-        jButton2.setText("Browse");
-        jButton2.setActionCommand("btnFraggerDb");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnSelectMsfraggerDb.setText("Browse");
+        btnSelectMsfraggerDb.setActionCommand("btnFraggerDb");
+        btnSelectMsfraggerDb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnSelectMsfraggerDbActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout panelFraggerParamsLayout = new javax.swing.GroupLayout(panelFraggerParams);
-        panelFraggerParams.setLayout(panelFraggerParamsLayout);
-        panelFraggerParamsLayout.setHorizontalGroup(
-            panelFraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelFraggerParamsLayout.createSequentialGroup()
+        javax.swing.GroupLayout panelMsfraggerParamsLayout = new javax.swing.GroupLayout(panelMsfraggerParams);
+        panelMsfraggerParams.setLayout(panelMsfraggerParamsLayout);
+        panelMsfraggerParamsLayout.setHorizontalGroup(
+            panelMsfraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMsfraggerParamsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtFraggerDb, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                .addComponent(txtMsfraggerDb, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btnSelectMsfraggerDb)
                 .addContainerGap())
         );
-        panelFraggerParamsLayout.setVerticalGroup(
-            panelFraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelFraggerParamsLayout.createSequentialGroup()
+        panelMsfraggerParamsLayout.setVerticalGroup(
+            panelMsfraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMsfraggerParamsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelFraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelMsfraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtFraggerDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
-                .addContainerGap(510, Short.MAX_VALUE))
+                    .addComponent(txtMsfraggerDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSelectMsfraggerDb))
+                .addContainerGap(431, Short.MAX_VALUE))
         );
 
         chkRunMsfragger.setSelected(true);
         chkRunMsfragger.setText("Run MSFragger");
+        chkRunMsfragger.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkRunMsfraggerActionPerformed(evt);
+            }
+        });
+
+        panelMsfraggerBin.setBorder(javax.swing.BorderFactory.createTitledBorder("MSFragger"));
+
+        btnSelectMsfraggerBin.setText("Browse");
+        btnSelectMsfraggerBin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectMsfraggerBinActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("MSFragger");
+
+        txtBinMsfragger.setText(getDefaultTextMsfragger());
+
+        javax.swing.GroupLayout panelMsfraggerBinLayout = new javax.swing.GroupLayout(panelMsfraggerBin);
+        panelMsfraggerBin.setLayout(panelMsfraggerBinLayout);
+        panelMsfraggerBinLayout.setHorizontalGroup(
+            panelMsfraggerBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMsfraggerBinLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtBinMsfragger)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSelectMsfraggerBin)
+                .addContainerGap())
+        );
+        panelMsfraggerBinLayout.setVerticalGroup(
+            panelMsfraggerBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMsfraggerBinLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelMsfraggerBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSelectMsfraggerBin)
+                    .addComponent(jLabel2)
+                    .addComponent(txtBinMsfragger, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout panelMsFraggerLayout = new javax.swing.GroupLayout(panelMsFragger);
         panelMsFragger.setLayout(panelMsFraggerLayout);
         panelMsFraggerLayout.setHorizontalGroup(
             panelMsFraggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelMsFraggerLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMsFraggerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelMsFraggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelMsFraggerLayout.createSequentialGroup()
+                .addGroup(panelMsFraggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelMsfraggerBin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelMsfraggerParams, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelMsFraggerLayout.createSequentialGroup()
                         .addComponent(chkRunMsfragger)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(panelFraggerParams, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelMsFraggerLayout.setVerticalGroup(
@@ -322,8 +369,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMsFraggerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(chkRunMsfragger)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelMsfraggerBin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelFraggerParams, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelMsfraggerParams, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1320,7 +1369,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSelectRawFilesActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnSelectMsfraggerDbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectMsfraggerDbActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("FASTA files", "fa", "fasta");
         fileChooser.setFileFilter(fileNameExtensionFilter);
@@ -1331,8 +1380,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
         setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
 
-        if (!txtPeptideProphetSeqDb.getText().isEmpty()) {
-            File toFile = Paths.get(txtPeptideProphetSeqDb.getText()).toFile();
+        if (!txtMsfraggerDb.getText().isEmpty()) {
+            File toFile = Paths.get(txtMsfraggerDb.getText()).toFile();
             fileChooser.setCurrentDirectory(toFile);
         }
 
@@ -1341,11 +1390,52 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
             case JFileChooser.APPROVE_OPTION:
 
             File f = fileChooser.getSelectedFile();
-            txtPeptideProphetSeqDb.setText(f.getAbsolutePath());
+            txtMsfraggerDb.setText(f.getAbsolutePath());
 
             break;
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnSelectMsfraggerDbActionPerformed
+
+    private void chkRunMsfraggerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRunMsfraggerActionPerformed
+        boolean selected = chkRunMsfragger.isSelected();
+        Container[] comps = new Container[] {
+            panelMsfraggerBin,
+            panelMsfraggerParams
+        };
+        for (Container c : comps) {
+            enableComponents(c, selected);
+        }
+    }//GEN-LAST:event_chkRunMsfraggerActionPerformed
+
+    private void btnSelectMsfraggerBinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectMsfraggerBinActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select binary");
+        fileChooser.setApproveButtonToolTipText("Select MSFragger jar");
+        fileChooser.setDialogTitle("Select MSFragger jar");
+        fileChooser.setMultiSelectionEnabled(false);
+        //        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
+        //        fileChooser.setFileFilter(fileNameExtensionFilter);
+
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_JAR_MSFRAGGER_IN);
+
+        if (!txtBinMsfragger.getText().isEmpty()) {
+            File toFile = Paths.get(txtBinMsfragger.getText()).toFile();
+            fileChooser.setCurrentDirectory(toFile);
+        }
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+
+            File f = fileChooser.getSelectedFile();
+            txtBinMsfragger.setText(f.getAbsolutePath());
+            saveFilechooserPathToCached(f, ThisAppProps.PROP_JAR_MSFRAGGER_IN);
+            saveBinPeptideProphet();
+            break;
+        }
+    }//GEN-LAST:event_btnSelectMsfraggerBinActionPerformed
 
     private void setFilechooserPathToCached(JFileChooser fileChooser, String propName) {
         ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
@@ -2025,7 +2115,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 
             String fastaPath = txtPeptideProphetSeqDb.getText().trim();
             if (fastaPath.isEmpty()) {
-                fastaPath = txtFraggerDb.getText().trim();
+                fastaPath = txtMsfraggerDb.getText().trim();
                 if (fastaPath.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Fasta file (PeptideProphet) path can't be empty",
                         "Warning", JOptionPane.WARNING_MESSAGE);
@@ -2772,6 +2862,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnClearConsole;
     private javax.swing.JButton btnProteinProphetSeqDb;
     private javax.swing.JButton btnRun;
+    private javax.swing.JButton btnSelectMsfraggerBin;
+    private javax.swing.JButton btnSelectMsfraggerDb;
     private javax.swing.JButton btnSelectPeptideProphetBin;
     private javax.swing.JButton btnSelectPeptideProphetSeqDbPath;
     private javax.swing.JButton btnSelectRawFiles;
@@ -2784,8 +2876,8 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private umich.msfragger.gui.TextConsole console;
     private javax.swing.JScrollPane consoleScrollPane;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
@@ -2802,9 +2894,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblOutputDir;
     private javax.swing.JLabel lblProgramsDir;
-    private javax.swing.JPanel panelFraggerParams;
     private javax.swing.JPanel panelInTabSelectFiles;
     private javax.swing.JPanel panelMsFragger;
+    private javax.swing.JPanel panelMsfraggerBin;
+    private javax.swing.JPanel panelMsfraggerParams;
     private javax.swing.JPanel panelPeptideProphet;
     private javax.swing.JPanel panelPeptideProphetBin;
     private javax.swing.JPanel panelPeptideProphetOptions;
@@ -2816,9 +2909,10 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     private javax.swing.JSpinner spinnerThreads;
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JTextArea txtAreaSelectedFiles;
+    private javax.swing.JTextField txtBinMsfragger;
     private javax.swing.JTextField txtBinPeptideProphet;
     private javax.swing.JTextField txtBinProteinProphet;
-    private javax.swing.JTextField txtFraggerDb;
+    private javax.swing.JTextField txtMsfraggerDb;
     private javax.swing.JTextArea txtPeptideProphetCmdLineOptions;
     private javax.swing.JTextField txtPeptideProphetSeqDb;
     private javax.swing.JTextField txtProgramsDir;

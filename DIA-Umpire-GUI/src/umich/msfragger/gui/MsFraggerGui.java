@@ -5,9 +5,6 @@
  */
 package umich.msfragger.gui;
 
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-
 /**
  *
  * @author dattam
