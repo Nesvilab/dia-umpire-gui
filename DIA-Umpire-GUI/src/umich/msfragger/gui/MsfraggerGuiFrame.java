@@ -193,7 +193,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MSFragger");
-        setIconImage(loadIcon());
+        setIconImages(loadIcon());
         setName("frameMain"); // NOI18N
 
         tabPane.setToolTipText("");
@@ -2728,11 +2728,20 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 //        fmttheoretical_fragment_ions.setText(props.getProperty(CometParams.PROP_theoretical_fragment_ions));
 //    }
     
-    private static Image loadIcon() {
-        Image image = Toolkit.getDefaultToolkit().getImage(MsfraggerGuiFrame.class.getResource("lightning.png"));
-        return image;
-//        ImageIcon icon = new ImageIcon( );
-//        return icon;
+    private static List<Image> loadIcon() {
+        // Icon attribution string:
+        // <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+        List<Image> images = new ArrayList<>();
+        int[] sizes = {16, 24, 32, 64, 128, 256, 512};
+        final String path = "icons/";
+        final String baseName = "bolt-";
+        final String ext = ".png";
+        for (int size : sizes) {
+            String location = path + baseName + Integer.toString(size) + ext;
+            Image icon = Toolkit.getDefaultToolkit().getImage(MsfraggerGuiFrame.class.getResource(location));
+            images.add(icon);
+        }
+        return images;
     }
 
     private static List<String> splitTrim(String input, String sep) {
