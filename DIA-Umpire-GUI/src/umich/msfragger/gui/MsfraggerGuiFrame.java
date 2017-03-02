@@ -6,7 +6,6 @@
 package umich.msfragger.gui;
 
 import umich.msfragger.params.UmpireQuantParams;
-import umich.msfragger.exceptions.FileWritingException;
 import umich.msfragger.exceptions.ParsingException;
 import umich.msfragger.params.CometParams;
 import umich.msfragger.params.PeptideProphetParams;
@@ -14,10 +13,8 @@ import umich.msfragger.params.Philosopher;
 import umich.msfragger.params.ProteinProphetParams;
 import umich.msfragger.params.ThisAppProps;
 import umich.msfragger.params.UmpireParams;
-import umich.msfragger.util.FileDelete;
 import umich.msfragger.util.LogUtils;
 import umich.msfragger.util.OsUtils;
-import umich.msfragger.util.PropertiesUtils;
 import umich.msfragger.util.StringUtils;
 
 import java.awt.Component;
@@ -25,11 +22,11 @@ import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -44,7 +41,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,7 +50,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -63,6 +58,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
@@ -80,7 +76,7 @@ import javax.swing.text.DefaultCaret;
  *
  * @author dattam
  */
-public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
+public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
     /** In MB. */
     protected static int MIN_RAM = 512;
@@ -91,7 +87,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
     /**
      * Creates new form UmpireUnargetedDbSearchPanel
      */
-    public UmpireUnargetedDbSearchFrame() {
+    public MsfraggerGuiFrame() {
         initComponents();
         initManual();
     }
@@ -196,7 +192,9 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         btnAbout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("DIA-Umpire GUI");
+        setTitle("MSFragger");
+        setIconImage(loadIcon());
+        setName("frameMain"); // NOI18N
 
         tabPane.setToolTipText("");
         tabPane.setName(""); // NOI18N
@@ -878,7 +876,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                         try {
                             Desktop.getDesktop().browse(e.getURL().toURI());
                         } catch (URISyntaxException | IOException ex) {
-                            Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
@@ -2729,6 +2727,13 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
 //        fmtfragment_bin_offset.setText(props.getProperty(CometParams.PROP_fragment_bin_offset));
 //        fmttheoretical_fragment_ions.setText(props.getProperty(CometParams.PROP_theoretical_fragment_ions));
 //    }
+    
+    private static Image loadIcon() {
+        Image image = Toolkit.getDefaultToolkit().getImage(MsfraggerGuiFrame.class.getResource("lightning.png"));
+        return image;
+//        ImageIcon icon = new ImageIcon( );
+//        return icon;
+    }
 
     private static List<String> splitTrim(String input, String sep) {
         String[] split = input.split(sep);
@@ -2826,7 +2831,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
-            java.util.logging.Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, e1);
+            java.util.logging.Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, e1);
             try {
                 for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                     if ("Nimbus".equals(info.getName())) {
@@ -2835,9 +2840,11 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
                     }
                 }
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException e2) {
-                java.util.logging.Logger.getLogger(UmpireUnargetedDbSearchFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, e2);
+                java.util.logging.Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, e2);
             }
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -2847,7 +2854,7 @@ public class UmpireUnargetedDbSearchFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                UmpireUnargetedDbSearchFrame frame = new UmpireUnargetedDbSearchFrame();
+                MsfraggerGuiFrame frame = new MsfraggerGuiFrame();
                 frame.setVisible(true);
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
                 frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);

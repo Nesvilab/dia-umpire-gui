@@ -25,7 +25,7 @@ public class MsFraggerGui {
 //            }
 //        });
 
-        UmpireUnargetedDbSearchFrame.main(args);
+        MsfraggerGuiFrame.main(args);
     }
     
 }
