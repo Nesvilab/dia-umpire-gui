@@ -20,6 +20,7 @@ import java.awt.Container;
 import java.io.File;
 import java.nio.file.Paths;
 import javax.swing.JFileChooser;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -28,6 +29,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
+import umich.msfragger.gui.renderers.TableCellDoubleRenderer;
 import umich.msfragger.params.ThisAppProps;
 import umich.msfragger.util.DocumentFilters;
 import umich.msfragger.util.SwingUtils;
@@ -45,9 +47,27 @@ public class FraggerPanel extends javax.swing.JPanel {
      */
     public FraggerPanel() {
         initComponents();
+        initMore();
     }
 
+    private void initMore() {
+        updateRowHeights(tableVarMods);
+        tableVarMods.getColumnModel().getColumn(2).setCellRenderer(new TableCellDoubleRenderer(5));
+        tableAdditionalMods.getColumnModel().getColumn(2).setCellRenderer(new TableCellDoubleRenderer(5));
+    }
     
+    private void updateRowHeights(JTable table) {
+        for (int row = 0; row < table.getRowCount(); row++) {
+            int rowHeight = table.getRowHeight();
+
+            for (int column = 0; column < table.getColumnCount(); column++) {
+                Component comp = table.prepareRenderer(table.getCellRenderer(row, column), row, column);
+                rowHeight = Math.max(rowHeight, comp.getPreferredSize().height);
+            }
+
+            table.setRowHeight(row, rowHeight);
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,6 +122,12 @@ public class FraggerPanel extends javax.swing.JPanel {
         spinnerMaxVarModsPerMod = new javax.swing.JSpinner();
         jLabel13 = new javax.swing.JLabel();
         spinnerMaxCombos = new javax.swing.JSpinner();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableVarMods = new javax.swing.JTable();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tableAdditionalMods = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         spinnerMinPeaks = new javax.swing.JSpinner();
@@ -345,22 +371,114 @@ public class FraggerPanel extends javax.swing.JPanel {
 
         spinnerMaxCombos.setModel(new javax.swing.SpinnerNumberModel(100, 1, 65534, 50));
 
+        tableVarMods.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                { new Boolean(true), "M",  new Double(15.9949)},
+                { new Boolean(true), "[*",  new Double(42.0106)},
+                {null, "STY",  new Double(79.96633)},
+                {null, "nQnC",  new Double(-17.0265)},
+                {null, "nE",  new Double(-18.0106)},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Enabled", "Site", "Mass Delta"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tableVarMods.setToolTipText("<html>Variable Modifications.<br/>\nValues:<br/>\n<ul>\n<li>A-Z amino acid codes</li>\n<li>\"*\" for any amino acid</li>\n<li>\"[\" and \"]\" specifies protein termini</li>\n<li>\"n\" and \"c\" specifies peptide termini</li>\n</ul>");
+        jScrollPane1.setViewportView(tableVarMods);
+
+        jLabel31.setText("Variable Modifications");
+
+        jLabel32.setText("Additional Modifications");
+
+        tableAdditionalMods.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, "C-Term Peptide",  new Double(0.0)},
+                {null, "N-Term Peptide",  new Double(0.0)},
+                {null, "C-Term Protein",  new Double(0.0)},
+                {null, "N-Term Protein",  new Double(0.0)},
+                {null, "G (glycine)",  new Double(0.0)},
+                {null, "A (alanine)",  new Double(0.0)},
+                {null, "S (serine)",  new Double(0.0)},
+                {null, "P (proline)",  new Double(0.0)},
+                {null, "V (valine)",  new Double(0.0)},
+                {null, "T (threonine)",  new Double(0.0)},
+                { new Boolean(true), "C (cysteine)",  new Double(57.021464)},
+                {null, "L (leucine)",  new Double(0.0)},
+                {null, "I (isoleucine)",  new Double(0.0)},
+                {null, "N (asparagine)",  new Double(0.0)},
+                {null, "D (aspartic acid)",  new Double(0.0)},
+                {null, "Q (glutamine)",  new Double(0.0)},
+                {null, "K (lysine)",  new Double(0.0)},
+                {null, "E (glutamic acid)",  new Double(0.0)},
+                {null, "M (methionine)",  new Double(0.0)},
+                {null, "H (histidine)",  new Double(0.0)},
+                {null, "F (phenylalanine)",  new Double(0.0)},
+                {null, "R (arginine)",  new Double(0.0)},
+                {null, "Y (tyrosine)",  new Double(0.0)},
+                {null, "W (tryptophan)",  new Double(0.0)},
+                {null, "B ",  new Double(0.0)},
+                {null, "J",  new Double(0.0)},
+                {null, "O",  new Double(0.0)},
+                {null, "U",  new Double(0.0)},
+                {null, "X",  new Double(0.0)},
+                {null, "Z",  new Double(0.0)}
+            },
+            new String [] {
+                "Enabled", "Site", "Delta Mass"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tableAdditionalMods);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(checkMultipleVarMods)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spinnerMaxVarModsPerMod, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spinnerMaxCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(checkMultipleVarMods)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spinnerMaxVarModsPerMod, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spinnerMaxCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(33, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel31)
+                            .addComponent(jLabel32))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -372,7 +490,15 @@ public class FraggerPanel extends javax.swing.JPanel {
                     .addComponent(spinnerMaxVarModsPerMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
                     .addComponent(spinnerMaxCombos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(240, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Spectral Processing"));
@@ -724,7 +850,7 @@ public class FraggerPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 648, Short.MAX_VALUE)
+            .addGap(0, 673, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addComponent(panelMsFragger, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -732,7 +858,7 @@ public class FraggerPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1050, Short.MAX_VALUE)
+            .addGap(0, 1475, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelMsFragger, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -897,6 +1023,8 @@ public class FraggerPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -907,6 +1035,8 @@ public class FraggerPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JSpinner jSpinner2;
     private javax.swing.JTextField jTextField1;
@@ -931,6 +1061,8 @@ public class FraggerPanel extends javax.swing.JPanel {
     private javax.swing.JSpinner spinnerPrecursorMassTol;
     private javax.swing.JSpinner spinnerPrecursorTrueTol;
     private javax.swing.JSpinner spinnerUseTopNPeaks;
+    private javax.swing.JTable tableAdditionalMods;
+    private javax.swing.JTable tableVarMods;
     private javax.swing.JTextField textButNotAfter;
     private javax.swing.JTextField textCutAfter;
     private javax.swing.JTextField textEnzymeName;

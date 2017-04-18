@@ -16,7 +16,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="648" max="32767" attributes="0"/>
+          <EmptySpace min="0" pref="673" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="panelMsFragger" min="-2" max="-2" attributes="0"/>
@@ -27,7 +27,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="1050" max="32767" attributes="0"/>
+          <EmptySpace min="0" pref="1475" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Component id="panelMsFragger" alignment="1" max="32767" attributes="0"/>
           </Group>
@@ -612,16 +612,29 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="checkMultipleVarMods" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="spinnerMaxVarModsPerMod" min="-2" pref="50" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="spinnerMaxCombos" min="-2" pref="70" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="checkMultipleVarMods" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="spinnerMaxVarModsPerMod" min="-2" pref="50" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="spinnerMaxCombos" min="-2" pref="70" max="-2" attributes="0"/>
+                                  <EmptySpace pref="33" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel31" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel32" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -636,7 +649,15 @@
                               <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="spinnerMaxCombos" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="240" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabel31" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" min="-2" pref="159" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jLabel32" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -672,6 +693,174 @@
                     </Property>
                   </Properties>
                 </Component>
+                <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTable" name="tableVarMods">
+                      <Properties>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                          <Table columnCount="3" rowCount="7">
+                            <Column editable="true" title="Enabled" type="java.lang.Boolean">
+                              <Data value="true"/>
+                              <Data value="true"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                            </Column>
+                            <Column editable="true" title="Site" type="java.lang.String">
+                              <Data value="M"/>
+                              <Data value="[*"/>
+                              <Data value="STY"/>
+                              <Data value="nQnC"/>
+                              <Data value="nE"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                            </Column>
+                            <Column editable="true" title="Mass Delta" type="java.lang.Double">
+                              <Data value="15.9949"/>
+                              <Data value="42.0106"/>
+                              <Data value="79.96633"/>
+                              <Data value="-17.0265"/>
+                              <Data value="-18.0106"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                            </Column>
+                          </Table>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Variable Modifications.&lt;br/&gt;&#xa;Values:&lt;br/&gt;&#xa;&lt;ul&gt;&#xa;&lt;li&gt;A-Z amino acid codes&lt;/li&gt;&#xa;&lt;li&gt;&quot;*&quot; for any amino acid&lt;/li&gt;&#xa;&lt;li&gt;&quot;[&quot; and &quot;]&quot; specifies protein termini&lt;/li&gt;&#xa;&lt;li&gt;&quot;n&quot; and &quot;c&quot; specifies peptide termini&lt;/li&gt;&#xa;&lt;/ul&gt;"/>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+                <Component class="javax.swing.JLabel" name="jLabel31">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Variable Modifications"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabel32">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Additional Modifications"/>
+                  </Properties>
+                </Component>
+                <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTable" name="tableAdditionalMods">
+                      <Properties>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                          <Table columnCount="3" rowCount="30">
+                            <Column editable="true" title="Enabled" type="java.lang.Boolean">
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="true"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                              <Data value="null"/>
+                            </Column>
+                            <Column editable="false" title="Site" type="java.lang.String">
+                              <Data value="C-Term Peptide"/>
+                              <Data value="N-Term Peptide"/>
+                              <Data value="C-Term Protein"/>
+                              <Data value="N-Term Protein"/>
+                              <Data value="G (glycine)"/>
+                              <Data value="A (alanine)"/>
+                              <Data value="S (serine)"/>
+                              <Data value="P (proline)"/>
+                              <Data value="V (valine)"/>
+                              <Data value="T (threonine)"/>
+                              <Data value="C (cysteine)"/>
+                              <Data value="L (leucine)"/>
+                              <Data value="I (isoleucine)"/>
+                              <Data value="N (asparagine)"/>
+                              <Data value="D (aspartic acid)"/>
+                              <Data value="Q (glutamine)"/>
+                              <Data value="K (lysine)"/>
+                              <Data value="E (glutamic acid)"/>
+                              <Data value="M (methionine)"/>
+                              <Data value="H (histidine)"/>
+                              <Data value="F (phenylalanine)"/>
+                              <Data value="R (arginine)"/>
+                              <Data value="Y (tyrosine)"/>
+                              <Data value="W (tryptophan)"/>
+                              <Data value="B "/>
+                              <Data value="J"/>
+                              <Data value="O"/>
+                              <Data value="U"/>
+                              <Data value="X"/>
+                              <Data value="Z"/>
+                            </Column>
+                            <Column editable="true" title="Delta Mass" type="java.lang.Double">
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="57.021464"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                              <Data value="0.0"/>
+                            </Column>
+                          </Table>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel3">

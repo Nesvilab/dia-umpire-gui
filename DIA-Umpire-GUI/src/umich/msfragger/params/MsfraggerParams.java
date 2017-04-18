@@ -71,4 +71,6 @@ public class MsfraggerParams {
     public static final String FILE_BASE_EXT = "params";
     /** This file is in the jar, use getResourceAsStream() to get it.  */
     public static final String DEFAULT_FILE = "fragger.params";
+    
+    
 }
