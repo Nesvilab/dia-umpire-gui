@@ -19,17 +19,19 @@ package umich.msfragger.params.enums;
  *
  * @author Dmitry Avtonomov
  */
-public enum MassTolUnits {
-    PPM (1),
-    ABS (0);
+public enum MsLevel {
+    MS1(1),
+    MS2(2);
     
-    private final int val;
-
-    private MassTolUnits(int val) {
-        this.val = val;
+    private final int msLevel;
+    
+    MsLevel(int msLevel) {
+        this.msLevel = msLevel;
     }
 
     public int valueInParamsFile() {
-        return val;
+        return msLevel;
     }
+    
+    
 }

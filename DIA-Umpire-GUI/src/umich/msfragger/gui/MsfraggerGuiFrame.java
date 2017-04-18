@@ -98,6 +98,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         exec = Executors.newFixedThreadPool(1);
         fraggerPanel = new FraggerPanel();
         scrollPaneMsFragger.setViewportView(fraggerPanel);
+        scrollPaneMsFragger.getVerticalScrollBar().setUnitIncrement(16);
     }
     
     private String getDefaultPhilosopherBinName() {

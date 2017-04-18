@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package umich.msfragger.params;
+package umich.msfragger.params.enums;
 
 /**
  *
@@ -24,10 +24,13 @@ public enum CleavageType {
     SEMI (1), 
     NON_SPECIFIC (0);
     
-    private int num_enzyme_termini;
+    private final int numEnzymeTermini;
     
     CleavageType(int num_enzyme_termini) {
-        this.num_enzyme_termini = num_enzyme_termini;
+        this.numEnzymeTermini = num_enzyme_termini;
     }
     
+    public int valueInParamsFile() {
+        return numEnzymeTermini;
+    }
 }
