@@ -5,6 +5,7 @@
  */
 package umich.msfragger.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +17,18 @@ import java.util.regex.Pattern;
  * @author Dmitry Avtonomov
  */
 public class StringUtils {
+
+    public static List<String> splitTrim(String input, String sep) {
+        String[] split = input.split(sep);
+        List<String> strings = new ArrayList<>(split.length);
+        for (int i = 0; i < split.length; i++) {
+            split[i] = split[i].trim();
+            if (!split[i].isEmpty()) {
+                strings.add(split[i]);
+            }
+        }
+        return strings;
+    }
     private StringUtils() {}
     
     
