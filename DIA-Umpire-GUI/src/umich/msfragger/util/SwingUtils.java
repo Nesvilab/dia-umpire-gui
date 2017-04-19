@@ -17,10 +17,19 @@ package umich.msfragger.util;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 import umich.msfragger.params.ThisAppProps;
 
 /**
@@ -74,6 +83,82 @@ public class SwingUtils {
             if (component instanceof Container) {
                 enableComponents((Container)component, enable);
             }
+        }
+    }
+    
+    /**
+     * Installs a listener to receive notification when the text of any
+     * {@code JTextComponent} is changed. Internally, it installs a
+     * {@link DocumentListener} on the text component's {@link Document}, and a
+     * {@link PropertyChangeListener} on the text component to detect if the
+     * {@code Document} itself is replaced.
+     *
+     * @param text any text component, such as a {@link JTextField} or
+     * {@link JTextArea}
+     * @param changeListener a listener to receieve {@link ChangeEvent}s when
+     * the text is changed; the source object for the events will be the text
+     * component
+     * @throws NullPointerException if either parameter is null
+     * 
+     * Taken from http://stackoverflow.com/questions/3953208/value-change-listener-to-jtextfield
+     * 
+     * @author Boann
+     */
+    public static void addChangeListener(final JTextComponent text, final ChangeListener changeListener) {
+        if (text == null || changeListener == null)
+            throw new IllegalArgumentException("Both the text component and the change listener need to be non-null");
+                
+        
+        final DocumentListener dl = new DocumentListener() {
+            private int lastChange = 0, lastNotifiedChange = 0;
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                changedUpdate(e);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changedUpdate(e);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                lastChange++;
+                
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (lastNotifiedChange != lastChange) {
+                            lastNotifiedChange = lastChange;
+                            changeListener.stateChanged(new ChangeEvent(text));
+                        }
+                    }
+                };
+                
+                SwingUtilities.invokeLater(runnable);
+            }
+        };
+   
+        PropertyChangeListener pcl = new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent e) {
+                Document d1 = (Document) e.getOldValue();
+                Document d2 = (Document) e.getNewValue();
+                if (d1 != null) {
+                    d1.removeDocumentListener(dl);
+                }
+                if (d2 != null) {
+                    d2.addDocumentListener(dl);
+                }
+                dl.changedUpdate(null);
+            }
+        };
+        text.addPropertyChangeListener("document", pcl);
+        
+        Document d = text.getDocument();
+        if (d != null) {
+            d.addDocumentListener(dl);
         }
     }
 }

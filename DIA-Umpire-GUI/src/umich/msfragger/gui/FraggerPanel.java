@@ -382,7 +382,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                 {null, null, null}
             },
             new String [] {
-                "Enabled", "Site", "Mass Delta"
+                "Enabled", "Site (editable)", "Mass Delta (editable)"
             }
         ) {
             Class[] types = new Class [] {
@@ -434,7 +434,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                 {null, "Z",  new Double(0.0)}
             },
             new String [] {
-                "Enabled", "Site", "Delta Mass"
+                "Enabled", "Site", "Mass Delta (editable)"
             }
         ) {
             Class[] types = new Class [] {

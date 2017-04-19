@@ -66,11 +66,9 @@ public class MsfraggerParams {
     public static final String PROP_clear_mz_range = "clear_mz_range";
     //public static final String PROP_ = "";
     
-    
     public static final String FILE_BASE_NAME = "fragger";
     public static final String FILE_BASE_EXT = "params";
     /** This file is in the jar, use getResourceAsStream() to get it.  */
     public static final String DEFAULT_FILE = "fragger.params";
-    
     
 }
