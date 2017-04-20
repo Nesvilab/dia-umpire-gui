@@ -88,6 +88,6 @@ add_W_tryptophan = 0.0000              # added to W - avg. 186.0793, mono. 186.0
 add_B_user_amino_acid = 0.0000         # added to B - avg.   0.0000, mono.   0.00000
 add_J_user_amino_acid = 0.0000         # added to J - avg.   0.0000, mono.   0.00000
 add_O_user_amino_acid = 0.0000         # added to O - avg.   0.0000, mono    0.00000
-add_U_user_amino_acid = 0.0000         # added to U - avg.   0.0000, mono.   0.00000
+add_U_user_amino_aProperties.cid = 0.0000         # added to U - avg.   0.0000, mono.   0.00000
 add_X_user_amino_acid = 0.0000         # added to X - avg.   0.0000, mono.   0.00000
 add_Z_user_amino_acid = 0.0000         # added to Z - avg.   0.0000, mono.   0.00000

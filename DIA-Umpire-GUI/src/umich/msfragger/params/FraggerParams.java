@@ -24,6 +24,11 @@ import java.beans.PropertyChangeSupport;
  */
 public class FraggerParams {
     
+    public static final String FILE_BASE_NAME = "fragger";
+    public static final String FILE_BASE_EXT = "params";
+    /** This file is in the jar, use getResourceAsStream() to get it.  */
+    public static final String DEFAULT_FILE = "fragger.params";
+    
     private String database_name;
     public static final String PROP_database_name = "database_name";
     
@@ -135,6 +140,52 @@ public class FraggerParams {
     private double[] clear_mz_range;
     public static final String PROP_clear_mz_range = "clear_mz_range";
     
+    private String[] add;
+
+    public static final String PROP_add = "add";
+
+        
+    /**
+     * Get the value of add
+     *
+     * @return the value of add
+     */
+    public String[] getAdd() {
+        return add;
+    }
+
+    /**
+     * Set the value of add
+     *
+     * @param add new value of add
+     */
+    public void setAdd(String[] add) {
+        String[] oldAdd = this.add;
+        this.add = add;
+        propertyChangeSupport.firePropertyChange(PROP_add, oldAdd, add);
+    }
+
+    /**
+     * Get the value of add at specified index
+     *
+     * @param index the index of add
+     * @return the value of add at specified index
+     */
+    public String getAdd(int index) {
+        return this.add[index];
+    }
+
+    /**
+     * Set the value of add at specified index.
+     *
+     * @param index the index of add
+     * @param add new value of add at specified index
+     */
+    public void setAdd(int index, String add) {
+        String oldAdd = this.add[index];
+        this.add[index] = add;
+        propertyChangeSupport.fireIndexedPropertyChange(PROP_add, index, oldAdd, add);
+    }
 
 
     /**

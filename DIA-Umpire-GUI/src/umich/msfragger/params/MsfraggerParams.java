@@ -15,11 +15,27 @@
  */
 package umich.msfragger.params;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.LinkedHashMap;
+import nu.studer.java.util.OrderedProperties;
+import umich.msfragger.util.PathUtils;
+import umich.msfragger.util.PropertiesUtils;
+
 /**
  *
  * @author dmitriya
  */
 public class MsfraggerParams {
+    OrderedProperties props;
+    
     public static final String PROP_database_name = "database_name";
     public static final String PROP_num_threads = "num_threads";
     public static final String PROP_precursor_mass_tolerance = "precursor_mass_tolerance";
@@ -64,11 +80,54 @@ public class MsfraggerParams {
     public static final String PROP_min_matched_fragments = "min_matched_fragments";
     public static final String PROP_minimum_ratio = "minimum_ratio";
     public static final String PROP_clear_mz_range = "clear_mz_range";
+    public static final String PROP_add = "";
     //public static final String PROP_ = "";
     
     public static final String FILE_BASE_NAME = "fragger";
     public static final String FILE_BASE_EXT = "params";
     /** This file is in the jar, use getResourceAsStream() to get it.  */
     public static final String DEFAULT_FILE = "fragger.params";
+    private static final long serialVersionUID = 1L;
+
+    public MsfraggerParams() {
+        props = new OrderedProperties();
+    }
     
+    public static Path tempFilePath() {
+        return Paths.get(PathUtils.getTempDir().toString(), DEFAULT_FILE);
+    }
+    
+    /**
+     * Loads properties either from the default properties file stored in the jar
+     * or from the temp directory.
+     * @throws IOException 
+     */
+    public void load() throws IOException {
+        // first check if there is a temp file saved
+        if (Files.exists(tempFilePath())) {
+            load(new FileInputStream(tempFilePath().toFile()));
+        } else {
+            load(MsfraggerParams.class.getResourceAsStream(DEFAULT_FILE));
+        }
+        int a = 1;
+    }
+    
+    public void load(InputStream is) throws IOException {
+        PropertiesUtils.readProperties(is, props);
+    }
+    
+    private OrderedProperties readOriginalProperties(InputStream is) throws IOException {
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader reader = new BufferedReader(isr);
+        StringBuilder sb = new StringBuilder();
+        
+        String line;
+        while ((line = reader.readLine()) != null) {
+            line = line.trim();
+            line = line.substring(line.indexOf("#"));
+            line = line.trim();
+            sb.append(line).append("\n");
+        }
+        return new StringReader(sb.toString());
+    }
 }

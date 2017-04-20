@@ -18,6 +18,7 @@ package umich.msfragger.gui;
 import java.awt.Component;
 import java.awt.Container;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
@@ -30,6 +31,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 import umich.msfragger.gui.renderers.TableCellDoubleRenderer;
+import umich.msfragger.params.FraggerParams;
+import umich.msfragger.params.MsfraggerParams;
 import umich.msfragger.params.ThisAppProps;
 import umich.msfragger.util.DocumentFilters;
 import umich.msfragger.util.SwingUtils;
@@ -42,18 +45,27 @@ import static umich.msfragger.util.SwingUtils.setFilechooserPathToCached;
  */
 public class FraggerPanel extends javax.swing.JPanel {
 
+    private MsfraggerParams params;
+    
     /**
      * Creates new form FraggerPanel
      */
-    public FraggerPanel() {
+    public FraggerPanel() throws IOException {
         initComponents();
         initMore();
     }
 
-    private void initMore() {
+    private void initMore() throws IOException {
         updateRowHeights(tableVarMods);
         tableVarMods.getColumnModel().getColumn(2).setCellRenderer(new TableCellDoubleRenderer(5));
         tableAdditionalMods.getColumnModel().getColumn(2).setCellRenderer(new TableCellDoubleRenderer(5));
+        
+        
+        
+        params = new MsfraggerParams();
+        params.load();
+        
+        int a = 1;
     }
     
     private void updateRowHeights(JTable table) {
