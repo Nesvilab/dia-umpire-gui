@@ -15,16 +15,12 @@
  */
 package umich.msfragger.params;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.LinkedHashMap;
 import nu.studer.java.util.OrderedProperties;
 import umich.msfragger.util.PathUtils;
 import umich.msfragger.util.PropertiesUtils;
@@ -34,7 +30,7 @@ import umich.msfragger.util.PropertiesUtils;
  * @author dmitriya
  */
 public class MsfraggerParams {
-    OrderedProperties props;
+    private OrderedProperties props;
     
     public static final String PROP_database_name = "database_name";
     public static final String PROP_num_threads = "num_threads";
@@ -53,6 +49,7 @@ public class MsfraggerParams {
     public static final String PROP_clip_nTerm_M = "clip_nTerm_M";
     /** Followed by '_N' (underscore and a number), max 7 mods. */
     public static final String PROP_variable_mod = "variable_mod";
+    public static final int VAR_MOD_COUNT_MAX = 7;  
     public static final String PROP_output_file_extension = "output_file_extension";
     public static final String PROP_output_report_topN = "output_report_topN";
     public static final String PROP_output_max_expect = "output_max_expect";
@@ -80,8 +77,21 @@ public class MsfraggerParams {
     public static final String PROP_min_matched_fragments = "min_matched_fragments";
     public static final String PROP_minimum_ratio = "minimum_ratio";
     public static final String PROP_clear_mz_range = "clear_mz_range";
-    public static final String PROP_add = "";
+    public static final String PROP_add = "add";
     //public static final String PROP_ = "";
+    
+    public static final String[] ADDON_NAMES = {"Cterm_peptide", "Nterm_peptide", "Cterm_protein", "Nterm_protein",
+        "G_glycine", "A_alanine", "S_serine", "P_proline", "V_valine", "T_threonine", "C_cysteine", "L_leucine", 
+        "I_isoleucine", "N_asparagine", "D_aspartic_acid", "Q_glutamine", "K_lysine", "E_glutamic_acid", "M_methionine", 
+        "H_histidine", "F_phenylalanine", "R_arginine", "Y_tyrosine", "W_tryptophan",
+        "B_user_amino_acid", "J_user_amino_acid", "O_user_amino_acid", "U_user_amino_acid", "X_user_amino_acid", "Z_user_amino_acid",
+    };
+    
+    public static final String[] ADDONS_HUMAN_READABLE = {"C-Term Peptide", "N-Term Peptide", "C-Term Protein", "N-Term Protein", 
+        "G (glycine)", "A (alanine)", "S (serine)", "P (proline)", "V (valine)", "T (threonine)", "C (cysteine)", "L (leucine)", 
+        "I (isoleucine)", "N (asparagine)", "D (aspartic acid)", "Q (glutamine)", "K (lysine)", "E (glutamic acid)", "M (methionine)", 
+        "H (histidine)", "F (phenylalanine)", "R (arginine)", "Y (tyrosine)", "W (tryptophan)", 
+        "B ", "J", "O", "U", "X", "Z", };
     
     public static final String FILE_BASE_NAME = "fragger";
     public static final String FILE_BASE_EXT = "params";
@@ -89,9 +99,13 @@ public class MsfraggerParams {
     public static final String DEFAULT_FILE = "fragger.params";
     private static final long serialVersionUID = 1L;
 
+    
+    
     public MsfraggerParams() {
         props = new OrderedProperties();
     }
+    
+    
     
     public static Path tempFilePath() {
         return Paths.get(PathUtils.getTempDir().toString(), DEFAULT_FILE);
@@ -109,25 +123,15 @@ public class MsfraggerParams {
         } else {
             load(MsfraggerParams.class.getResourceAsStream(DEFAULT_FILE));
         }
-        int a = 1;
     }
     
     public void load(InputStream is) throws IOException {
         PropertiesUtils.readProperties(is, props);
     }
-    
-    private OrderedProperties readOriginalProperties(InputStream is) throws IOException {
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader reader = new BufferedReader(isr);
-        StringBuilder sb = new StringBuilder();
-        
-        String line;
-        while ((line = reader.readLine()) != null) {
-            line = line.trim();
-            line = line.substring(line.indexOf("#"));
-            line = line.trim();
-            sb.append(line).append("\n");
-        }
-        return new StringReader(sb.toString());
+
+    public OrderedProperties getProps() {
+        return props;
     }
+    
+    
 }

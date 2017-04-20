@@ -20,16 +20,24 @@ import java.awt.Container;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
+import nu.studer.java.util.OrderedProperties;
 import umich.msfragger.gui.renderers.TableCellDoubleRenderer;
 import umich.msfragger.params.FraggerParams;
 import umich.msfragger.params.MsfraggerParams;
@@ -45,27 +53,105 @@ import static umich.msfragger.util.SwingUtils.setFilechooserPathToCached;
  */
 public class FraggerPanel extends javax.swing.JPanel {
 
+    private static final long serialVersionUID = 1L;
+
     private MsfraggerParams params;
     
     /**
      * Creates new form FraggerPanel
      */
-    public FraggerPanel() throws IOException {
+    public FraggerPanel() {
         initComponents();
         initMore();
     }
 
-    private void initMore() throws IOException {
+    private void initMore() {
         updateRowHeights(tableVarMods);
         tableVarMods.getColumnModel().getColumn(2).setCellRenderer(new TableCellDoubleRenderer(5));
         tableAdditionalMods.getColumnModel().getColumn(2).setCellRenderer(new TableCellDoubleRenderer(5));
-        
+        tableAdditionalMods.getModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int a = 1;
+            }
+        });
         
         
         params = new MsfraggerParams();
-        params.load();
+        try {
+            params.load();
+            fillFormFromParams(params);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, 
+                    "Could not load default fragger params neither from temp file "
+                            + "nor from the included one in the jar: " + ex.getMessage(), 
+                    "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    private void fillFormFromParams(MsfraggerParams params) {
+        OrderedProperties props = params.getProps();
         
-        int a = 1;
+    }
+    
+    
+    
+    private TableModel getDefaultAddonTableModel() {
+        
+        DefaultTableModel model = new DefaultTableModel(
+                new Object [][] {
+                    {null, "C-Term Peptide",  new Double(0.0)},
+                    {null, "N-Term Peptide",  new Double(0.0)},
+                    {null, "C-Term Protein",  new Double(0.0)},
+                    {null, "N-Term Protein",  new Double(0.0)},
+                    {null, "G (glycine)",  new Double(0.0)},
+                    {null, "A (alanine)",  new Double(0.0)},
+                    {null, "S (serine)",  new Double(0.0)},
+                    {null, "P (proline)",  new Double(0.0)},
+                    {null, "V (valine)",  new Double(0.0)},
+                    {null, "T (threonine)",  new Double(0.0)},
+                    { new Boolean(true), "C (cysteine)",  new Double(57.021464)},
+                    {null, "L (leucine)",  new Double(0.0)},
+                    {null, "I (isoleucine)",  new Double(0.0)},
+                    {null, "N (asparagine)",  new Double(0.0)},
+                    {null, "D (aspartic acid)",  new Double(0.0)},
+                    {null, "Q (glutamine)",  new Double(0.0)},
+                    {null, "K (lysine)",  new Double(0.0)},
+                    {null, "E (glutamic acid)",  new Double(0.0)},
+                    {null, "M (methionine)",  new Double(0.0)},
+                    {null, "H (histidine)",  new Double(0.0)},
+                    {null, "F (phenylalanine)",  new Double(0.0)},
+                    {null, "R (arginine)",  new Double(0.0)},
+                    {null, "Y (tyrosine)",  new Double(0.0)},
+                    {null, "W (tryptophan)",  new Double(0.0)},
+                    {null, "B ",  new Double(0.0)},
+                    {null, "J",  new Double(0.0)},
+                    {null, "O",  new Double(0.0)},
+                    {null, "U",  new Double(0.0)},
+                    {null, "X",  new Double(0.0)},
+                    {null, "Z",  new Double(0.0)}
+                },
+                new String [] {
+                    "Enabled", "Site", "Mass Delta (editable)"
+                }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        };
+        
+        return model;
     }
     
     private void updateRowHeights(JTable table) {
