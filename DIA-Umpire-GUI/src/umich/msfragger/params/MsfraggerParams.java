@@ -78,6 +78,7 @@ public class MsfraggerParams {
     public static final String PROP_minimum_ratio = "minimum_ratio";
     public static final String PROP_clear_mz_range = "clear_mz_range";
     public static final String PROP_add = "add";
+    public static final String PROP_add_enabled = "add_enabled";
     //public static final String PROP_ = "";
     
     public static final String[] ADDON_NAMES = {"Cterm_peptide", "Nterm_peptide", "Cterm_protein", "Nterm_protein",
@@ -132,6 +133,5 @@ public class MsfraggerParams {
     public OrderedProperties getProps() {
         return props;
     }
-    
     
 }
