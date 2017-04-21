@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
  * @author Dmitry Avtonomov
  */
 public class StringUtils {
+    private static Pattern WHITESPACE_STRING = Pattern.compile("^\\s*$");
 
     public static List<String> splitTrim(String input, String sep) {
         String[] split = input.split(sep);
@@ -31,6 +32,10 @@ public class StringUtils {
     }
     private StringUtils() {}
     
+    
+    public static boolean isNullOrWhitespace(String s) {
+        return s == null || WHITESPACE_STRING.matcher(s).matches();
+    }
     
     /**
      * Will trim all whitespace and return the non-zero length strings that are left.
