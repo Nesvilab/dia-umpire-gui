@@ -789,7 +789,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        SwingUtils.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
+        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
 
         if (!txtProgramsDir.getText().isEmpty()) {
             File toFile = Paths.get(txtProgramsDir.getText()).toFile();
@@ -802,7 +802,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
             File f = fileChooser.getSelectedFile();
             txtProgramsDir.setText(f.getAbsolutePath());
-            SwingUtils.saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
+            ThisAppProps.saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
             saveProgramsDir();
             break;
         }
@@ -818,7 +818,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        SwingUtils.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_LCMS_FILES_IN);
+        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_LCMS_FILES_IN);
         //setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
 
         if (!txtWorkingDir.getText().isEmpty()) {
@@ -832,7 +832,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
             File f = fileChooser.getSelectedFile();
             txtWorkingDir.setText(f.getAbsolutePath());
-            SwingUtils.saveTextFieldToCache(txtWorkingDir, ThisAppProps.PROP_LCMS_FILES_IN);
+            ThisAppProps.saveTextFieldToCache(txtWorkingDir, ThisAppProps.PROP_LCMS_FILES_IN);
             break;
         }
     }//GEN-LAST:event_btnSelectWrkingDirActionPerformed
@@ -1088,7 +1088,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Choose FASTA file");
         fileChooser.setMultiSelectionEnabled(false);
 
-        SwingUtils.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
+        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
 
         if (!txtProteinProphetSeqDb.getText().isEmpty()) {
             File toFile = Paths.get(txtProteinProphetSeqDb.getText()).toFile();
@@ -1121,7 +1121,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-        SwingUtils.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
+        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
 
         if (!txtBinProteinProphet.getText().isEmpty()) {
             File toFile = Paths.get(txtBinProteinProphet.getText()).toFile();
@@ -1134,7 +1134,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
             File f = fileChooser.getSelectedFile();
             txtBinProteinProphet.setText(f.getAbsolutePath());
-            SwingUtils.saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
+            ThisAppProps.saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
             saveBinProteinProphet();
             break;
         }
@@ -1160,7 +1160,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Choose FASTA file");
         fileChooser.setMultiSelectionEnabled(false);
 
-        SwingUtils.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
+        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
 
         if (!txtPeptideProphetSeqDb.getText().isEmpty()) {
             File toFile = Paths.get(txtPeptideProphetSeqDb.getText()).toFile();
@@ -1204,7 +1204,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-        SwingUtils.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
+        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
 
         if (!txtBinPeptideProphet.getText().isEmpty()) {
             File toFile = Paths.get(txtBinPeptideProphet.getText()).toFile();
@@ -1217,7 +1217,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
             File f = fileChooser.getSelectedFile();
             txtBinPeptideProphet.setText(f.getAbsolutePath());
-            SwingUtils.saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
+            ThisAppProps.saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
             saveBinPeptideProphet();
             break;
         }
@@ -1239,7 +1239,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             fc.setMultiSelectionEnabled(true);
             fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-            SwingUtils.setFilechooserPathToCached(fc, ThisAppProps.PROP_LCMS_FILES_IN);
+            ThisAppProps.setFilechooserPathToCached(fc, ThisAppProps.PROP_LCMS_FILES_IN);
 
             int retVal = fc.showDialog(this, approveText);
             if (retVal == JFileChooser.APPROVE_OPTION) {
@@ -1248,7 +1248,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     txtAreaSelectedFiles.append(f.toString() + "\n");
                 }
                 if (files.length > 0) {
-                    SwingUtils.saveFilechooserPathToCached(files[0], ThisAppProps.PROP_LCMS_FILES_IN);
+                    ThisAppProps.saveFilechooserPathToCached(files[0], ThisAppProps.PROP_LCMS_FILES_IN);
                 }
 
             } else {
@@ -2468,7 +2468,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
 
     private void saveProgramsDir() {
-        SwingUtils.saveTextFieldToCache(txtProgramsDir, ThisAppProps.PROP_BINARIES_IN);
+        ThisAppProps.saveTextFieldToCache(txtProgramsDir, ThisAppProps.PROP_BINARIES_IN);
     }
     
 //    private void saveBinUmpireSe() {
@@ -2484,11 +2484,11 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 //    }
     
     private void saveBinPeptideProphet() {
-        SwingUtils.saveTextFieldToCache(txtBinProteinProphet, ThisAppProps.PROP_TEXTFIELD_PATH_PROTEIN_PROPHET);
+        ThisAppProps.saveTextFieldToCache(txtBinProteinProphet, ThisAppProps.PROP_TEXTFIELD_PATH_PROTEIN_PROPHET);
     }
     
     private void saveBinProteinProphet() {
-        SwingUtils.saveTextFieldToCache(txtBinProteinProphet, ThisAppProps.PROP_TEXTFIELD_PATH_PROTEIN_PROPHET);
+        ThisAppProps.saveTextFieldToCache(txtBinProteinProphet, ThisAppProps.PROP_TEXTFIELD_PATH_PROTEIN_PROPHET);
     }
     
     

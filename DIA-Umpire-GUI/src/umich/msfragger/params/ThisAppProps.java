@@ -15,6 +15,7 @@
  */
 package umich.msfragger.params;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,6 +23,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
+import javax.swing.JFileChooser;
+import javax.swing.JTextField;
 
 public class ThisAppProps extends Properties {
     //private static final Logger log = LoggerFactory.getLogger(ThisAppProps.class);
@@ -54,6 +57,43 @@ public class ThisAppProps extends Properties {
         }
 
         return null;
+    }
+
+    public static void setFilechooserPathToCached(JFileChooser fileChooser, String propName) {
+        ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
+        if (thisAppProps == null) {
+            return;
+        }
+        String inputPath = thisAppProps.getProperty(propName);
+        if (inputPath != null) {
+            File file = Paths.get(inputPath).toFile();
+            fileChooser.setCurrentDirectory(file);
+        }
+    }
+
+    public static void saveTextFieldToCache(JTextField txt, String propName) {
+        String text = txt.getText().trim();
+        if (!text.isEmpty()) {
+            ThisAppProps.savePropToCache(propName, text);
+        }
+    }
+
+    public static void saveFilechooserPathToCached(File file, String propName) {
+        ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
+        if (thisAppProps == null) {
+            thisAppProps = new ThisAppProps();
+        }
+        thisAppProps.setProperty(propName, file.getAbsolutePath());
+        thisAppProps.save();
+    }
+
+    public static boolean loadTextFieldFromCache(JTextField txt, String propName) {
+        String cached = ThisAppProps.loadPropFromCache(propName);
+        if (cached == null) {
+            return false;
+        }
+        txt.setText(cached);
+        return true;
     }
 
     public void save() {

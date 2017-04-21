@@ -19,9 +19,11 @@ import java.awt.Component;
 import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.swing.JFileChooser;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -30,7 +32,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
-import umich.msfragger.params.ThisAppProps;
 
 /**
  *
@@ -38,43 +39,21 @@ import umich.msfragger.params.ThisAppProps;
  */
 public class SwingUtils {
 
-    public static void saveFilechooserPathToCached(File file, String propName) {
-        ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
-        if (thisAppProps == null) {
-            thisAppProps = new ThisAppProps();
-        }
-        thisAppProps.setProperty(propName, file.getAbsolutePath());
-        thisAppProps.save();
-    }
-
-    public static void setFilechooserPathToCached(JFileChooser fileChooser, String propName) {
-        ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
-        if (thisAppProps == null) {
+    private SwingUtils() {}
+    
+    public static void setFileChooserPath(JFileChooser fileChooser, String path) {
+        if (path == null) {
+            fileChooser.setCurrentDirectory(null);
             return;
         }
-        String inputPath = thisAppProps.getProperty(propName);
-        if (inputPath != null) {
-            File file = Paths.get(inputPath).toFile();
-            fileChooser.setCurrentDirectory(file);
+        Path p = Paths.get(path);
+        if (Files.exists(p)) {
+            fileChooser.setCurrentDirectory(p.toFile());
+        } else {
+            fileChooser.setCurrentDirectory(null);
         }
     }
-
-    public static boolean loadTextFieldFromCache(JTextField txt, String propName) {
-        String cached = ThisAppProps.loadPropFromCache(propName);
-        if (cached == null) {
-            return false;
-        }
-        txt.setText(cached);
-        return true;
-    }
-
-    public static void saveTextFieldToCache(JTextField txt, String propName) {
-        String text = txt.getText().trim();
-        if (!text.isEmpty()) {
-            ThisAppProps.savePropToCache(propName, text);
-        }
-    }
-    private SwingUtils() {}
+    
     
     public static void enableComponents(Container container, boolean enable) {
         Component[] components = container.getComponents();
