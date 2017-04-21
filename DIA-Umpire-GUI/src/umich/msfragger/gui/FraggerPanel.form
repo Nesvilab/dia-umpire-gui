@@ -151,7 +151,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="txtMsfraggerDb" max="32767" attributes="0"/>
+                              <Component id="textMsfraggerDb" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -168,7 +168,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtMsfraggerDb" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textMsfraggerDb" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnSelectMsfraggerDb" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -227,7 +227,7 @@
                 <Property name="text" type="java.lang.String" value="Sequence Database"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtMsfraggerDb">
+            <Component class="javax.swing.JTextField" name="textMsfraggerDb">
             </Component>
             <Component class="javax.swing.JButton" name="btnSelectMsfraggerDb">
               <Properties>
@@ -790,7 +790,10 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel26" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="spinnerClearMzRangeMax" min="-2" pref="70" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="spinnerClearMzRangeMax" min="-2" pref="70" max="-2" attributes="0"/>
+                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -803,6 +806,7 @@
                               <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel20" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="spinnerUseTopNPeaks" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -911,6 +915,14 @@
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value="for iTRAQ/TMT type data; will clear out all peaks in the specified m/z range"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="jButton1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="save"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

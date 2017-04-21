@@ -1,14 +1,15 @@
 database_name = E:\fasta\uniprot-proteome_UP000005640_HUMAN_rev.fasta
-num_threads = 4                       # 0=poll CPU to set num threads; else specify num threads directly (max 64)
+num_threads = 4                         # 0=poll CPU to set num threads; else specify num threads directly (max 64)
 
+precursor_mass_units = 1                # 0=Daltons, 1=ppm
 precursor_mass_tolerance = 50.00
-precursor_mass_units = 1               # 0=Daltons, 1=ppm
-precursor_true_units = 1
+precursor_true_units = 1                # 0=Daltons, 1=ppm
 precursor_true_tolerance = 50.00
+fragment_mass_units = 1		        # 0=Daltons, 1=ppm
 fragment_mass_tolerance = 50.00
-fragment_mass_units = 1		       # 0=Daltons, 1=ppm
 
-isotope_error = -1/0/1/2                  # 0=off, -1/0/1/2/3 (standard C13 error)
+
+isotope_error = -1/0/1/2                # 0=off, -1/0/1/2/3 (standard C13 error)
 
 search_enzyme_name = Trypsin
 search_enzyme_cutafter = KR
@@ -18,17 +19,6 @@ num_enzyme_termini = 2                 # 2 for enzymatic, 1 for semi-enzymatic, 
 allowed_missed_cleavage = 1            # maximum value is 5
 
 clip_nTerm_M = 1 
-
-#maximum of 7 mods - amino acid codes, * for any amino acid, [ and ] specifies protein termini, n and c specifies peptide termini
-variable_mod_01 = 15.9949 M
-variable_mod_02 = 42.0106 [*
-#variable_mod_03 = 79.96633 STY
-#variable_mod_03 = -17.0265 nQnC
-#variable_mod_04 = -18.0106 nE 
-
-allow_multiple_variable_mods_on_residue = 1  	# static mods are not considered
-max_variable_mods_per_mod = 3 			# maximum of 5
-max_variable_mods_combinations = 100  		# maximum of 65534, limits number of modified peptides generated from sequence
 
 output_file_extension = pepXML	       #pep.xml
 output_report_topN = 3 
@@ -43,11 +33,14 @@ digest_max_length = 60
 digest_mass_range = 500.0 7000.0       # MH+ peptide mass range to analyze
 max_fragment_charge = 2                # set maximum fragment charge state to analyze (allowed max 5)
 
+
 #open search parameters
+
 track_zero_topN = 0		       # in addition to topN results, keep track of top results in zero bin
 zero_bin_accept_expect = 0	       # boost top zero bin entry to top if it has expect under 0.01 - set to 0 to disable
 zero_bin_mult_expect = 1	       # disabled if above passes - multiply expect of zero bin for ordering purposes (does not affect reported expect)
 add_topN_complementary = 0
+
 
 # spectral processing
 
@@ -57,6 +50,21 @@ min_fragments_modelling = 3
 min_matched_fragments = 6 
 minimum_ratio = 0.01		       # filter peaks below this fraction of strongest peak
 clear_mz_range = 0.0 0.0               # for iTRAQ/TMT type data; will clear out all peaks in the specified m/z range
+
+
+# modifications
+
+#maximum of 7 mods - amino acid codes, * for any amino acid, [ and ] specifies protein termini, n and c specifies peptide termini
+variable_mod_01 = 15.9949 M
+variable_mod_02 = 42.0106 [*
+#variable_mod_03 = 79.96633 STY
+#variable_mod_03 = -17.0265 nQnC
+#variable_mod_04 = -18.0106 nE 
+
+allow_multiple_variable_mods_on_residue = 1  	# static mods are not considered
+max_variable_mods_per_mod = 3 			# maximum of 5
+max_variable_mods_combinations = 100  		# maximum of 65534, limits number of modified peptides generated from sequence
+
 
 # additional modifications
 
@@ -88,6 +96,6 @@ add_W_tryptophan = 0.0000              # added to W - avg. 186.0793, mono. 186.0
 add_B_user_amino_acid = 0.0000         # added to B - avg.   0.0000, mono.   0.00000
 add_J_user_amino_acid = 0.0000         # added to J - avg.   0.0000, mono.   0.00000
 add_O_user_amino_acid = 0.0000         # added to O - avg.   0.0000, mono    0.00000
-add_U_user_amino_aProperties.cid = 0.0000         # added to U - avg.   0.0000, mono.   0.00000
+add_U_user_amino_acid = 0.0000         # added to U - avg.   0.0000, mono.   0.00000
 add_X_user_amino_acid = 0.0000         # added to X - avg.   0.0000, mono.   0.00000
 add_Z_user_amino_acid = 0.0000         # added to Z - avg.   0.0000, mono.   0.00000

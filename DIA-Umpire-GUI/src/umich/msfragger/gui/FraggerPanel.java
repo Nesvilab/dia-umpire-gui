@@ -17,17 +17,17 @@ package umich.msfragger.gui;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -36,9 +36,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 import nu.studer.java.util.OrderedProperties;
-import rx.Observable;
-import rx.functions.Action1;
-import rx.swing.sources.AbstractButtonSource;
 import umich.msfragger.gui.renderers.TableCellDoubleRenderer;
 import umich.msfragger.params.MsfraggerParams;
 import umich.msfragger.params.ThisAppProps;
@@ -89,6 +86,12 @@ public class FraggerPanel extends javax.swing.JPanel {
         OrderedProperties props = params.getProps();
         
         
+        
+        
+    }
+    
+    public MsfraggerParams getParamsFromForm() {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
     
     private synchronized TableModel getDefaultVarModTableModel() {
@@ -177,7 +180,7 @@ public class FraggerPanel extends javax.swing.JPanel {
         panelMsFragger = new javax.swing.JPanel();
         panelMsfraggerParams = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtMsfraggerDb = new javax.swing.JTextField();
+        textMsfraggerDb = new javax.swing.JTextField();
         btnSelectMsfraggerDb = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         comboPrecursorMassTol = new javax.swing.JComboBox<>();
@@ -239,6 +242,7 @@ public class FraggerPanel extends javax.swing.JPanel {
         spinnerClearMzRangeMin = new javax.swing.JSpinner();
         jLabel26 = new javax.swing.JLabel();
         spinnerClearMzRangeMax = new javax.swing.JSpinner();
+        jButton1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         checkTrackZeroTopN = new javax.swing.JCheckBox();
         checkZeroBinAcceptExpect = new javax.swing.JCheckBox();
@@ -560,6 +564,13 @@ public class FraggerPanel extends javax.swing.JPanel {
         spinnerClearMzRangeMax.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, null, 10.0d));
         spinnerClearMzRangeMax.setToolTipText("for iTRAQ/TMT type data; will clear out all peaks in the specified m/z range");
 
+        jButton1.setText("save");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -594,7 +605,9 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel26)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spinnerClearMzRangeMax, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(spinnerClearMzRangeMax, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -604,7 +617,8 @@ public class FraggerPanel extends javax.swing.JPanel {
                     .addComponent(spinnerMinPeaks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel19)
                     .addComponent(jLabel20)
-                    .addComponent(spinnerUseTopNPeaks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spinnerUseTopNPeaks, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
@@ -739,7 +753,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                     .addGroup(panelMsfraggerParamsLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtMsfraggerDb)))
+                        .addComponent(textMsfraggerDb)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSelectMsfraggerDb)
                 .addContainerGap())
@@ -752,7 +766,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(panelMsfraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtMsfraggerDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textMsfraggerDb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSelectMsfraggerDb))
                 .addGap(18, 18, 18)
                 .addGroup(panelMsfraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -899,8 +913,8 @@ public class FraggerPanel extends javax.swing.JPanel {
 
         setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
 
-        if (!txtMsfraggerDb.getText().isEmpty()) {
-            File toFile = Paths.get(txtMsfraggerDb.getText()).toFile();
+        if (!textMsfraggerDb.getText().isEmpty()) {
+            File toFile = Paths.get(textMsfraggerDb.getText()).toFile();
             fileChooser.setCurrentDirectory(toFile);
         }
 
@@ -909,7 +923,7 @@ public class FraggerPanel extends javax.swing.JPanel {
             case JFileChooser.APPROVE_OPTION:
 
             File f = fileChooser.getSelectedFile();
-            txtMsfraggerDb.setText(f.getAbsolutePath());
+            textMsfraggerDb.setText(f.getAbsolutePath());
 
             break;
         }
@@ -969,6 +983,15 @@ public class FraggerPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSelectMsfraggerBinActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            Path save = params.save();
+            int a = 1;
+        } catch (IOException ex) {
+            Logger.getLogger(FraggerPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public static PlainDocument getFilterIsotopeCorrection() {
         final String filteredCharsRegex = "[^\\-\\d/]";
         PlainDocument doc = new PlainDocument();
@@ -1002,7 +1025,7 @@ public class FraggerPanel extends javax.swing.JPanel {
     }
 
     public JTextField getTxtMsfraggerDb() {
-        return txtMsfraggerDb;
+        return textMsfraggerDb;
     }
     
     
@@ -1021,6 +1044,7 @@ public class FraggerPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> comboFragMassTol;
     private javax.swing.JComboBox<String> comboPrecursorMassTol;
     private javax.swing.JComboBox<String> comboPrecursorTrueTol;
+    private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -1091,9 +1115,9 @@ public class FraggerPanel extends javax.swing.JPanel {
     private javax.swing.JTextField textCutAfter;
     private javax.swing.JTextField textEnzymeName;
     private javax.swing.JTextField textFraggerOutputExt;
+    private javax.swing.JTextField textMsfraggerDb;
     private javax.swing.JSpinner textOutputMaxExpect;
     private javax.swing.JSpinner textReportTopN;
     private javax.swing.JTextField txtBinMsfragger;
-    private javax.swing.JTextField txtMsfraggerDb;
     // End of variables declaration//GEN-END:variables
 }

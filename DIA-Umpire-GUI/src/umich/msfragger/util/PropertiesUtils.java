@@ -84,7 +84,7 @@ public class PropertiesUtils {
      * the end of the line in properties files.<br/>
      * You probably don't need this method, use {@link #readProperties(java.io.InputStream) }
      * instead.
-     * @param is  InputStream to read from/
+     * @param is  InputStream to read from. The stream is closed.
      * @return  A StringReader wrapped around the slurped string representation of the file.
      * @throws IOException 
      */
@@ -107,6 +107,8 @@ public class PropertiesUtils {
             }
             sb.append("\n");
         }
+        
+        is.close();
         return new StringReader(sb.toString());
     }
 
@@ -121,5 +123,34 @@ public class PropertiesUtils {
         if (is == null || properties == null)
             throw new IllegalArgumentException("Arguments can't be null");
         properties.load(preparePropertyFile(is));
+    }
+    
+    /**
+     * Writes to the stream (buffers it), includes comments after each parameter.
+     * @param os  The stream is closed after writing.
+     * @param properties
+     * @param comments
+     * @throws IOException 
+     */
+    public static void writePropertiesWithComments(OutputStream os, OrderedProperties properties, Map<String, String> comments) throws IOException {
+        Set<Map.Entry<String, String>> entries = properties.entrySet();
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+        for (Map.Entry<String, String> e : entries) {
+            bw.write(e.getKey());
+            bw.write(" = ");
+            bw.write(e.getValue());
+            if (comments != null && !comments.isEmpty()) {
+                String comment = comments.get(e.getKey());
+                if (comment != null && !comment.isEmpty()) {
+                    bw.write("\t\t\t# ");
+                    bw.write(comment);
+                }
+            }
+            bw.write("\n");
+        }
+        bw.write("\n");
+        
+        bw.flush();
+        os.close();
     }
 }
