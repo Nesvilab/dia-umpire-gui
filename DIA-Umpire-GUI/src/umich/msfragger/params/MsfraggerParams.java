@@ -24,10 +24,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import umich.msfragger.params.enums.CleavageType;
 import umich.msfragger.params.enums.MassTolUnits;
+import umich.msfragger.params.enums.MsLevel;
 import umich.msfragger.util.PathUtils;
+import umich.msfragger.util.StringUtils;
 
 /**
  *
@@ -285,7 +290,348 @@ public class MsfraggerParams {
         props.setProp(PROP_fragment_mass_tolerance, DF.format(v));
     }
     
+    // =======================================================================
+    
     public String getIsotopeError() {
         return props.getProp(PROP_isotope_error, "-1/0/1/2").value;
+    }
+    
+    public String getSearchEnzymeName() {
+        return props.getProp(PROP_search_enzyme_name, "Trypsin").value;
+    }
+    
+    public void setSearchEnzymeName(String v) {
+        props.setProp(PROP_search_enzyme_name, v);
+    }
+    
+    public String getSearchEnzymeCutAfter() {
+        return props.getProp(PROP_search_enzyme_cutafter, "KR").value;
+    }
+    
+    public void setSearchEnzymeCutAfter(String v) {
+        props.setProp(PROP_search_enzyme_cutafter, v);
+    }
+    
+    public String getSearchEnzymeButNotAfter() {
+        return props.getProp(PROP_search_enzyme_butnotafter, "P").value;
+    }
+    
+    public void setSearchEnzymeButNotAfter(String v) {
+        props.setProp(PROP_search_enzyme_butnotafter, v);
+    }
+    
+    public CleavageType getNumEnzymeTermini() {
+        int v = Integer.parseInt(props.getProp(PROP_num_enzyme_termini, "2").value);
+        for (CleavageType ct : CleavageType.values())
+            if (ct.valueInParamsFile() == v)
+                return ct;
+        throw new IllegalStateException("Unknown cleavage type found in properties.");
+    }
+    
+    public void setNumEnzymeTermini(CleavageType ct) {
+        props.setProp(PROP_num_enzyme_termini, Integer.toString(ct.valueInParamsFile()));
+    }
+    
+    public int getAllowedMissedCleavage() {
+        return Integer.parseInt(props.getProp(PROP_allowed_missed_cleavage, "1").value);
+    }
+    
+    public void setAllowedMissedCleavage(int v) {
+        props.setProp(PROP_allowed_missed_cleavage, Integer.toString(v));
+    }
+    
+    public boolean getClipNTermM() {
+        int v = Integer.parseInt(props.getProp(PROP_clip_nTerm_M, "1").value);
+        return v == 1;
+    }
+    
+    public void setClipNTermM(boolean v) {
+        int vInt = v ? 1 : 0;
+        props.setProp(PROP_clip_nTerm_M, Integer.toString(vInt));
+    }
+    
+    public String getOutputFileExtension() {
+        return props.getProp(PROP_output_file_extension, "pepXML").value;
+    }
+    
+    public void setOutputFileExtension(String v) {
+        props.setProp(PROP_output_file_extension, v);
+    }
+    
+    public int getOutputReportTopN() {
+        return Integer.parseInt(props.getProp(PROP_output_report_topN, "3").value);
+    }
+    
+    public void setOutputReportTopN(int v) {
+        props.setProp(PROP_output_report_topN, Integer.toString(v));
+    }
+    
+    public double getOutputMaxExpect() {
+        return Double.parseDouble(props.getProp(PROP_output_max_expect, "50").value);
+    }
+    
+    public void setOutputMaxExpect(double v) {
+        props.setProp(PROP_output_max_expect, Double.toString(v));
+    }
+    
+    public int[] getPrecursorCharge() {
+        String str = props.getProp(PROP_precursor_charge, "0 0").value;
+        String[] split = str.split("\\s+");
+        if (split.length != 2)
+            throw new IllegalStateException("The string parsed from properties could not be interpreted as two integers");
+        
+        
+        int z0 = Integer.parseInt(split[0]);
+        int z1 = Integer.parseInt(split[1]);
+        try {
+            return new int[] {z0, z1};
+        } catch (NumberFormatException nfe) {
+            throw new IllegalStateException("The string parsed from properties could not be interpreted as two integers");
+        }
+    }
+    
+    public void setPrecursorCharge(int[] v) {
+        if (v.length != 2)
+            throw new IllegalArgumentException("Array length must be 2");
+        props.setProp(PROP_precursor_charge, Integer.toString(v[0]) + " " + Integer.toString(v[1]));
+    }
+    
+    public boolean getOverrideCharge() {
+        int v = Integer.parseInt(props.getProp(PROP_override_charge, "0").value);
+        return v == 1;
+    }
+    
+    public void setOverrideCharge(boolean v) {
+        int vInt = v ? 1 : 0;
+        props.setProp(PROP_override_charge, Integer.toString(vInt));
+    }
+    
+    public MsLevel getMsLevel() {
+        int v = Integer.parseInt(props.getProp(PROP_ms_level, "2").value);
+        for (MsLevel msl : MsLevel.values())
+            if (msl.valueInParamsFile() == v)
+                return msl;
+        throw new IllegalStateException("Unknown value for ms-level found in properties.");
+    }
+    
+    public void setMsLevel(MsLevel msLevel) {
+        props.setProp(PROP_ms_level, Integer.toString(msLevel.valueInParamsFile()));
+    }
+    
+    public int getDigestMinLength() {
+        return Integer.parseInt(props.getProp(PROP_digest_min_length, "5").value);
+    }
+    
+    public void setDigestMinLength(int v) {
+        props.setProp(PROP_digest_min_length, Integer.toString(v));
+    }
+    
+    public int getDigestMaxLength() {
+        return Integer.parseInt(props.getProp(PROP_digest_max_length, "5").value);
+    }
+    
+    public void setDigestMaxLength(int v) {
+        props.setProp(PROP_digest_max_length, Integer.toString(v));
+    }
+    
+    public double[] getDigestMassRange() {
+        String str = props.getProp(PROP_digest_mass_range, "500.0 7000.0").value;
+        String[] split = str.split("\\s+");
+        if (split.length != 2)
+            throw new IllegalStateException("The string parsed from properties could not be interpreted as two doubles");
+        
+        
+        double m0 = Double.parseDouble(split[0]);
+        double m1 = Double.parseDouble(split[0]);
+        try {
+            return new double[] {m0, m1};
+        } catch (NumberFormatException nfe) {
+            throw new IllegalStateException("The string parsed from properties could not be interpreted as two doubles");
+        }
+    }
+    
+    public void setDigestMassRange(double[] v) {
+        if (v.length != 2)
+            throw new IllegalArgumentException("Array length must be 2");
+        props.setProp(PROP_digest_mass_range, Double.toString(v[0]) + " " + Double.toString(v[1]));
+    }
+    
+    public int getMaxFragmentCharge() {
+        return Integer.parseInt(props.getProp(PROP_max_fragment_charge, "2").value);
+    }
+    
+    public void setMaxFragmentCharge(int v) {
+        props.setProp(PROP_max_fragment_charge, Integer.toString(v));
+    }
+    
+    public int getTrackZeroTopN() {
+        return Integer.parseInt(props.getProp(PROP_track_zero_topN, "0").value);
+    }
+    
+    public void setTrackZeroTopN(int v) {
+        props.setProp(PROP_track_zero_topN, Integer.toString(v));
+    }
+    
+    public boolean getZeroBinAcceptExpect() {
+        int v = Integer.parseInt(props.getProp(PROP_zero_bin_accept_expect, "0").value);
+        return v == 1;
+    }
+    
+    public void setZeroBinAcceptExpect(boolean v) {
+        int vInt = v ? 1 : 0;
+        props.setProp(PROP_zero_bin_accept_expect, Integer.toString(vInt));
+    }
+    
+    public boolean getZeroBinMultExpect() {
+        int v = Integer.parseInt(props.getProp(PROP_zero_bin_mult_expect, "1").value);
+        return v == 1;
+    }
+    
+    public void setZeroBinMultExpect(boolean v) {
+        int vInt = v ? 1 : 0;
+        props.setProp(PROP_zero_bin_mult_expect, Integer.toString(vInt));
+    }
+    
+    public int getAddTopNComplementary() {
+        return Integer.parseInt(props.getProp(PROP_add_topN_complementary, "0").value);
+    }
+    
+    public void setAddTopNComplementary(int v) {
+        props.setProp(PROP_add_topN_complementary, Integer.toString(v));
+    }
+    
+    public int getMinimumPeaks() {
+        return Integer.parseInt(props.getProp(PROP_minimum_peaks, "6").value);
+    }
+    
+    public void setMinimumPeaks(int v) {
+        props.setProp(PROP_minimum_peaks, Integer.toString(v));
+    }
+    
+    public int getUseTopNPeaks() {
+        return Integer.parseInt(props.getProp(PROP_use_topN_peaks, "100").value);
+    }
+    
+    public void setUseTopNPeaks(int v) {
+        props.setProp(PROP_use_topN_peaks, Integer.toString(v));
+    }
+    
+    public int getMinFragmentsModelling() {
+        return Integer.parseInt(props.getProp(PROP_min_fragments_modelling, "3").value);
+    }
+    
+    public void setMinFragmentsModelling(int v) {
+        props.setProp(PROP_min_fragments_modelling, Integer.toString(v));
+    }
+    
+    public int getMinMatchedFragments() {
+        return Integer.parseInt(props.getProp(PROP_min_matched_fragments, "6").value);
+    }
+    
+    public void setMinMatchedFragments(int v) {
+        props.setProp(PROP_min_matched_fragments, Integer.toString(v));
+    }
+    
+    public double getMinimumRatio() {
+        return Double.parseDouble(props.getProp(PROP_minimum_ratio, "0.01").value);
+    }
+    
+    public void setMinimumRatio(double v) {
+        props.setProp(PROP_minimum_ratio, Double.toString(v));
+    }
+    
+    public double[] getClearMzRange() {
+        String str = props.getProp(PROP_clear_mz_range, "0.0 0.0").value;
+        String[] split = str.split("\\s+");
+        if (split.length != 2)
+            throw new IllegalStateException("The string parsed from properties could not be interpreted as two doubles");
+        
+        
+        double m0 = Double.parseDouble(split[0]);
+        double m1 = Double.parseDouble(split[0]);
+        try {
+            return new double[] {m0, m1};
+        } catch (NumberFormatException nfe) {
+            throw new IllegalStateException("The string parsed from properties could not be interpreted as two doubles");
+        }
+    }
+    
+    public void setClearMzRange(double[] v) {
+        if (v.length != 2)
+            throw new IllegalArgumentException("Array length must be 2");
+        props.setProp(PROP_clear_mz_range, Double.toString(v[0]) + " " + Double.toString(v[1]));
+    }
+    
+    public boolean getAllowMultipleVariableModsOnResidue() {
+        int v = Integer.parseInt(props.getProp(PROP_allow_multiple_variable_mods_on_residue, "1").value);
+        return v == 1;
+    }
+    
+    public void setAllowMultipleVariableModsOnResidue(boolean v) {
+        int vInt = v ? 1 : 0;
+        props.setProp(PROP_allow_multiple_variable_mods_on_residue, Integer.toString(vInt));
+    }
+    
+    public int getMaxVariableModsPerMod() {
+        return Integer.parseInt(props.getProp(PROP_max_variable_mods_per_mod, "3").value);
+    }
+    
+    public void setMaxVariableModsPerMod(int v) {
+        props.setProp(PROP_max_variable_mods_per_mod, Integer.toString(v));
+    }
+    
+    public int getMaxVariableModsCombinations() {
+        return Integer.parseInt(props.getProp(PROP_max_variable_mods_combinations, "100").value);
+    }
+    
+    public void setMaxVariableModsCombinations(int v) {
+        props.setProp(PROP_max_variable_mods_combinations, Integer.toString(v));
+    }
+    
+    public List<VariableMod> getVariableMods() {
+        ArrayList<VariableMod> mods = new ArrayList<>(VAR_MOD_COUNT_MAX);
+        for (int i = 0; i < VAR_MOD_COUNT_MAX; i++) {
+            String name = String.format("%s_%02d", PROP_variable_mod, i+1);
+            Props.Prop p = props.getProp(name);
+            if (p == null)
+                continue;
+            String[] split = p.value.split("\\s+");
+            if (split.length != 2)
+                throw new IllegalStateException("Can't interpret variable mod from properties as delta mass and sites");
+            for (int j = 0; j < split.length; j++)
+                split[j] = split[j].trim();
+            
+            double dm;
+            try {
+                dm = Double.parseDouble(split[0]);
+            } catch (NumberFormatException nfe) {
+                throw new IllegalStateException("Can't interpret variable mod from properties as delta mass and sites");
+            }
+            if (StringUtils.isNullOrWhitespace(split[1]))
+                throw new IllegalStateException("Can't interpret variable mod from properties as delta mass and sites");
+            
+            mods.add(new VariableMod(dm, split[1], p.isEnabled));
+        }
+        
+        return mods;
+    }
+    
+    public void setVariableMods(List<VariableMod> mods) {
+        for (VaribleMod vm : mods) {
+            
+        }
+    }
+    
+    
+    public static class VariableMod {
+        final double massDelta;
+        final String sites;
+        final boolean isEnabled;
+
+        public VariableMod(double massDelta, String sites, boolean isEnabled) {
+            this.massDelta = massDelta;
+            this.sites = sites;
+            this.isEnabled = isEnabled;
+        }
     }
 }
