@@ -108,6 +108,17 @@ public class MsfraggerParams {
         "H (histidine)", "F (phenylalanine)", "R (arginine)", "Y (tyrosine)", "W (tryptophan)", 
         "B ", "J", "O", "U", "X", "Z", };
     
+    public static final Map<String, String> ADDON_MAP_NAME2HUMAN = new HashMap<>(ADDON_NAMES.length);
+    public static final Map<String, String> ADDON_MAP_HUMAN2NAME = new HashMap<>(ADDON_NAMES.length);
+    static {
+        for (int i = 0; i < ADDON_NAMES.length; i++) {
+            String name = ADDON_NAMES[i];
+            String humanReadable = ADDONS_HUMAN_READABLE[i];
+            ADDON_MAP_NAME2HUMAN.put(name, humanReadable);
+            ADDON_MAP_HUMAN2NAME.put(humanReadable, name);
+        }
+    }
+    
     public static final String FILE_BASE_NAME = "fragger";
     public static final String FILE_BASE_EXT = "params";
     /** This file is in the jar, use getResourceAsStream() to get it.  */
@@ -588,8 +599,8 @@ public class MsfraggerParams {
         props.setProp(PROP_max_variable_mods_combinations, Integer.toString(v));
     }
     
-    public List<VariableMod> getVariableMods() {
-        ArrayList<VariableMod> mods = new ArrayList<>(VAR_MOD_COUNT_MAX);
+    public List<Mod> getVariableMods() {
+        ArrayList<Mod> mods = new ArrayList<>(VAR_MOD_COUNT_MAX);
         for (int i = 0; i < VAR_MOD_COUNT_MAX; i++) {
             String name = String.format("%s_%02d", PROP_variable_mod, i+1);
             Props.Prop p = props.getProp(name);
@@ -610,25 +621,58 @@ public class MsfraggerParams {
             if (StringUtils.isNullOrWhitespace(split[1]))
                 throw new IllegalStateException("Can't interpret variable mod from properties as delta mass and sites");
             
-            mods.add(new VariableMod(dm, split[1], p.isEnabled));
+            mods.add(new Mod(dm, split[1], p.isEnabled));
         }
         
         return mods;
     }
     
-    public void setVariableMods(List<VariableMod> mods) {
-        for (VaribleMod vm : mods) {
-            
+    public void setVariableMods(List<Mod> mods) {
+        for (int i = 0; i < mods.size(); i++) {
+            Mod vm = mods.get(i);
+            String name = String.format("%s_%02d", PROP_variable_mod, i+1);
+            String value = String.format("%.5f %s", vm.massDelta, vm.sites);
+            props.setProp(name, value, vm.isEnabled);
+        }
+    }
+    
+    public List<Mod> getAdditionalMods() {
+        ArrayList<Mod> mods = new ArrayList<>(ADDON_NAMES.length);
+        for (int i = 0; i < ADDON_NAMES.length; i++) {
+            String siteName = ADDON_NAMES[i];
+            String name = String.format("%s_%s", PROP_add, siteName);
+            Props.Prop p = props.getProp(name);
+            if (p == null)
+                continue;
+            double dm = Double.parseDouble(p.value);
+            String sites = ADDON_MAP_NAME2HUMAN.get(siteName);
+            if (sites == null)
+                throw new IllegalStateException("Could not map addon modificaiton site name to a human readable name.");
+            mods.add(new Mod(dm, sites, p.isEnabled));
+        }
+        
+        return mods;
+    }
+    
+    public void setAdditionalMods(List<Mod> mods) {
+        for (int i = 0; i < mods.size(); i++) {
+            Mod vm = mods.get(i);
+            String siteName = ADDON_MAP_HUMAN2NAME.get(vm.sites);
+            if (siteName == null)
+                throw new IllegalStateException("Could not map human readable addon modification name to name in properties.");
+            String name = String.format("%s_%s", PROP_add, siteName);
+            String value = String.format("%.6f", vm.massDelta);
+            props.setProp(name, value, vm.isEnabled);
         }
     }
     
     
-    public static class VariableMod {
+    public static class Mod {
         final double massDelta;
         final String sites;
         final boolean isEnabled;
 
-        public VariableMod(double massDelta, String sites, boolean isEnabled) {
+        public Mod(double massDelta, String sites, boolean isEnabled) {
             this.massDelta = massDelta;
             this.sites = sites;
             this.isEnabled = isEnabled;
