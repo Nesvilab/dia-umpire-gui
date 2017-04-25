@@ -18,8 +18,9 @@ package umich.msfragger.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
-import static java.nio.file.Files.newBufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,9 +37,23 @@ public class IOUtils {
      * @param is  The stream is closed after reading. It's up to the user to make
      * sure it's not an endless stream.
      * @return 
+     * @throws java.io.IOException 
      */
     public static List<String> readAllLines(InputStream is) throws IOException {
-        try (BufferedReader reader = newBufferedReader(path, cs)) {
+        return readAllLines(is, Charset.forName("UTF-8"));
+    }
+    
+    /**
+     * Like {@link Files#readAllLines(java.nio.file.Path, java.nio.charset.Charset) } method,
+     * but works with streams.
+     * @param is  The stream is closed after reading. It's up to the user to make
+     * sure it's not an endless stream.
+     * @param cs  Charset for decoder.
+     * @return 
+     * @throws java.io.IOException 
+     */
+    public static List<String> readAllLines(InputStream is, Charset cs) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, cs))) {
             List<String> result = new ArrayList<>();
             for (;;) {
                 String line = reader.readLine();
@@ -49,4 +64,5 @@ public class IOUtils {
             return result;
         }
     }
+    
 }

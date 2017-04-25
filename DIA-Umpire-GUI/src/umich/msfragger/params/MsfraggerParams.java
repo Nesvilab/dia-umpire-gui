@@ -25,20 +25,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
-import nu.studer.java.util.OrderedProperties;
 import umich.msfragger.params.enums.MassTolUnits;
 import umich.msfragger.util.PathUtils;
-import umich.msfragger.util.PropertiesUtils;
 
 /**
  *
  * @author dmitriya
  */
 public class MsfraggerParams {
-    private OrderedProperties props;
+    private Props props;
     
     public static final String PROP_database_name = "database_name";
     public static final String PROP_num_threads = "num_threads";
@@ -117,7 +113,6 @@ public class MsfraggerParams {
     private Map<String, String> comments;
         
     public MsfraggerParams() {
-        props = new OrderedProperties();
         comments = new HashMap<>();
         comments.put(PROP_num_threads, "0=poll CPU to set num threads; else specify num threads directly (max 64)");
         comments.put(PROP_precursor_mass_units, "0=Daltons, 1=ppm");
@@ -140,6 +135,7 @@ public class MsfraggerParams {
         comments.put(PROP_allow_multiple_variable_mods_on_residue, "static mods are not considered");
         comments.put(PROP_max_variable_mods_per_mod, "maximum of 5");
         comments.put(PROP_max_variable_mods_combinations, "maximum of 65534, limits number of modified peptides generated from sequence");
+        props = new Props(comments);        
     }
     
     
@@ -162,36 +158,14 @@ public class MsfraggerParams {
         } else {
             loadDefaults();
         }
-        fixValues();
     }
     
     public void loadDefaults() throws IOException {
         load(MsfraggerParams.class.getResourceAsStream(DEFAULT_FILE));
-        fixValues();
     }
     
     public void load(InputStream is) throws IOException {
-        PropertiesUtils.readProperties(is, props);
-        is.close();
-        fixValues();
-    }
-    
-    private void fixValues() {
-        LinkedHashMap<String, String> map = new LinkedHashMap<>();
-        for (Map.Entry<String, String> e : props.entrySet()) {
-            String v = e.getValue().trim();
-            int indexOfHash = v.indexOf("#");
-            if (indexOfHash >= 0) {
-                String withoutComment = v.substring(0, indexOfHash).trim();
-                map.put(e.getKey(), withoutComment);
-            } else {
-                map.put(e.getKey(), v);
-            }
-        }
-        for (Map.Entry<String, String> e : map.entrySet()) {
-            props.removeProperty(e.getKey());
-            props.setProperty(e.getKey(), e.getValue());
-        }
+        props.load(is);
     }
     
     /**
@@ -203,7 +177,7 @@ public class MsfraggerParams {
         if (Files.exists(temp)) {
             Files.delete(temp);
         }
-        save(new FileOutputStream(temp.toFile()));
+        props.save(new FileOutputStream(temp.toFile()));
         return temp;
     }
     
@@ -213,34 +187,33 @@ public class MsfraggerParams {
      * @throws IOException 
      */
     public void save(OutputStream os) throws IOException {
-        PropertiesUtils.writePropertiesWithComments(os, props, comments);
-        os.close();
+        props.save(os);
     }
 
-    public OrderedProperties getProps() {
+    public Props getProps() {
         return props;
     }
     
     public String getDatabaseName() {
-        return props.getProperty(PROP_database_name, "");
+        return props.getProp(PROP_database_name, "").value;
     }
     
     public void setDatabaseName(String databaseName) {
-        props.setProperty(PROP_database_name, databaseName);
+        props.setProp(PROP_database_name, databaseName);
     }
     
     public int getNumThreads() {
-        return Integer.parseInt(props.getProperty(PROP_num_threads, "1"));
+        return Integer.parseInt(props.getProp(PROP_num_threads, "1").value);
     }
     
     public void setNumThreads(int numThreads) {
-        props.setProperty(PROP_num_threads, Integer.toString(numThreads));
+        props.setProp(PROP_num_threads, Integer.toString(numThreads));
     }
     
     
     // =======================================================================
     public MassTolUnits getPrecursorMassUnits() {
-        int v = Integer.parseInt(props.getProperty(PROP_precursor_mass_units, "1"));
+        int v = Integer.parseInt(props.getProp(PROP_precursor_mass_units, "1").value);
         for (int i = 0; i < MassTolUnits.values().length; i++) {
             MassTolUnits u = MassTolUnits.values()[i];
             if (u.valueInParamsFile() == v)
@@ -251,21 +224,21 @@ public class MsfraggerParams {
     }
     
     public void setPrecursorMassUnits(MassTolUnits u) {
-        props.setProperty(PROP_precursor_mass_units, Integer.toString(u.valueInParamsFile()));
+        props.setProp(PROP_precursor_mass_units, Integer.toString(u.valueInParamsFile()));
     }
     
     public double getPrecursorMassTolerance() {
-        return Double.parseDouble(props.getProperty(PROP_precursor_mass_tolerance, "50.0"));
+        return Double.parseDouble(props.getProp(PROP_precursor_mass_tolerance, "50.0").value);
     }
     
     public void setPrecursorMassTolerance(double v) {
-        props.setProperty(PROP_precursor_mass_tolerance, DF.format(v));
+        props.setProp(PROP_precursor_mass_tolerance, DF.format(v));
     }
     
     
     // =======================================================================
     public MassTolUnits getPrecursorTrueUnits() {
-        int v = Integer.parseInt(props.getProperty(PROP_precursor_true_units, "1"));
+        int v = Integer.parseInt(props.getProp(PROP_precursor_true_units, "1").value);
         for (int i = 0; i < MassTolUnits.values().length; i++) {
             MassTolUnits u = MassTolUnits.values()[i];
             if (u.valueInParamsFile() == v)
@@ -276,21 +249,21 @@ public class MsfraggerParams {
     }
     
     public void setPrecursorTrueUnits(MassTolUnits u) {
-        props.setProperty(PROP_precursor_true_units, Integer.toString(u.valueInParamsFile()));
+        props.setProp(PROP_precursor_true_units, Integer.toString(u.valueInParamsFile()));
     }
     
     public double getPrecursorTrueTolerance() {
-        return Double.parseDouble(props.getProperty(PROP_precursor_true_tolerance, "50.0"));
+        return Double.parseDouble(props.getProp(PROP_precursor_true_tolerance, "50.0").value);
     }
     
     public void setPrecursorTrueTolerance(double v) {
-        props.setProperty(PROP_precursor_true_tolerance, DF.format(v));
+        props.setProp(PROP_precursor_true_tolerance, DF.format(v));
     }
     
     
     // =======================================================================
     public MassTolUnits getFragmentMassUnits() {
-        int v = Integer.parseInt(props.getProperty(PROP_fragment_mass_units, "1"));
+        int v = Integer.parseInt(props.getProp(PROP_fragment_mass_units, "1").value);
         for (int i = 0; i < MassTolUnits.values().length; i++) {
             MassTolUnits u = MassTolUnits.values()[i];
             if (u.valueInParamsFile() == v)
@@ -301,18 +274,18 @@ public class MsfraggerParams {
     }
     
     public void setFragmentMassUnits(MassTolUnits u) {
-        props.setProperty(PROP_fragment_mass_units, Integer.toString(u.valueInParamsFile()));
+        props.setProp(PROP_fragment_mass_units, Integer.toString(u.valueInParamsFile()));
     }
     
     public double getPFragmentMassTolerance() {
-        return Double.parseDouble(props.getProperty(PROP_fragment_mass_tolerance, "50.0"));
+        return Double.parseDouble(props.getProp(PROP_fragment_mass_tolerance, "50.0").value);
     }
     
     public void setFragmentMassTolerance(double v) {
-        props.setProperty(PROP_fragment_mass_tolerance, DF.format(v));
+        props.setProp(PROP_fragment_mass_tolerance, DF.format(v));
     }
     
     public String getIsotopeError() {
-        return props.getProperty(PROP_isotope_error, "-1/0/1/2");
+        return props.getProp(PROP_isotope_error, "-1/0/1/2").value;
     }
 }

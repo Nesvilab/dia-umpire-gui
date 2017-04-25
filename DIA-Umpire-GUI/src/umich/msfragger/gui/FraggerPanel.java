@@ -39,6 +39,7 @@ import javax.swing.text.PlainDocument;
 import nu.studer.java.util.OrderedProperties;
 import umich.msfragger.gui.renderers.TableCellDoubleRenderer;
 import umich.msfragger.params.MsfraggerParams;
+import umich.msfragger.params.Props;
 import umich.msfragger.params.ThisAppProps;
 import umich.msfragger.util.DocumentFilters;
 import umich.msfragger.util.SwingUtils;
@@ -83,7 +84,7 @@ public class FraggerPanel extends javax.swing.JPanel {
     }
     
     private void fillFormFromParams(MsfraggerParams params) {
-        OrderedProperties props = params.getProps();
+        Props props = params.getProps();
         
         
         
@@ -1096,6 +1097,19 @@ public class FraggerPanel extends javax.swing.JPanel {
             Path path = Paths.get(selectedFile.getAbsolutePath());
             if (Files.exists(path)) {
                 try {
+                    
+                    
+                    // TESTING PROPS
+                    Props props = new Props();
+                    props.load(new FileInputStream(selectedFile));
+                    
+                    String ap = selectedFile.getAbsolutePath();
+                    Path dir = Paths.get(ap).getParent();
+                    Path file = Paths.get(ap).getFileName();
+                    Path out = Paths.get(dir.toString(), file.toString() + "_props");
+                    props.save(new FileOutputStream(out.toFile()));
+                    
+                    
                     params.load(new FileInputStream(selectedFile));
                     fillFormFromParams(params);
                 } catch (IOException ex) {
