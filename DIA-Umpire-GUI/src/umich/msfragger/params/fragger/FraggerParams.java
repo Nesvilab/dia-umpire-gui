@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package umich.msfragger.params;
+package umich.msfragger.params.fragger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- *
+ * @deprecated use {@link MsfraggerParams} instead.
  * @author Dmitry Avtonomov
  */
+@Deprecated
 public class FraggerParams {
     
     public static final String FILE_BASE_NAME = "fragger";

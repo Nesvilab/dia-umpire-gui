@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package umich.msfragger.params;
+package umich.msfragger.params.fragger;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import umich.msfragger.params.Props;
 import umich.msfragger.params.enums.CleavageType;
 import umich.msfragger.params.enums.MassTolUnits;
 import umich.msfragger.params.enums.MsLevel;
@@ -293,7 +294,7 @@ public class MsfraggerParams {
         props.setProp(PROP_fragment_mass_units, Integer.toString(u.valueInParamsFile()));
     }
     
-    public double getPFragmentMassTolerance() {
+    public double getFragmentMassTolerance() {
         return Double.parseDouble(props.getProp(PROP_fragment_mass_tolerance, "50.0").value);
     }
     
@@ -305,6 +306,10 @@ public class MsfraggerParams {
     
     public String getIsotopeError() {
         return props.getProp(PROP_isotope_error, "-1/0/1/2").value;
+    }
+    
+    public void setIsotopeError(String v) {
+        props.setProp(PROP_isotope_error, v);
     }
     
     public String getSearchEnzymeName() {
@@ -453,7 +458,7 @@ public class MsfraggerParams {
         
         
         double m0 = Double.parseDouble(split[0]);
-        double m1 = Double.parseDouble(split[0]);
+        double m1 = Double.parseDouble(split[1]);
         try {
             return new double[] {m0, m1};
         } catch (NumberFormatException nfe) {
@@ -475,12 +480,22 @@ public class MsfraggerParams {
         props.setProp(PROP_max_fragment_charge, Integer.toString(v));
     }
     
-    public int getTrackZeroTopN() {
-        return Integer.parseInt(props.getProp(PROP_track_zero_topN, "0").value);
+//    public int getTrackZeroTopN() {
+//        return Integer.parseInt(props.getProp(PROP_track_zero_topN, "0").value);
+//    }
+//    
+//    public void setTrackZeroTopN(int v) {
+//        props.setProp(PROP_track_zero_topN, Integer.toString(v));
+//    }
+    
+    public boolean getTrackZeroTopN() {
+        int v = Integer.parseInt(props.getProp(PROP_track_zero_topN, "0").value);
+        return v == 1;
     }
     
-    public void setTrackZeroTopN(int v) {
-        props.setProp(PROP_track_zero_topN, Integer.toString(v));
+    public void setTrackZeroTopN(boolean v) {
+        int vInt = v ? 1 : 0;
+        props.setProp(PROP_track_zero_topN, Integer.toString(vInt));
     }
     
     public boolean getZeroBinAcceptExpect() {
@@ -503,12 +518,22 @@ public class MsfraggerParams {
         props.setProp(PROP_zero_bin_mult_expect, Integer.toString(vInt));
     }
     
-    public int getAddTopNComplementary() {
-        return Integer.parseInt(props.getProp(PROP_add_topN_complementary, "0").value);
+//    public int getAddTopNComplementary() {
+//        return Integer.parseInt(props.getProp(PROP_add_topN_complementary, "0").value);
+//    }
+//    
+//    public void setAddTopNComplementary(int v) {
+//        props.setProp(PROP_add_topN_complementary, Integer.toString(v));
+//    }
+    
+    public boolean getAddTopNComplementary() {
+        int v = Integer.parseInt(props.getProp(PROP_add_topN_complementary, "0").value);
+        return v == 1;
     }
     
-    public void setAddTopNComplementary(int v) {
-        props.setProp(PROP_add_topN_complementary, Integer.toString(v));
+    public void setAddTopNComplementary(boolean v) {
+        int vInt = v ? 1 : 0;
+        props.setProp(PROP_add_topN_complementary, Integer.toString(vInt));
     }
     
     public int getMinimumPeaks() {
@@ -559,7 +584,7 @@ public class MsfraggerParams {
         
         
         double m0 = Double.parseDouble(split[0]);
-        double m1 = Double.parseDouble(split[0]);
+        double m1 = Double.parseDouble(split[1]);
         try {
             return new double[] {m0, m1};
         } catch (NumberFormatException nfe) {
@@ -667,15 +692,4 @@ public class MsfraggerParams {
     }
     
     
-    public static class Mod {
-        final double massDelta;
-        final String sites;
-        final boolean isEnabled;
-
-        public Mod(double massDelta, String sites, boolean isEnabled) {
-            this.massDelta = massDelta;
-            this.sites = sites;
-            this.isEnabled = isEnabled;
-        }
-    }
 }

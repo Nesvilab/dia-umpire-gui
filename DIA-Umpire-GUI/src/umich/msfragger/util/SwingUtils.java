@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -59,6 +60,10 @@ public class SwingUtils {
         Component[] components = container.getComponents();
         for (Component component : components) {
             component.setEnabled(enable);
+//            if (component instanceof JScrollPane) {
+//                JScrollPane jsp = (JScrollPane)component;
+//                enableComponents(jsp.getViewport(), enable);
+//            }
             if (component instanceof Container) {
                 enableComponents((Container)component, enable);
             }

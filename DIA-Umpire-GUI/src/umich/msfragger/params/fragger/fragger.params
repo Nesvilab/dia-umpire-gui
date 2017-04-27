@@ -1,4 +1,4 @@
-database_name = E:\fasta\uniprot-proteome_UP000005640_HUMAN_rev.fasta
+database_name = 
 num_threads = 4                         # 0=poll CPU to set num threads; else specify num threads directly (max 64)
 
 precursor_mass_units = 1                # 0=Daltons, 1=ppm
