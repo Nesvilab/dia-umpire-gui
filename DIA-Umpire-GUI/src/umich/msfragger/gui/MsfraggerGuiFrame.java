@@ -17,7 +17,6 @@ import umich.msfragger.util.LogUtils;
 import umich.msfragger.util.OsUtils;
 import umich.msfragger.util.StringUtils;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -68,7 +67,12 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.TableModel;
 import javax.swing.text.DefaultCaret;
+import umich.msfragger.gui.api.DataConverter;
+import umich.msfragger.gui.api.SimpleETable;
+import umich.msfragger.gui.api.SimpleUniqueTableModel;
+import umich.msfragger.gui.api.TableModelColumn;
 import umich.msfragger.util.SwingUtils;
 
 /**
@@ -83,22 +87,51 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     protected FraggerPanel fraggerPanel;
     protected ExecutorService exec;
     private final List<Process> submittedProcesses = new ArrayList<>(100);
+    
+    SimpleETable tableRawFiles;
+    SimpleUniqueTableModel<Path> tableModelRawFiles;
 
     /**
      * Creates new form UmpireUnargetedDbSearchPanel
      */
     public MsfraggerGuiFrame() {
         initComponents();
-        initManual();
+        initMore();
     }
 
     
 
-    private void initManual() {
+    private void initMore() {
         exec = Executors.newFixedThreadPool(1);
         fraggerPanel = new FraggerPanel();
         scrollPaneMsFragger.setViewportView(fraggerPanel);
         scrollPaneMsFragger.getVerticalScrollBar().setUnitIncrement(16);
+        
+        
+        tableModelRawFiles = createTableModelRawFiles();
+        tableRawFiles = new SimpleETable(tableModelRawFiles);
+        tableRawFiles.addComponentsEnabledOnNonEmptyData(btnRawClear);
+        tableRawFiles.addComponentsEnabledOnNonEmptySelection(btnRawRemove);
+        tableRawFiles.fireInitialization();
+        scrollPaneRawFiles.setViewportView(tableRawFiles);
+        
+        
+    }
+    
+    public SimpleUniqueTableModel<Path> createTableModelRawFiles() {
+        if (tableModelRawFiles != null)
+            return tableModelRawFiles; 
+        List<TableModelColumn<Path, ?>> cols = new ArrayList<>();
+       
+        TableModelColumn<Path, String> colPath = new TableModelColumn<>("Path", String.class, false, new DataConverter<Path, String>() {
+            @Override public String convert(Path data) {
+                return data.toString();
+            }
+        });
+        cols.add(colPath);
+        
+        tableModelRawFiles = new SimpleUniqueTableModel<>(cols, 0);
+        return tableModelRawFiles;
     }
     
     private String getDefaultPhilosopherBinName() {
@@ -122,10 +155,11 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         tabPane = new javax.swing.JTabbedPane();
         panelInTabSelectFiles = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtAreaSelectedFiles = new javax.swing.JTextArea();
-        btnSelectRawFiles = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnRawAddFiles = new javax.swing.JButton();
+        btnRawClear = new javax.swing.JButton();
+        scrollPaneRawFiles = new javax.swing.JScrollPane();
+        btnRawAddFolder = new javax.swing.JButton();
+        btnRawRemove = new javax.swing.JButton();
         panelMsFragger = new javax.swing.JPanel();
         scrollPaneMsFragger = new javax.swing.JScrollPane();
         panelPeptideProphet = new javax.swing.JPanel();
@@ -188,23 +222,31 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Selected files"));
 
-        txtAreaSelectedFiles.setColumns(20);
-        txtAreaSelectedFiles.setRows(5);
-        txtAreaSelectedFiles.setDisabledTextColor(new java.awt.Color(0, 0, 0));
-        txtAreaSelectedFiles.setEnabled(false);
-        jScrollPane1.setViewportView(txtAreaSelectedFiles);
-
-        btnSelectRawFiles.setText("Add files");
-        btnSelectRawFiles.addActionListener(new java.awt.event.ActionListener() {
+        btnRawAddFiles.setText("Add files");
+        btnRawAddFiles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSelectRawFilesActionPerformed(evt);
+                btnRawAddFilesActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Clear");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnRawClear.setText("Clear");
+        btnRawClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnRawClearActionPerformed(evt);
+            }
+        });
+
+        btnRawAddFolder.setText("Add Folder");
+        btnRawAddFolder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRawAddFolderActionPerformed(evt);
+            }
+        });
+
+        btnRawRemove.setText("Remove");
+        btnRawRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRawRemoveActionPerformed(evt);
             }
         });
 
@@ -215,23 +257,29 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
+                    .addComponent(scrollPaneRawFiles)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(btnSelectRawFiles)
+                        .addComponent(btnRawClear)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(btnRawRemove)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRawAddFiles)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRawAddFolder)
+                        .addGap(0, 302, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
+                .addComponent(scrollPaneRawFiles, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSelectRawFiles)
-                    .addComponent(jButton1))
+                    .addComponent(btnRawAddFiles)
+                    .addComponent(btnRawClear)
+                    .addComponent(btnRawAddFolder)
+                    .addComponent(btnRawRemove))
                 .addContainerGap())
         );
 
@@ -1223,12 +1271,12 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSelectPeptideProphetBinActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        txtAreaSelectedFiles.setText("");
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnRawClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawClearActionPerformed
+        tableModelRawFiles.dataClear();
+    }//GEN-LAST:event_btnRawClearActionPerformed
 
-    private void btnSelectRawFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectRawFilesActionPerformed
-        if (btnSelectRawFiles == evt.getSource()) {
+    private void btnRawAddFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawAddFilesActionPerformed
+        if (btnRawAddFiles == evt.getSource()) {
             String approveText = "Select";
             JFileChooser fc = new JFileChooser();
             fc.setAcceptAllFileFilterUsed(true);
@@ -1244,18 +1292,36 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             int retVal = fc.showDialog(this, approveText);
             if (retVal == JFileChooser.APPROVE_OPTION) {
                 File[] files = fc.getSelectedFiles();
-                for (File f : files) {
-                    txtAreaSelectedFiles.append(f.toString() + "\n");
-                }
                 if (files.length > 0) {
                     ThisAppProps.saveFilechooserPathToCached(files[0], ThisAppProps.PROP_LCMS_FILES_IN);
+                    List<Path> paths = new ArrayList<>(files.length);
+                    for (File f : files) {
+                        paths.add(Paths.get(f.getAbsolutePath()));
+                    }
+                    tableModelRawFiles.dataAddAll(paths);
                 }
 
             } else {
 
             }
         }
-    }//GEN-LAST:event_btnSelectRawFilesActionPerformed
+    }//GEN-LAST:event_btnRawAddFilesActionPerformed
+
+    private void btnRawRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawRemoveActionPerformed
+        int[] sel = tableRawFiles.getSelectedRows();
+        if (sel.length == 0)
+            return;
+        List<Path> toRemove = new ArrayList<>();
+        for (int i = 0; i < sel.length; i++) {
+            toRemove.add(tableModelRawFiles.dataGet(sel[i]));
+        }
+        tableRawFiles.getSelectionModel().clearSelection();
+        tableModelRawFiles.dataRemoveAll(toRemove);
+    }//GEN-LAST:event_btnRawRemoveActionPerformed
+
+    private void btnRawAddFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawAddFolderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRawAddFolderActionPerformed
 
 
 
@@ -1320,16 +1386,12 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }
     
     private List<String> getLcmsFilePaths() {
-        String selectedFiles = txtAreaSelectedFiles.getText();
-        String[] lcmsFilePaths = selectedFiles.split("\n");
-        ArrayList<String> paths = new ArrayList<>();
-        for (int i = 0; i < lcmsFilePaths.length; i++) {
-            lcmsFilePaths[i] = lcmsFilePaths[i].trim();
-            if (lcmsFilePaths[i].isEmpty())
-                continue;
-            paths.add(lcmsFilePaths[i]);
+        ArrayList<Path> paths = tableModelRawFiles.dataCopy();
+        ArrayList<String> result = new ArrayList<>(paths.size());
+        for (Path p : paths) {
+            result.add(p.toString());
         }
-        return paths;
+        return result;
     }
     
     /**
@@ -2658,10 +2720,13 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnBrowseProgramsDir;
     private javax.swing.JButton btnClearConsole;
     private javax.swing.JButton btnProteinProphetSeqDb;
+    private javax.swing.JButton btnRawAddFiles;
+    private javax.swing.JButton btnRawAddFolder;
+    private javax.swing.JButton btnRawClear;
+    private javax.swing.JButton btnRawRemove;
     private javax.swing.JButton btnRun;
     private javax.swing.JButton btnSelectPeptideProphetBin;
     private javax.swing.JButton btnSelectPeptideProphetSeqDbPath;
-    private javax.swing.JButton btnSelectRawFiles;
     private javax.swing.JButton btnSelectWrkingDir;
     private javax.swing.JButton btnStop;
     private javax.swing.JCheckBox chkProteinProphetAddInteractPepXmlsSeparately;
@@ -2669,7 +2734,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkRunProteinProphet;
     private umich.msfragger.gui.TextConsole console;
     private javax.swing.JScrollPane consoleScrollPane;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
@@ -2681,7 +2745,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblOutputDir;
@@ -2696,10 +2759,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JPanel panelProteinProphetOptions;
     private javax.swing.JPanel panelRun;
     private javax.swing.JScrollPane scrollPaneMsFragger;
+    private javax.swing.JScrollPane scrollPaneRawFiles;
     private javax.swing.JSpinner spinnerRam;
     private javax.swing.JSpinner spinnerThreads;
     private javax.swing.JTabbedPane tabPane;
-    private javax.swing.JTextArea txtAreaSelectedFiles;
     private javax.swing.JTextField txtBinPeptideProphet;
     private javax.swing.JTextField txtBinProteinProphet;
     private javax.swing.JTextArea txtPeptideProphetCmdLineOptions;
