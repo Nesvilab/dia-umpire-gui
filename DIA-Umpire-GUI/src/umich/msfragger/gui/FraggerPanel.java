@@ -64,7 +64,7 @@ public class FraggerPanel extends javax.swing.JPanel {
     private static final String[] TABLE_ADD_MODS_COL_NAMES = {"Enabled", "Site", "Mass Delta (editable)"};
     private ModificationsTableModel tableModelAddMods;
     
-    
+    public static FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("LCMS files (mzML/mzXML/mgf)", "mzml", "mzxml", "mgf");
     
     
     /**

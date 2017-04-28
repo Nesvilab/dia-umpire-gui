@@ -46,6 +46,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -57,25 +58,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.TransferHandler;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.TableModel;
 import javax.swing.text.DefaultCaret;
-import org.netbeans.swing.etable.ETableTransferHandler;
 import umich.msfragger.gui.api.DataConverter;
 import umich.msfragger.gui.api.SimpleETable;
 import umich.msfragger.gui.api.SimpleUniqueTableModel;
 import umich.msfragger.gui.api.TableModelColumn;
+import umich.msfragger.util.FileDrop;
 import umich.msfragger.util.SwingUtils;
 
 /**
@@ -93,6 +92,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     
     SimpleETable tableRawFiles;
     SimpleUniqueTableModel<Path> tableModelRawFiles;
+    FileDrop tableRawFilesFileDrop;
 
     /**
      * Creates new form UmpireUnargetedDbSearchPanel
@@ -119,15 +119,60 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         scrollPaneRawFiles.setViewportView(tableRawFiles);
         
         // Drag and drop support for files from Explorer to the Application
-        tableRawFiles.setDragEnabled(true);
-        tableRawFiles.setDropMode(DropMode.ON);
-        TransferHandler origHandler = tableRawFiles.getTransferHandler();
         
         
+        // this doesn't work.
+//        tableRawFiles.setDragEnabled(true);
+//        tableRawFiles.setDropMode(DropMode.ON);
+//        TransferHandler origHandler = tableRawFiles.getTransferHandler();
+//        SimpleETableTransferHandler newHandler = new SimpleETableTransferHandler();
+//        tableRawFiles.setTransferHandler(newHandler);
         
-        //tableRawFiles.setTransferHandler(new TransferHandler);
+        // dropping onto enclosing JPanel works.
+        tableRawFilesFileDrop = new FileDrop(panelSelectedFiles, false, new FileDrop.Listener() {
+            @Override
+            public void filesDropped(File[] files) {
+                ArrayList<Path> paths = new ArrayList<>(files.length);
+                for (File f : files) {
+                    boolean isDirectory = f.isDirectory();
+                    if (!isDirectory) {
+                        if (FraggerPanel.fileNameExtensionFilter.accept(f))
+                            paths.add(Paths.get(f.getAbsolutePath()));
+                    } else {
+                        traverseDirectories(f, FraggerPanel.fileNameExtensionFilter, paths);
+                    }
+                }
+                tableModelRawFiles.dataAddAll(paths);
+            }
+        });
         
         
+    }
+    
+    private void traverseDirectories(File dir, FileFilter filter, List<Path> accepted) {
+        if (!dir.isDirectory()) {
+            if (filter.accept(dir)) {
+                accepted.add(Paths.get(dir.getAbsolutePath()));
+            }
+        }
+        Path dirPath = Paths.get(dir.getAbsolutePath());
+        try {
+            DirectoryStream<Path> ds = Files.newDirectoryStream(dirPath);
+            Iterator<Path> it = ds.iterator();
+            while (it.hasNext()) {
+                File next = it.next().toFile();
+                boolean isDir = next.isDirectory();
+                if (isDir) {
+                    traverseDirectories(next, filter, accepted);
+                } else {
+                    if (filter.accept(next)) {
+                        accepted.add(Paths.get(next.getAbsolutePath()));
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public SimpleUniqueTableModel<Path> createTableModelRawFiles() {
@@ -166,7 +211,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         tabPane = new javax.swing.JTabbedPane();
         panelInTabSelectFiles = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
+        panelSelectedFiles = new javax.swing.JPanel();
         btnRawAddFiles = new javax.swing.JButton();
         btnRawClear = new javax.swing.JButton();
         scrollPaneRawFiles = new javax.swing.JScrollPane();
@@ -232,7 +277,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         tabPane.setToolTipText("");
         tabPane.setName(""); // NOI18N
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Selected files"));
+        panelSelectedFiles.setBorder(javax.swing.BorderFactory.createTitledBorder("Selected files"));
 
         btnRawAddFiles.setText("Add files");
         btnRawAddFiles.addActionListener(new java.awt.event.ActionListener() {
@@ -262,15 +307,15 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelSelectedFilesLayout = new javax.swing.GroupLayout(panelSelectedFiles);
+        panelSelectedFiles.setLayout(panelSelectedFilesLayout);
+        panelSelectedFilesLayout.setHorizontalGroup(
+            panelSelectedFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSelectedFilesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelSelectedFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollPaneRawFiles)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
+                    .addGroup(panelSelectedFilesLayout.createSequentialGroup()
                         .addComponent(btnRawClear)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRawRemove)
@@ -281,13 +326,13 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         .addGap(0, 302, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        panelSelectedFilesLayout.setVerticalGroup(
+            panelSelectedFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSelectedFilesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(scrollPaneRawFiles, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelSelectedFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRawAddFiles)
                     .addComponent(btnRawClear)
                     .addComponent(btnRawAddFolder)
@@ -301,14 +346,14 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             panelInTabSelectFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInTabSelectFilesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelSelectedFiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         panelInTabSelectFilesLayout.setVerticalGroup(
             panelInTabSelectFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInTabSelectFilesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelSelectedFiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1292,7 +1337,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             String approveText = "Select";
             JFileChooser fc = new JFileChooser();
             fc.setAcceptAllFileFilterUsed(true);
-            FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("LCMS files (mzML/mzXML/mgf)", "mzml", "mzxml", "mgf");
+            FileNameExtensionFilter fileNameExtensionFilter = FraggerPanel.fileNameExtensionFilter;
             fc.setFileFilter(fileNameExtensionFilter);
             fc.setApproveButtonText(approveText);
             fc.setDialogTitle("Choose raw data files");
@@ -1332,7 +1377,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRawRemoveActionPerformed
 
     private void btnRawAddFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawAddFolderActionPerformed
-        // TODO add your handling code here:
+        throw new UnsupportedOperationException("Not implemented");
     }//GEN-LAST:event_btnRawAddFolderActionPerformed
 
 
@@ -2756,7 +2801,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblOutputDir;
@@ -2770,6 +2814,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JPanel panelProteinProphetBin;
     private javax.swing.JPanel panelProteinProphetOptions;
     private javax.swing.JPanel panelRun;
+    private javax.swing.JPanel panelSelectedFiles;
     private javax.swing.JScrollPane scrollPaneMsFragger;
     private javax.swing.JScrollPane scrollPaneRawFiles;
     private javax.swing.JSpinner spinnerRam;
