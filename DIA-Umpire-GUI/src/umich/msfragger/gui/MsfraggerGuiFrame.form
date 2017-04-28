@@ -694,7 +694,9 @@
                               <Component id="btnRun" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnStop" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="375" max="32767" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="checkDryRun" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="296" max="32767" attributes="0"/>
                               <Component id="btnAbout" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnClearConsole" min="-2" max="-2" attributes="0"/>
@@ -744,6 +746,7 @@
                           <Component id="btnStop" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnClearConsole" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnAbout" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="checkDryRun" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="consoleScrollPane" pref="623" max="32767" attributes="0"/>
@@ -842,6 +845,12 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAboutActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="checkDryRun">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Dry Run"/>
+                <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Only print the commands to execute, &lt;br/&gt;&#xa;but don&apos;t actually execute them."/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

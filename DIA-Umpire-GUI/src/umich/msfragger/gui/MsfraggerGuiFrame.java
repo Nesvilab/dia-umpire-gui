@@ -26,6 +26,7 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -266,6 +268,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         txtProgramsDir = new javax.swing.JTextField();
         lblProgramsDir = new javax.swing.JLabel();
         btnAbout = new javax.swing.JButton();
+        checkDryRun = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MSFragger");
@@ -727,6 +730,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             }
         });
 
+        checkDryRun.setText("Dry Run");
+        checkDryRun.setToolTipText("<html>Only print the commands to execute, <br/>\nbut don't actually execute them.");
+
         javax.swing.GroupLayout panelRunLayout = new javax.swing.GroupLayout(panelRun);
         panelRun.setLayout(panelRunLayout);
         panelRunLayout.setHorizontalGroup(
@@ -739,7 +745,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         .addComponent(btnRun)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStop)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 375, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(checkDryRun)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 296, Short.MAX_VALUE)
                         .addComponent(btnAbout)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClearConsole))
@@ -777,7 +785,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     .addComponent(btnRun)
                     .addComponent(btnStop)
                     .addComponent(btnClearConsole)
-                    .addComponent(btnAbout))
+                    .addComponent(btnAbout)
+                    .addComponent(checkDryRun))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
                 .addContainerGap())
@@ -1040,6 +1049,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         LogUtils.println(console, "");
         LogUtils.println(console, "");
 
+        if (checkDryRun.isSelected()) {
+            LogUtils.println(console, "Dry Run selected, not running the commands.");
+        }
+        
         try // run everything
         {
             exec = Executors.newFixedThreadPool(1);
@@ -1870,6 +1883,29 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private List<ProcessBuilder> processBuildersFragger(String programsDir, String workingDir, List<String> lcmsFilePaths, String dateStr) {
         List<ProcessBuilder> builders = new LinkedList<>();
         if (fraggerPanel.isRunMsfragger()) {
+            
+            String bin = fraggerPanel.getFraggerBin();
+            if (StringUtils.isNullOrWhitespace(bin)) {
+                JOptionPane.showMessageDialog(this, "Binary for running Fragger can not be an empty string.\n",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            bin = testBinaryPath(bin, programsDir);
+            if (bin == null) {
+                JOptionPane.showMessageDialog(this, "Binary for running Fragger not found or could not be run.\n"
+                        + "Neither on PATH, nor in the working directory",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            
+            String fastaPath = fraggerPanel.getFastaPath();
+            if (StringUtils.isNullOrWhitespace(fastaPath)) {
+                JOptionPane.showMessageDialog(this, "Fasta file path (Fragger) can't be empty",
+                    "Warning", JOptionPane.WARNING_MESSAGE);
+                return null;
+            }
+            
+            
             MsfraggerParams params = null;
             try {
                 params = fraggerPanel.collectParams();
@@ -1879,9 +1915,87 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     return null;
             }
             
+            Path savedParamsPath = Paths.get(workingDir, MsfraggerParams.DEFAULT_FILE);
+            try {
+                params.save(new FileOutputStream(savedParamsPath.toFile()));
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Could not save fragger.params file to working dir.\n",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                    return null;
+            }
             
+            int ramGb = fraggerPanel.getRamGb();
+            
+            Map<String, String> mapRawToPep = createPepxmlFilePathsDirty(lcmsFilePaths, params.getOutputFileExtension());
+            for (String filePath : lcmsFilePaths) {
+                // Fragger search
+                Path path = Paths.get(filePath);
+                ArrayList<String> cmd = new ArrayList<>();
+                cmd.add(bin);
+                cmd.add("java");
+                cmd.add("-jar");
+                if (ramGb > 0) {
+                    cmd.add(new StringBuilder().append("-Xmx").append(ramGb).append("G").toString());
+                }
+                cmd.add(bin);
+                cmd.add(savedParamsPath.toString());
+                ProcessBuilder pb = new ProcessBuilder(cmd);
+                builders.add(pb);
+                cmd.clear();
+                
+                // Move the resulting file
+                String pepFile = mapRawToPep.get(filePath);
+                Path pepPath = Paths.get(pepFile);
+                Path wdPath = Paths.get(workingDir);
+                
+                // check if the working dir is the dir where the mzXML file was
+                // if it is, then don't do anything, if it is not, then copy
+                // UmpireSE outputs to the working directory
+                // and also create symlinks to the original files
+
+                if (!wdPath.equals(pepPath.getParent())) {
+                    // find the curernt gui JAR location
+                    URI currentJarUri = OsUtils.getCurrentJarPath();
+                    String currentJarPath = Paths.get(currentJarUri).toAbsolutePath().toString();
+
+                    // working dir is different from pepxml file location, need to move output
+                    List<String> commandsFileMove = new ArrayList<>();
+                    commandsFileMove.add("java");
+                    commandsFileMove.add("-cp");
+                    commandsFileMove.add(currentJarPath);
+                    commandsFileMove.add("umich.msfragger.util.FileMove");
+                    String origin = pepPath.toAbsolutePath().toString();
+                    String destination = Paths.get(wdPath.toString(), pepPath.getFileName().toString()).toString();
+                    commandsFileMove.add(origin);
+                    commandsFileMove.add(destination);
+                    ProcessBuilder pbFileMove = new ProcessBuilder(commandsFileMove);
+                    builders.add(pbFileMove);
+                }
+            }
         }
+        
         return builders;
+    }
+    
+    private Map<String, String> createPepxmlFilePathsDirty(List<String> lcmsFilePaths, String ext) {
+        HashMap<String, String> pepxmls = new HashMap<>();
+        for (String s : lcmsFilePaths) {
+            String baseName = s.substring(0, s.lastIndexOf(".") + 1);
+            pepxmls.put(s, baseName + ext);
+        }
+        return pepxmls;
+    }
+    
+    private Map<String, String> createPepxmlFilePathsAfterMove(Map<String, String> dirtyPepXmls, String workingDir) {
+        HashMap<String, String> pepxmls = new HashMap<>();
+        Path wd = Paths.get(workingDir);
+        for (Map.Entry<String, String> entry : dirtyPepXmls.entrySet()) {
+            String raw = entry.getKey();
+            String pepxmlDirty = entry.getValue();
+            Path pepxmlClean = wd.resolve(Paths.get(pepxmlDirty).getFileName()).toAbsolutePath();
+            pepxmls.put(raw, pepxmlClean.toString());
+        }
+        return pepxmls;
     }
     
 //    private List<ProcessBuilder> processBuildersComet(String programsDir, String workingDir, List<String> lcmsFilePaths, String dateStr) {
@@ -2001,7 +2115,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         List<ProcessBuilder> processBuilders = new LinkedList<>();
         if (chkRunPeptideProphet.isSelected()) {
             String bin = txtBinPeptideProphet.getText().trim();
-            if (bin.isEmpty()) {
+            if (StringUtils.isNullOrWhitespace(bin)) {
                 JOptionPane.showMessageDialog(this, "Philosopher (PeptideProphet) binary can not be an empty string.\n",
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
@@ -2016,9 +2130,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
 
             String fastaPath = txtPeptideProphetSeqDb.getText().trim();
-            if (fastaPath.isEmpty()) {
+            if (StringUtils.isNullOrWhitespace(fastaPath)) {
                 fastaPath = fraggerPanel.getTxtMsfraggerDb().getText().trim();
-                if (fastaPath.isEmpty()) {
+                if (StringUtils.isNullOrWhitespace(fastaPath)) {
                     JOptionPane.showMessageDialog(this, "Fasta file (PeptideProphet) path can't be empty",
                         "Warning", JOptionPane.WARNING_MESSAGE);
                     return null;
@@ -2035,52 +2149,50 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             PeptideProphetParams peptideProphetParams = new PeptideProphetParams();
             peptideProphetParams.setCmdLineParams(txtPeptideProphetCmdLineOptions.getText().trim());
 
-
-            List<String> createdPepXmlFiles = new ArrayList<>();
+            
             String philosopherPeptideprophetCmd = "peptideprophet";
             boolean isPhilosopher = isPhilosopherBin(bin);
-            for (String filePath : lcmsFilePaths) {
+            Map<String, String> pepxmlDirty = createPepxmlFilePathsDirty(lcmsFilePaths, fraggerPanel.getOutputFileExt());
+            Map<String, String> pepxmlClean = createPepxmlFilePathsAfterMove(pepxmlDirty, workingDir);
+            for (String rawFilePath : lcmsFilePaths) {
                 // Comet
-                for (int i = 1; i <= 3; i++) {
-                    List<String> commands = new ArrayList<>();
-                    commands.add(bin);
-                    if (isPhilosopher) // for philosopher we always add the correct command
-                        commands.add(Philosopher.CMD_PEPTIDE_PROPHET);
-                    
-                    if (!peptideProphetParams.getCmdLineParams().isEmpty()) {
-                        String cmdOpts = peptideProphetParams.getCmdLineParams();
-//                        List<String> opts = StringUtils.split("\\s+", cmdOpts);
-                        List<String> opts = StringUtils.splitCommandLine(cmdOpts);
-                        for (String opt : opts) {
-                            if (!opt.isEmpty()) {
-                                if (opt.equals(Philosopher.CMD_PEPTIDE_PROPHET))
-                                    continue;
-                                commands.add(opt);
-                            }
+                List<String> commands = new ArrayList<>();
+                commands.add(bin);
+                if (isPhilosopher) // for philosopher we always add the correct command
+                    commands.add(Philosopher.CMD_PEPTIDE_PROPHET);
+
+                if (!peptideProphetParams.getCmdLineParams().isEmpty()) {
+                    String cmdOpts = peptideProphetParams.getCmdLineParams();
+                    List<String> opts = StringUtils.splitCommandLine(cmdOpts);
+                    for (String opt : opts) {
+                        if (!opt.isEmpty()) {
+                            if (opt.equals(Philosopher.CMD_PEPTIDE_PROPHET))
+                                continue;
+                            commands.add(opt);
                         }
                     }
-                    commands.add("--database");
-                    commands.add(fastaPath);
-
-                    Path curMzXMl = Paths.get(filePath);
-                    Path mzXmlFileName = curMzXMl.getFileName();
-
-                    String s = mzXmlFileName.toString();
-                    int indexOf = s.toLowerCase().indexOf(".mzxml");
-                    String baseName = mzXmlFileName.toString().substring(0, indexOf);
-                    Path createdPepXml = Paths.get(workingDir, baseName+"_Q"+i+".pep.xml");
-                    commands.add(createdPepXml.toString());
-                    ProcessBuilder pb = new ProcessBuilder(commands);
-                    Map<String, String> env = pb.environment();
-                    // set environment 
-                    String ENV_WEBSERVER_ROOT = "WEBSERVER_ROOT";
-                    String webroot = env.get(ENV_WEBSERVER_ROOT);
-                    if (webroot == null) {
-                        env.put(ENV_WEBSERVER_ROOT, "fake-WEBSERVER_ROOT-value");
-                    }
-                    processBuilders.add(pb);
-                    createdPepXmlFiles.add(createdPepXml.toString());
                 }
+                commands.add("--database");
+                commands.add(fastaPath);
+                
+                String pepxmlInWd = pepxmlClean.get(rawFilePath);
+                if (pepxmlInWd == null) {
+                    JOptionPane.showMessageDialog(this, "PeptideProphet process could not figure where a pepxml was.\n"
+                            + "RAW: " + rawFilePath + "\n",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                    return null;
+                }
+                
+                commands.add(pepxmlInWd);
+                ProcessBuilder pb = new ProcessBuilder(commands);
+                Map<String, String> env = pb.environment();
+                // set environment 
+                String ENV_WEBSERVER_ROOT = "WEBSERVER_ROOT";
+                String webroot = env.get(ENV_WEBSERVER_ROOT);
+                if (webroot == null) {
+                    env.put(ENV_WEBSERVER_ROOT, "fake-WEBSERVER_ROOT-value");
+                }
+                processBuilders.add(pb);
             }
         }
         return processBuilders;
@@ -2093,7 +2205,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private List<ProcessBuilder> processBuildersProteinProphet(String programsDir, String workingDir, List<String> lcmsFilePaths) {
         if (chkRunProteinProphet.isSelected()) {
             String bin = txtBinProteinProphet.getText().trim();
-            if (bin.isEmpty()) {
+            if (StringUtils.isNullOrWhitespace(bin)) {
                 JOptionPane.showMessageDialog(this, "ProteinProphet binary can not be an empty string.\n",
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
@@ -2280,147 +2392,11 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         return Collections.emptyList();
     }
     
-//    private CometParams collectCometParams() throws ParsingException {
-//        try {
-//            
-//            // load deafaults
-//            CometParams params = null;
-//            String userSpecifiedFileLoc = txtCometParamsFile.getText();
-//            if (userSpecifiedFileLoc.isEmpty()) {
-//                params = CometParams.parseDefault();
-//            } else {
-//                params = CometParams.parse(new FileInputStream(userSpecifiedFileLoc));
-//            }
-//            
-//            // now fill in the values from the UI
-//            DecimalFormat fmt = new DecimalFormat("#.####");
-//            Properties props = params.getProps();
-//            String dbPath = txtCometSeqDb.getText();
-//            if (dbPath.isEmpty())
-//                throw new ParsingException("Comet search database path can't be empty");
-//            
-//            props.setProperty(CometParams.PROP_database_name, dbPath);
-//            props.setProperty(CometParams.PROP_fragment_bin_offset, fmtfragment_bin_offset.getText());
-//            props.setProperty(CometParams.PROP_fragment_bin_tol, fmtfragment_bin_tol.getText());
-//            props.setProperty(CometParams.PROP_peptide_mass_tolerance, fmtpeptide_mass_tolerance.getText());
-//            props.setProperty(CometParams.PROP_theoretical_fragment_ions, fmttheoretical_fragment_ions.getText());
-//            //props.setProperty(CometParams.PROP_, fmt.getText());
-//            
-//            return params;
-//        } catch (FileNotFoundException ex) {
-//            throw new ParsingException("Error collecting user-specified params for Umpire", ex);
-//        }
-//    }
-
-//    public UmpireParams collectUmpireParams() throws ParsingException {
-//        try {
-//            
-//            // load deafaults
-//            UmpireParams params = null;
-//            String userSpecifiedFileLoc = txtUmpireConfigFile.getText().trim();
-//            if (userSpecifiedFileLoc.isEmpty()) {
-//                params = UmpireParams.parseDefault();
-//            } else {
-//                params = UmpireParams.parse(new FileInputStream(userSpecifiedFileLoc));
-//            }
-//            
-//            // now fill in the values from the UI
-//            DecimalFormat fmt = new DecimalFormat("#.####");
-//            Properties props = params.getProps();
-//            props.setProperty(UmpireParams.PROP_AdjustFragIntensity, Boolean.toString(chkAdjustFragIntensity.isSelected()));
-//            props.setProperty(UmpireParams.PROP_BoostComplementaryIon, Boolean.toString(chkBoostComplementaryIon.isSelected()));
-//            props.setProperty(UmpireParams.PROP_CorrThreshold, fmtCorrThreshold.getText());
-//            props.setProperty(UmpireParams.PROP_DeltaApex, fmtDeltaApex.getText());
-//            props.setProperty(UmpireParams.PROP_EstimateBG, Boolean.toString(chkEstimateBG.isSelected()));
-//            props.setProperty(UmpireParams.PROP_MS1PPM, fmtMS1PPM.getText());
-//            props.setProperty(UmpireParams.PROP_MS2PPM, fmtMS2PPM.getText());
-//            props.setProperty(UmpireParams.PROP_MS2SN, fmtMS2SN.getText());
-//            props.setProperty(UmpireParams.PROP_MaxCurveRTRange, fmtMaxCurveRTRange.getText());
-//            props.setProperty(UmpireParams.PROP_MaxNoPeakCluster, fmtMaxNoPeakCluster.getText());
-//            props.setProperty(UmpireParams.PROP_MinFrag, fmtMinFrag.getText());
-//            props.setProperty(UmpireParams.PROP_MinMSIntensity, fmtMinMSIntensity.getText());
-//            props.setProperty(UmpireParams.PROP_MinMSMSIntensity, fmtMinMSMSIntensity.getText());
-//            props.setProperty(UmpireParams.PROP_NoMissedScan, fmtNoMissedScan.getText());
-//            props.setProperty(UmpireParams.PROP_RFmax, fmtRFmax.getText());
-//            props.setProperty(UmpireParams.PROP_RPmax, fmtRPmax.getText());
-//            props.setProperty(UmpireParams.PROP_RTOverlap, fmtRTOverlap.getText());
-//            props.setProperty(UmpireParams.PROP_SN, fmtSN.getText());
-//            props.setProperty(UmpireParams.PROP_WindowSize, fmtWindowSize.getText());
-//            Object selectedWindowType = comboWindowType.getSelectedItem();
-//            props.setProperty(UmpireParams.PROP_WindowType, (String)selectedWindowType);
-//            //props.setProperty(UmpireParams.PROP_, fmt.getText());
-//            
-//            //adding the number of threads
-//            int numThreads = (Integer)spinnerThreads.getValue();
-//            if (numThreads == 0)
-//                numThreads = Runtime.getRuntime().availableProcessors();
-//            props.setProperty(UmpireParams.PROP_Threads, Integer.toString(numThreads));
-//            
-//            return params;
-//        } catch (FileNotFoundException ex) {
-//            throw new ParsingException("Error collecting user-specified params for Umpire SE", ex);
-//        }
-//    }
-    
     private Path getWorkingDir() {
         String wdStr = txtWorkingDir.getText().trim();
         Path path = Paths.get(wdStr).toAbsolutePath();
         return path;
     }
-    
-//    public UmpireQuantParams collectUmpireQuantParams() throws ParsingException {
-//        try {
-//            
-//            // load deafaults
-//            UmpireQuantParams params = null;
-//            String userSpecifiedFileLoc = txtUmpireQuantConfig.getText().trim();
-//            if (userSpecifiedFileLoc.isEmpty()) {
-//                params = UmpireQuantParams.parseDefault();
-//            } else {
-//                params = UmpireQuantParams.parse(new FileInputStream(userSpecifiedFileLoc));
-//            }
-//            
-//            // now fill in the values from the UI
-//            DecimalFormat fmt = new DecimalFormat("#.####");
-//            Properties props = params.getProps();
-//            props.setProperty(UmpireQuantParams.PROP_DecoyPrefix, txtDecoyPrefix.getText());
-//            props.setProperty(UmpireQuantParams.PROP_InternalLibSearch, Boolean.toString(chkInternalLibSearch.isSelected()));
-//            props.setProperty(UmpireQuantParams.PROP_PeptideFDR, fmtPeptideFDR.getText());
-//            props.setProperty(UmpireQuantParams.PROP_ProteinFDR, fmtProteinFDR.getText());
-//            props.setProperty(UmpireQuantParams.PROP_DataSetLevelPepFDR, Boolean.toString(chkDataSetLevelPepFDR.isSelected()));
-//            String filterWeightString = (String)comboFilterWeight.getSelectedItem();
-//            props.setProperty(UmpireQuantParams.PROP_FilterWeight, filterWeightString);
-//            props.setProperty(UmpireQuantParams.PROP_MinWeight, fmtMinWeight.getText());
-//            props.setProperty(UmpireQuantParams.PROP_TopNFrag, fmtTopNFrag.getText());
-//            props.setProperty(UmpireQuantParams.PROP_TopNPep, fmtTopNPep.getText());
-//            props.setProperty(UmpireQuantParams.PROP_Freq, fmtFreq.getText());
-//            
-//            //adding the number of threads
-//            int numThreads = (Integer)spinnerThreads.getValue();
-//            if (numThreads == 0)
-//                numThreads = Runtime.getRuntime().availableProcessors();
-//            props.setProperty(UmpireQuantParams.PROP_Thread, Integer.toString(numThreads));
-//            
-//            // setting Path param to working dir
-//            String path = getWorkingDir().toString();
-//            if (!path.endsWith(File.separator))
-//                path = path + File.separator;
-//            props.setProperty(UmpireQuantParams.PROP_Path, path);
-//            
-//            // setting fasta
-//            String fastaPath = getUmpireQuantFastaPath();
-//            props.setProperty(UmpireQuantParams.PROP_Fasta, fastaPath);
-//            
-//            // setting combined prot file (the value is taken from ProteinProphet)
-//            String workdir = txtWorkingDir.getText().trim();
-//            Path combinedProtFilePath = getCombinedProtFilePath(workdir);
-//            props.setProperty(UmpireQuantParams.PROP_Combined_Prot, combinedProtFilePath.toString());
-//            
-//            return params;
-//        } catch (FileNotFoundException ex) {
-//            throw new ParsingException("Error collecting user-specified params for Umpire Quant", ex);
-//        }
-//    }
 
     private String getDefaultTextMsfragger() {
         String value = ThisAppProps.loadPropFromCache(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER);
@@ -2766,6 +2742,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnSelectPeptideProphetSeqDbPath;
     private javax.swing.JButton btnSelectWrkingDir;
     private javax.swing.JButton btnStop;
+    private javax.swing.JCheckBox checkDryRun;
     private javax.swing.JCheckBox chkProteinProphetAddInteractPepXmlsSeparately;
     private javax.swing.JCheckBox chkRunPeptideProphet;
     private javax.swing.JCheckBox chkRunProteinProphet;

@@ -98,6 +98,22 @@ public class FraggerPanel extends javax.swing.JPanel {
         }
     }
     
+    public String getFastaPath() {
+        return textMsfraggerDb.getText().trim();
+    }
+    
+    public String getFraggerBin() {
+        return txtBinMsfragger.getText().trim();
+    }
+    
+    public int getRamGb() {
+        return (Integer)spinnerFraggerRam.getValue();
+    }
+    
+    public String getOutputFileExt() {
+        return textOutputFileExt.getText().trim();
+    }
+    
     private void fillFormFromParams(MsfraggerParams params) {
         textMsfraggerDb.setText(params.getDatabaseName());
         textFraggerDbFocusLost(null);
@@ -971,10 +987,10 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addGap(49, 49, 49))
             .addGroup(panelMsfraggerParamsLayout.createSequentialGroup()
                 .addGroup(panelMsfraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         panelMsfraggerParamsLayout.setVerticalGroup(
@@ -1067,10 +1083,10 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBinMsfragger, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(97, 97, 97)
+                .addComponent(txtBinMsfragger)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSelectMsfraggerBin)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelMsfraggerBinLayout.setVerticalGroup(
             panelMsfraggerBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
