@@ -58,11 +58,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.TransferHandler;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.HyperlinkEvent;
@@ -72,6 +74,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultCaret;
 import umich.msfragger.gui.api.DataConverter;
 import umich.msfragger.gui.api.SimpleETable;
+import umich.msfragger.gui.api.SimpleETableTransferHandler;
 import umich.msfragger.gui.api.SimpleUniqueTableModel;
 import umich.msfragger.gui.api.TableModelColumn;
 import umich.msfragger.util.FileDrop;
@@ -121,9 +124,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         // Drag and drop support for files from Explorer to the Application
         
         
-        // this doesn't work.
+        // this works only when tableRawFiles.setFillsViewportHeight(true) is called.
 //        tableRawFiles.setDragEnabled(true);
 //        tableRawFiles.setDropMode(DropMode.ON);
+//        tableRawFiles.setFillsViewportHeight(true);
 //        TransferHandler origHandler = tableRawFiles.getTransferHandler();
 //        SimpleETableTransferHandler newHandler = new SimpleETableTransferHandler();
 //        tableRawFiles.setTransferHandler(newHandler);
@@ -139,7 +143,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         if (FraggerPanel.fileNameExtensionFilter.accept(f))
                             paths.add(Paths.get(f.getAbsolutePath()));
                     } else {
-                        traverseDirectories(f, FraggerPanel.fileNameExtensionFilter, paths);
+                        traverseDirectoriesAcceptingFiles(f, FraggerPanel.fileNameExtensionFilter, paths);
                     }
                 }
                 tableModelRawFiles.dataAddAll(paths);
@@ -149,7 +153,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         
     }
     
-    private void traverseDirectories(File dir, FileFilter filter, List<Path> accepted) {
+    private void traverseDirectoriesAcceptingFiles(File dir, FileFilter filter, List<Path> accepted) {
         if (!dir.isDirectory()) {
             if (filter.accept(dir)) {
                 accepted.add(Paths.get(dir.getAbsolutePath()));
@@ -163,7 +167,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 File next = it.next().toFile();
                 boolean isDir = next.isDirectory();
                 if (isDir) {
-                    traverseDirectories(next, filter, accepted);
+                    traverseDirectoriesAcceptingFiles(next, filter, accepted);
                 } else {
                     if (filter.accept(next)) {
                         accepted.add(Paths.get(next.getAbsolutePath()));
