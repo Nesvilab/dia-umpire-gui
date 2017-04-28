@@ -119,6 +119,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         tableRawFiles.addComponentsEnabledOnNonEmptyData(btnRawClear);
         tableRawFiles.addComponentsEnabledOnNonEmptySelection(btnRawRemove);
         tableRawFiles.fireInitialization();
+        tableRawFiles.setFillsViewportHeight(true);
         scrollPaneRawFiles.setViewportView(tableRawFiles);
         
         // Drag and drop support for files from Explorer to the Application
@@ -133,7 +134,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 //        tableRawFiles.setTransferHandler(newHandler);
         
         // dropping onto enclosing JPanel works.
-        tableRawFilesFileDrop = new FileDrop(panelSelectedFiles, false, new FileDrop.Listener() {
+        tableRawFilesFileDrop = new FileDrop(panelSelectedFiles, true, new FileDrop.Listener() {
             @Override
             public void filesDropped(File[] files) {
                 ArrayList<Path> paths = new ArrayList<>(files.length);

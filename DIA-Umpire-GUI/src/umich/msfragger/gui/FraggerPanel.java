@@ -78,7 +78,9 @@ public class FraggerPanel extends javax.swing.JPanel {
     private void initMore() {
         updateRowHeights(tableVarMods);
         tableVarMods.getColumnModel().getColumn(2).setCellRenderer(new TableCellDoubleRenderer(5));
+        tableVarMods.setFillsViewportHeight(true);
         tableAdditionalMods.getColumnModel().getColumn(2).setCellRenderer(new TableCellDoubleRenderer(5));
+        tableAdditionalMods.setFillsViewportHeight(true);
         
         params = new MsfraggerParams();
         try {
