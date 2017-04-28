@@ -57,11 +57,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.TransferHandler;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.HyperlinkEvent;
@@ -69,6 +71,7 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
 import javax.swing.text.DefaultCaret;
+import org.netbeans.swing.etable.ETableTransferHandler;
 import umich.msfragger.gui.api.DataConverter;
 import umich.msfragger.gui.api.SimpleETable;
 import umich.msfragger.gui.api.SimpleUniqueTableModel;
@@ -114,6 +117,15 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         tableRawFiles.addComponentsEnabledOnNonEmptySelection(btnRawRemove);
         tableRawFiles.fireInitialization();
         scrollPaneRawFiles.setViewportView(tableRawFiles);
+        
+        // Drag and drop support for files from Explorer to the Application
+        tableRawFiles.setDragEnabled(true);
+        tableRawFiles.setDropMode(DropMode.ON);
+        TransferHandler origHandler = tableRawFiles.getTransferHandler();
+        
+        
+        
+        //tableRawFiles.setTransferHandler(new TransferHandler);
         
         
     }
