@@ -77,6 +77,7 @@ import umich.msfragger.gui.api.SimpleETable;
 import umich.msfragger.gui.api.SimpleETableTransferHandler;
 import umich.msfragger.gui.api.SimpleUniqueTableModel;
 import umich.msfragger.gui.api.TableModelColumn;
+import umich.msfragger.params.fragger.MsfraggerParams;
 import umich.msfragger.util.FileDrop;
 import umich.msfragger.util.SwingUtils;
 
@@ -86,9 +87,6 @@ import umich.msfragger.util.SwingUtils;
  */
 public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
-    /** In MB. */
-    protected static int MIN_RAM = 512;
-    
     protected FraggerPanel fraggerPanel;
     protected ExecutorService exec;
     private final List<Process> submittedProcesses = new ArrayList<>(100);
@@ -261,11 +259,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         console = new umich.msfragger.gui.TextConsole();
         DefaultCaret caret = (DefaultCaret) console.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        jLabel24 = new javax.swing.JLabel();
-        spinnerRam = new javax.swing.JSpinner();
-        jLabel25 = new javax.swing.JLabel();
-        spinnerThreads = new javax.swing.JSpinner();
-        jLabel26 = new javax.swing.JLabel();
         lblOutputDir = new javax.swing.JLabel();
         btnSelectWrkingDir = new javax.swing.JButton();
         txtWorkingDir = new javax.swing.JTextField();
@@ -702,22 +695,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         consoleScrollPane.setViewportView(console);
 
-        jLabel24.setText("RAM");
-
-        spinnerRam.setModel(new javax.swing.SpinnerNumberModel(2.0d, 1.0d, null, 1.0d));
-        spinnerRam.setMinimumSize(new java.awt.Dimension(40, 20));
-        spinnerRam.setPreferredSize(new java.awt.Dimension(40, 20));
-
-        jLabel25.setText("Threads");
-        jLabel25.setToolTipText("Set to zero to use all CPU cores");
-
-        spinnerThreads.setModel(new javax.swing.SpinnerNumberModel());
-        spinnerThreads.setToolTipText("Set to zero to use all CPU cores");
-        spinnerThreads.setMinimumSize(new java.awt.Dimension(40, 20));
-        spinnerThreads.setPreferredSize(new java.awt.Dimension(40, 20));
-
-        jLabel26.setText("(GB)");
-
         lblOutputDir.setText("Output dir");
         lblOutputDir.setToolTipText("<html>All the output will be placed into this directory.<br/>\nUmpire-SE always generates output near mzXML files, <br/>\nif you stop processing early, then these files might not have been<br/>\nmoved to the Output Dir yet. For this case there is a button<br/>\non \"DIA-Umpire SE\" tab to Clean Up the generated files."); // NOI18N
 
@@ -762,17 +739,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         .addComponent(btnRun)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStop)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel24)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spinnerRam, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel26)
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel25)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 375, Short.MAX_VALUE)
                         .addComponent(btnAbout)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClearConsole))
@@ -810,11 +777,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     .addComponent(btnRun)
                     .addComponent(btnStop)
                     .addComponent(btnClearConsole)
-                    .addComponent(jLabel24)
-                    .addComponent(spinnerRam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25)
-                    .addComponent(spinnerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel26)
                     .addComponent(btnAbout))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
@@ -863,8 +825,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             //                + "<li>Dmitry Avtonomov</li>"
             //                + "<li>Alexey Nesvizhskii</li>"
             //                + "</ul>"
-            + "<a href=\"http://www.nature.com/nmeth/journal/v12/n3/full/nmeth.3255.html\">Original MSFragger paper link</a><br/>"
-            + "Reference: <b>doi:10.1038/nmeth.3255</b>"
+            + "<a href=\"http://www.nature.com/nmeth/journal/v14/n5/full/nmeth.4256.html\">Original MSFragger paper link</a><br/>"
+            + "Reference: <b>doi:10.1038/nmeth.4256</b>"
             + "</body></html>");
 
         // handle link events
@@ -967,19 +929,29 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
         resetRunButtons(false);
 
-        Integer ramVal = (Integer)spinnerRam.getModel().getValue();
-        if (ramVal < MIN_RAM) {
-            String msg = String.format("Minimum amount of RAM required is %d", MIN_RAM);
-            JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.WARNING_MESSAGE);
+        if (
+            !fraggerPanel.isRunMsfragger() &&
+            !chkRunPeptideProphet.isSelected() &&
+            !chkRunProteinProphet.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Nothing to run.\n"
+                + "Please mark checkboxes in other tabs to run processing tools.", "Error", JOptionPane.WARNING_MESSAGE);
             resetRunButtons(true);
             return;
         }
-
+        
+        
         final TextConsole textConsole = console;
         final String workingDir = txtWorkingDir.getText();
         if (workingDir.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Output directory can't be left empty.\n"
                 + "Please select an existing directory for the output.", "Error", JOptionPane.WARNING_MESSAGE);
+            resetRunButtons(true);
+            return;
+        }
+        final Path workingDirPath = Paths.get(workingDir);
+        if (!Files.exists(workingDirPath) || !Files.isDirectory(workingDirPath)) {
+            JOptionPane.showMessageDialog(this, "Output directory doesn't exist\n"
+                + "or is a file rather than a directory.", "Error", JOptionPane.WARNING_MESSAGE);
             resetRunButtons(true);
             return;
         }
@@ -1012,16 +984,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             // On windows copy the files over to the working directory
             List<ProcessBuilder> processBuildersCopyFiles = processBuildersCopyFiles(programsDir, workingDir, lcmsFilePaths);
             processBuilders.addAll(processBuildersCopyFiles);
-        }
-
-        if (
-            //!chkRunFraggerSearch.isSelected() &&
-            !chkRunPeptideProphet.isSelected() &&
-            !chkRunProteinProphet.isSelected()) {
-            JOptionPane.showMessageDialog(this, "Nothing to run.\n"
-                + "Please mark checkboxes in other tabs to run processing tools.", "Error", JOptionPane.WARNING_MESSAGE);
-            resetRunButtons(true);
-            return;
         }
 
         // we will now compose parameter objects for running processes.
@@ -1906,7 +1868,20 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }
     
     private List<ProcessBuilder> processBuildersFragger(String programsDir, String workingDir, List<String> lcmsFilePaths, String dateStr) {
-        return Collections.EMPTY_LIST;
+        List<ProcessBuilder> builders = new LinkedList<>();
+        if (fraggerPanel.isRunMsfragger()) {
+            MsfraggerParams params = null;
+            try {
+                params = fraggerPanel.collectParams();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Could not collect MSFragger params from GUI.\n",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                    return null;
+            }
+            
+            
+        }
+        return builders;
     }
     
 //    private List<ProcessBuilder> processBuildersComet(String programsDir, String workingDir, List<String> lcmsFilePaths, String dateStr) {
@@ -2796,9 +2771,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkRunProteinProphet;
     private umich.msfragger.gui.TextConsole console;
     private javax.swing.JScrollPane consoleScrollPane;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
@@ -2822,8 +2794,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JPanel panelSelectedFiles;
     private javax.swing.JScrollPane scrollPaneMsFragger;
     private javax.swing.JScrollPane scrollPaneRawFiles;
-    private javax.swing.JSpinner spinnerRam;
-    private javax.swing.JSpinner spinnerThreads;
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JTextField txtBinPeptideProphet;
     private javax.swing.JTextField txtBinProteinProphet;
