@@ -1264,6 +1264,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="getDefaultTextMsfragger()" type="code"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Path to MSFragger binary (.jar file).&lt;br/&gt;&#xa;It will be searched in the &quot;Programs&quot; directory (check &quot;Run&quot; tab)&lt;br/&gt;&#xa;and in system&apos;s PATH."/>
               </Properties>
             </Component>
           </SubComponents>

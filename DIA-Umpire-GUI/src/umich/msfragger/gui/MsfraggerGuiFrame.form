@@ -43,7 +43,7 @@
   <SubComponents>
     <Container class="javax.swing.JTabbedPane" name="tabPane">
       <Properties>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Path to PeptideProphet binary.&lt;br/&gt;&#xa;It can be Philosopher or actual PeptideProphet from TPP.&lt;br/&gt;&#xa;It will be searched in the &quot;Programs&quot; directory (check &quot;Run&quot; tab)&lt;br/&gt;&#xa;and in system&apos;s PATH."/>
         <Property name="name" type="java.lang.String" value="" noResource="true"/>
       </Properties>
       <AccessibilityProperties>
@@ -87,7 +87,7 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Selected files"/>
+                    <TitledBorder title="Selected files (Drag &amp; Drop files or folders here)"/>
                   </Border>
                 </Property>
               </Properties>
@@ -95,7 +95,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="scrollPaneRawFiles" max="32767" attributes="0"/>
@@ -107,7 +107,7 @@
                                   <Component id="btnRawAddFiles" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnRawAddFolder" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="302" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="345" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -118,14 +118,14 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="scrollPaneRawFiles" pref="642" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="btnRawAddFiles" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnRawClear" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnRawAddFolder" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnRawRemove" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnRawAddFiles" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnRawAddFolder" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="scrollPaneRawFiles" pref="655" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -258,9 +258,11 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel33" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="txtBinPeptideProphet" max="32767" attributes="0"/>
+                          <Component id="txtBinPeptideProphet" pref="342" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnSelectPeptideProphetBin" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnDownloadPhilosopherPeptideProphet" min="-2" pref="150" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -273,6 +275,7 @@
                               <Component id="jLabel33" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnSelectPeptideProphetBin" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtBinPeptideProphet" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDownloadPhilosopherPeptideProphet" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -283,7 +286,7 @@
                 <Component class="javax.swing.JLabel" name="jLabel33">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="PeptideProphet"/>
-                    <Property name="toolTipText" type="java.lang.String" value=""/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Path to PeptideProphet binary.&lt;br/&gt;&#xa;It can be Philosopher or actual PeptideProphet from TPP.&lt;br/&gt;&#xa;It will be searched in the &quot;Programs&quot; directory (check &quot;Run&quot; tab)&lt;br/&gt;&#xa;and in system&apos;s PATH." noResource="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnSelectPeptideProphetBin">
@@ -299,10 +302,18 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="getDefaultTextPeptideProphet()" type="code"/>
                     </Property>
-                    <Property name="toolTipText" type="java.lang.String" value=""/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Path to PeptideProphet binary.&lt;br/&gt;&#xa;It can be Philosopher or actual PeptideProphet from TPP.&lt;br/&gt;&#xa;It will be searched in the &quot;Programs&quot; directory (check &quot;Run&quot; tab)&lt;br/&gt;&#xa;and in system&apos;s PATH." noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtBinPeptideProphetFocusLost"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnDownloadPhilosopherPeptideProphet">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Download Philosopher"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDownloadPhilosopherPeptideProphetActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -487,6 +498,8 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnBinProteinProphet" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnDownloadPhilosopherProteinProphet" min="-2" pref="150" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -498,6 +511,7 @@
                               <Component id="btnBinProteinProphet" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtBinProteinProphet" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel38" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDownloadPhilosopherProteinProphet" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -518,6 +532,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="getDefaultTextProteinProphet()" type="code"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Path to ProteinProphet binary.&lt;br/&gt;&#xa;It can be Philosopher or actual ProteinProphet from TPP.&lt;br/&gt;&#xa;It will be searched in the &quot;Programs&quot; directory (check &quot;Run&quot; tab)&lt;br/&gt;&#xa;and in system&apos;s PATH." noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtBinProteinProphetFocusLost"/>
@@ -526,7 +541,16 @@
                 <Component class="javax.swing.JLabel" name="jLabel38">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="ProteinProphet"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Path to ProteinProphet binary.&lt;br/&gt;&#xa;It can be Philosopher or actual ProteinProphet from TPP.&lt;br/&gt;&#xa;It will be searched in the &quot;Programs&quot; directory (check &quot;Run&quot; tab)&lt;br/&gt;&#xa;and in system&apos;s PATH." noResource="true"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnDownloadPhilosopherProteinProphet">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Download Philosopher"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDownloadPhilosopherProteinProphetActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -567,8 +591,8 @@
                                   <Component id="jScrollPane4" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="0" pref="200" max="32767" attributes="0"/>
-                                  <Component id="chkProteinProphetAddInteractPepXmlsSeparately" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="276" max="32767" attributes="0"/>
+                                  <Component id="chkProteinProphetInteractStar" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -598,7 +622,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jScrollPane4" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="chkProteinProphetAddInteractPepXmlsSeparately" min="-2" max="-2" attributes="0"/>
+                                  <Component id="chkProteinProphetInteractStar" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -651,7 +675,7 @@
                     <Property name="text" type="java.lang.String" value="Cmd Line Options"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="chkProteinProphetAddInteractPepXmlsSeparately">
+                <Component class="javax.swing.JCheckBox" name="chkProteinProphetInteractStar">
                   <Properties>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Use &apos;interact-*pep.xml&apos; as file filter for ProteinProphet (Philosopher only)"/>
@@ -832,13 +856,13 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="getDefaultTextProgramsDir()" type="code"/>
                 </Property>
-                <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;The .jar files and executables will be searched here. &lt;br/&gt; Executables (e.g. msconvert.exe) will also be searched using system&apos;s PATH variable."/>
+                <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;The .jar files and executables will be searched here.&#xa;&lt;br/&gt;Executables (e.g. msconvert.exe) will also be searched using system&apos;s PATH variable." noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblProgramsDir">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Programs dir"/>
-                <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;The .jar files and executables will be searched here. &lt;br/&gt;&#xa;Executables (e.g. msconvert.exe) will also be searched using system&apos;s PATH variable." noResource="true"/>
+                <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;The .jar files and executables will be searched here.&#xa;&lt;br/&gt;Executables (e.g. msconvert.exe) will also be searched using system&apos;s PATH variable." noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnAbout">

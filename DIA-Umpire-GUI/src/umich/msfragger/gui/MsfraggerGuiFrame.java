@@ -19,6 +19,7 @@ import umich.msfragger.util.StringUtils;
 
 import java.awt.Container;
 import java.awt.Desktop;
+import static java.awt.Desktop.getDesktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -206,6 +207,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         jLabel33 = new javax.swing.JLabel();
         btnSelectPeptideProphetBin = new javax.swing.JButton();
         txtBinPeptideProphet = new javax.swing.JTextField();
+        btnDownloadPhilosopherPeptideProphet = new javax.swing.JButton();
         chkRunPeptideProphet = new javax.swing.JCheckBox();
         panelPeptideProphetOptions = new javax.swing.JPanel();
         jLabel34 = new javax.swing.JLabel();
@@ -220,6 +222,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         btnBinProteinProphet = new javax.swing.JButton();
         txtBinProteinProphet = new javax.swing.JTextField();
         jLabel38 = new javax.swing.JLabel();
+        btnDownloadPhilosopherProteinProphet = new javax.swing.JButton();
         panelProteinProphetOptions = new javax.swing.JPanel();
         btnProteinProphetSeqDb = new javax.swing.JButton();
         txtProteinProphetSeqDb = new javax.swing.JTextField();
@@ -227,7 +230,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         txtProteinProphetCmdLineOpts = new javax.swing.JTextArea();
         jLabel40 = new javax.swing.JLabel();
-        chkProteinProphetAddInteractPepXmlsSeparately = new javax.swing.JCheckBox();
+        chkProteinProphetInteractStar = new javax.swing.JCheckBox();
         jLabel41 = new javax.swing.JLabel();
         txtProteinProphetOutputFile = new javax.swing.JTextField();
         panelRun = new javax.swing.JPanel();
@@ -253,10 +256,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         setIconImages(loadIcon());
         setName("frameMain"); // NOI18N
 
-        tabPane.setToolTipText("");
+        tabPane.setToolTipText("<html>Path to PeptideProphet binary.<br/>\nIt can be Philosopher or actual PeptideProphet from TPP.<br/>\nIt will be searched in the \"Programs\" directory (check \"Run\" tab)<br/>\nand in system's PATH.");
         tabPane.setName(""); // NOI18N
 
-        panelSelectedFiles.setBorder(javax.swing.BorderFactory.createTitledBorder("Selected files"));
+        panelSelectedFiles.setBorder(javax.swing.BorderFactory.createTitledBorder("Selected files (Drag & Drop files or folders here)"));
 
         btnRawAddFiles.setText("Add files");
         btnRawAddFiles.addActionListener(new java.awt.event.ActionListener() {
@@ -302,20 +305,20 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         .addComponent(btnRawAddFiles)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRawAddFolder)
-                        .addGap(0, 302, Short.MAX_VALUE)))
+                        .addGap(0, 345, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelSelectedFilesLayout.setVerticalGroup(
             panelSelectedFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelSelectedFilesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollPaneRawFiles, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelSelectedFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRawAddFiles)
                     .addComponent(btnRawClear)
-                    .addComponent(btnRawAddFolder)
-                    .addComponent(btnRawRemove))
+                    .addComponent(btnRawRemove)
+                    .addComponent(btnRawAddFiles)
+                    .addComponent(btnRawAddFolder))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollPaneRawFiles, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -355,7 +358,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         panelPeptideProphetBin.setToolTipText("If you're using Philosopher to run PeptideProhphet, make sure 'peptideprophet' is the first command in Cmd Line Options text");
 
         jLabel33.setText("PeptideProphet");
-        jLabel33.setToolTipText("");
+        jLabel33.setToolTipText("<html>Path to PeptideProphet binary.<br/>\nIt can be Philosopher or actual PeptideProphet from TPP.<br/>\nIt will be searched in the \"Programs\" directory (check \"Run\" tab)<br/>\nand in system's PATH."); // NOI18N
 
         btnSelectPeptideProphetBin.setText("Browse");
         btnSelectPeptideProphetBin.addActionListener(new java.awt.event.ActionListener() {
@@ -365,10 +368,17 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         });
 
         txtBinPeptideProphet.setText(getDefaultTextPeptideProphet());
-        txtBinPeptideProphet.setToolTipText("");
+        txtBinPeptideProphet.setToolTipText("<html>Path to PeptideProphet binary.<br/>\nIt can be Philosopher or actual PeptideProphet from TPP.<br/>\nIt will be searched in the \"Programs\" directory (check \"Run\" tab)<br/>\nand in system's PATH."); // NOI18N
         txtBinPeptideProphet.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtBinPeptideProphetFocusLost(evt);
+            }
+        });
+
+        btnDownloadPhilosopherPeptideProphet.setText("Download Philosopher");
+        btnDownloadPhilosopherPeptideProphet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDownloadPhilosopherPeptideProphetActionPerformed(evt);
             }
         });
 
@@ -380,9 +390,11 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel33)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBinPeptideProphet)
+                .addComponent(txtBinPeptideProphet, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSelectPeptideProphetBin)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDownloadPhilosopherPeptideProphet, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         panelPeptideProphetBinLayout.setVerticalGroup(
@@ -392,7 +404,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addGroup(panelPeptideProphetBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel33)
                     .addComponent(btnSelectPeptideProphetBin)
-                    .addComponent(txtBinPeptideProphet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBinPeptideProphet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDownloadPhilosopherPeptideProphet))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -508,6 +521,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         });
 
         txtBinProteinProphet.setText(getDefaultTextProteinProphet());
+        txtBinProteinProphet.setToolTipText("<html>Path to ProteinProphet binary.<br/>\nIt can be Philosopher or actual ProteinProphet from TPP.<br/>\nIt will be searched in the \"Programs\" directory (check \"Run\" tab)<br/>\nand in system's PATH."); // NOI18N
         txtBinProteinProphet.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtBinProteinProphetFocusLost(evt);
@@ -515,6 +529,14 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         });
 
         jLabel38.setText("ProteinProphet");
+        jLabel38.setToolTipText("<html>Path to ProteinProphet binary.<br/>\nIt can be Philosopher or actual ProteinProphet from TPP.<br/>\nIt will be searched in the \"Programs\" directory (check \"Run\" tab)<br/>\nand in system's PATH."); // NOI18N
+
+        btnDownloadPhilosopherProteinProphet.setText("Download Philosopher");
+        btnDownloadPhilosopherProteinProphet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDownloadPhilosopherProteinProphetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelProteinProphetBinLayout = new javax.swing.GroupLayout(panelProteinProphetBin);
         panelProteinProphetBin.setLayout(panelProteinProphetBinLayout);
@@ -527,6 +549,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addComponent(txtBinProteinProphet)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBinProteinProphet)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDownloadPhilosopherProteinProphet, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         panelProteinProphetBinLayout.setVerticalGroup(
@@ -536,7 +560,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addGroup(panelProteinProphetBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBinProteinProphet)
                     .addComponent(txtBinProteinProphet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel38))
+                    .addComponent(jLabel38)
+                    .addComponent(btnDownloadPhilosopherProteinProphet))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -563,9 +588,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         jLabel40.setText("Cmd Line Options");
 
-        chkProteinProphetAddInteractPepXmlsSeparately.setSelected(true);
-        chkProteinProphetAddInteractPepXmlsSeparately.setText("Use 'interact-*pep.xml' as file filter for ProteinProphet (Philosopher only)");
-        chkProteinProphetAddInteractPepXmlsSeparately.setToolTipText("<html>If checked will use 'interact-*pep.xml' to match pep.xml files to be passed to ProteinProphet.<br/> Otherwise will add files as separate entries, \nwhich might cause problems on Windows<br/> when there are many pepxml files, as the length of command line parameter string is limited to 8192 chars."); // NOI18N
+        chkProteinProphetInteractStar.setSelected(true);
+        chkProteinProphetInteractStar.setText("Use 'interact-*pep.xml' as file filter for ProteinProphet (Philosopher only)");
+        chkProteinProphetInteractStar.setToolTipText("<html>If checked will use 'interact-*pep.xml' to match pep.xml files to be passed to ProteinProphet.<br/> Otherwise will add files as separate entries, \nwhich might cause problems on Windows<br/> when there are many pepxml files, as the length of command line parameter string is limited to 8192 chars."); // NOI18N
 
         jLabel41.setText("Output File");
 
@@ -595,8 +620,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         .addGap(8, 8, 8)
                         .addComponent(jScrollPane4))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addGap(0, 200, Short.MAX_VALUE)
-                        .addComponent(chkProteinProphetAddInteractPepXmlsSeparately)))
+                        .addGap(0, 276, Short.MAX_VALUE)
+                        .addComponent(chkProteinProphetInteractStar)))
                 .addContainerGap())
         );
         panelProteinProphetOptionsLayout.setVerticalGroup(
@@ -619,7 +644,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkProteinProphetAddInteractPepXmlsSeparately)
+                        .addComponent(chkProteinProphetInteractStar)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -696,10 +721,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         });
 
         txtProgramsDir.setText(getDefaultTextProgramsDir());
-        txtProgramsDir.setToolTipText("<html>The .jar files and executables will be searched here. <br/> Executables (e.g. msconvert.exe) will also be searched using system's PATH variable.");
+        txtProgramsDir.setToolTipText("<html>The .jar files and executables will be searched here.\n<br/>Executables (e.g. msconvert.exe) will also be searched using system's PATH variable."); // NOI18N
 
         lblProgramsDir.setText("Programs dir");
-        lblProgramsDir.setToolTipText("<html>The .jar files and executables will be searched here. <br/>\nExecutables (e.g. msconvert.exe) will also be searched using system's PATH variable."); // NOI18N
+        lblProgramsDir.setToolTipText("<html>The .jar files and executables will be searched here.\n<br/>Executables (e.g. msconvert.exe) will also be searched using system's PATH variable."); // NOI18N
 
         btnAbout.setText("About");
         btnAbout.addActionListener(new java.awt.event.ActionListener() {
@@ -1369,7 +1394,22 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         LogUtils.println(console, sb.toString());
     }//GEN-LAST:event_btnCheckJavaVersionActionPerformed
 
+    private void btnDownloadPhilosopherPeptideProphetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadPhilosopherPeptideProphetActionPerformed
+        downloadPhilosopher();
+    }//GEN-LAST:event_btnDownloadPhilosopherPeptideProphetActionPerformed
 
+    private void btnDownloadPhilosopherProteinProphetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadPhilosopherProteinProphetActionPerformed
+        downloadPhilosopher();
+    }//GEN-LAST:event_btnDownloadPhilosopherProteinProphetActionPerformed
+
+    private void downloadPhilosopher() {
+        
+        try {
+            Desktop.getDesktop().browse(URI.create("https://github.com/prvst/philosopher/releases/latest"));
+        } catch (IOException ex) {
+            Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     
     
@@ -1953,6 +1993,20 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         return pepxmls;
     }
     
+    private Map<String, String> createInteractFilePaths(Map<String, String> cleanPepXmls, String workingDir) {
+        HashMap<String, String> interacts = new HashMap<>();
+        Path wd = Paths.get(workingDir);
+        for (Map.Entry<String, String> entry : cleanPepXmls.entrySet()) {
+            String raw = entry.getKey();
+            String pepxmlClean = entry.getValue();
+            String pepxmlCleanFilename = Paths.get(pepxmlClean).getFileName().toString();
+            String pepxmlCleanBasename = pepxmlCleanFilename.substring(0, pepxmlCleanFilename.lastIndexOf(".") + 1);
+            Path interactXml = wd.resolve("interact-" + pepxmlCleanBasename + "pep.xml").toAbsolutePath();
+            interacts.put(raw, interactXml.toString());
+        }
+        return interacts;
+    }
+    
 //    private List<ProcessBuilder> processBuildersComet(String programsDir, String workingDir, List<String> lcmsFilePaths, String dateStr) {
 //        List<ProcessBuilder> processBuilders = new LinkedList<>();
 //        if (chkRunCometSearch.isSelected()) {
@@ -2067,7 +2121,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
      * @return null in case of errors, or a list of process builders.
      */
     private List<ProcessBuilder> processBuildersPeptideProphet(String programsDir, String workingDir, List<String> lcmsFilePaths) {
-        List<ProcessBuilder> processBuilders = new LinkedList<>();
+        List<ProcessBuilder> builders = new LinkedList<>();
         if (chkRunPeptideProphet.isSelected()) {
             String bin = txtBinPeptideProphet.getText().trim();
             if (StringUtils.isNullOrWhitespace(bin)) {
@@ -2103,10 +2157,19 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
             PeptideProphetParams peptideProphetParams = new PeptideProphetParams();
             peptideProphetParams.setCmdLineParams(txtPeptideProphetCmdLineOptions.getText().trim());
-
             
             String philosopherPeptideprophetCmd = "peptideprophet";
             boolean isPhilosopher = isPhilosopherBin(bin);
+            
+            // for new philoshopher we need to run 'init' command first
+            if (isPhilosopher) {
+                List<String> cmd = new ArrayList<>();
+                cmd.add(bin);
+                cmd.add("init");
+                ProcessBuilder pb = new ProcessBuilder(cmd);
+                builders.add(pb);
+            }
+            
             Map<String, String> pepxmlDirty = createPepxmlFilePathsDirty(lcmsFilePaths, fraggerPanel.getOutputFileExt());
             Map<String, String> pepxmlClean = createPepxmlFilePathsAfterMove(pepxmlDirty, workingDir);
             for (String rawFilePath : lcmsFilePaths) {
@@ -2147,10 +2210,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 if (webroot == null) {
                     env.put(ENV_WEBSERVER_ROOT, "fake-WEBSERVER_ROOT-value");
                 }
-                processBuilders.add(pb);
+                builders.add(pb);
             }
         }
-        return processBuilders;
+        return builders;
     }
     
     /**
@@ -2193,18 +2256,31 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
             ProteinProphetParams proteinProphetParams = new ProteinProphetParams();
             proteinProphetParams.setCmdLineParams(txtProteinProphetCmdLineOpts.getText());
-
+            List<ProcessBuilder> builders = new ArrayList<>();
 
             List<String> createdInteractFiles = new ArrayList<>();
             List<String> commands = new ArrayList<>();
             commands.add(bin);
             boolean isPhilosopher = isPhilosopherBin(bin);
             
+            // for new philoshopher we need to run 'init' command first
+            if (isPhilosopher) {
+                List<String> cmd = new ArrayList<>();
+                cmd.add(bin);
+                cmd.add("init");
+                builders.add(new ProcessBuilder(cmd));
+            }
+            
+            Map<String, String> pepxmlDirty = createPepxmlFilePathsDirty(lcmsFilePaths, fraggerPanel.getOutputFileExt());
+            Map<String, String> pepxmlClean = createPepxmlFilePathsAfterMove(pepxmlDirty, workingDir);
+            Map<String, String> interacts = createInteractFilePaths(pepxmlClean, workingDir);
             
             if (isPhilosopher) {
                 commands.add(Philosopher.CMD_PROTEIN_PROPHET);
-                commands.add("--output");
-                commands.add(txtProteinProphetOutputFile.getText());
+                
+                // --output flag is not available in the latest philosopher
+                //commands.add("--output");
+                //commands.add(txtProteinProphetOutputFile.getText());
                 
                 // for Philosopher command line flags go before files
                 String cmdLineOpts = proteinProphetParams.getCmdLineParams().trim();
@@ -2213,36 +2289,20 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     commands.addAll(opts);
                 }
                 
-                if (chkProteinProphetAddInteractPepXmlsSeparately.isSelected()) {
+                if (chkProteinProphetInteractStar.isSelected()) {
                     commands.add("interact-*.pep.xml");
                 } else {
                     for (String filePath : lcmsFilePaths) {
-                        for (int i = 1; i <= 3; i++) {
-                            Path curMzXMl = Paths.get(filePath);
-                            Path mzXmlFileName = curMzXMl.getFileName();
-                            String s = mzXmlFileName.toString();
-                            int indexOf = s.toLowerCase().indexOf(".mzxml");
-                            String baseName = mzXmlFileName.toString().substring(0, indexOf);
-                            //Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), "interact-" + baseName + "_Q" + i + ".pep.xml");
-                            Path createdPepXml = Paths.get(workingDir, "interact-" + baseName + "_Q" + i + ".pep.xml");
-                            commands.add(createdPepXml.toString());
-                            createdInteractFiles.add(createdPepXml.toString());
-                        }
+                        String interact = interacts.get(filePath);
+                        if (!StringUtils.isNullOrWhitespace(interact))
+                            createdInteractFiles.add(interact);
                     }
                 }
             } else {
                 for (String filePath : lcmsFilePaths) {
-                    for (int i = 1; i <= 3; i++) {
-                        Path curMzXMl = Paths.get(filePath);
-                        Path mzXmlFileName = curMzXMl.getFileName();
-                        String s = mzXmlFileName.toString();
-                        int indexOf = s.toLowerCase().indexOf(".mzxml");
-                        String baseName = mzXmlFileName.toString().substring(0, indexOf);
-                        //Path createdPepXml = Paths.get(curMzXMl.getParent().toString(), "interact-" + baseName + "_Q" + i + ".pep.xml");
-                        Path createdPepXml = Paths.get(workingDir, "interact-" + baseName + "_Q" + i + ".pep.xml");
-                        commands.add(createdPepXml.toString());
-                        createdInteractFiles.add(createdPepXml.toString());
-                    }
+                    String interact = interacts.get(filePath);
+                    if (!StringUtils.isNullOrWhitespace(interact))
+                        createdInteractFiles.add(interact);
                 }
                 
                 // output file
@@ -2669,6 +2729,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnBrowseProgramsDir;
     private javax.swing.JButton btnCheckJavaVersion;
     private javax.swing.JButton btnClearConsole;
+    private javax.swing.JButton btnDownloadPhilosopherPeptideProphet;
+    private javax.swing.JButton btnDownloadPhilosopherProteinProphet;
     private javax.swing.JButton btnProteinProphetSeqDb;
     private javax.swing.JButton btnRawAddFiles;
     private javax.swing.JButton btnRawAddFolder;
@@ -2680,7 +2742,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnSelectWrkingDir;
     private javax.swing.JButton btnStop;
     private javax.swing.JCheckBox checkDryRun;
-    private javax.swing.JCheckBox chkProteinProphetAddInteractPepXmlsSeparately;
+    private javax.swing.JCheckBox chkProteinProphetInteractStar;
     private javax.swing.JCheckBox chkRunPeptideProphet;
     private javax.swing.JCheckBox chkRunProteinProphet;
     private umich.msfragger.gui.TextConsole console;

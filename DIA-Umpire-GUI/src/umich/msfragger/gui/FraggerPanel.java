@@ -1112,6 +1112,7 @@ public class FraggerPanel extends javax.swing.JPanel {
         jLabel2.setText("MSFragger");
 
         txtBinMsfragger.setText(getDefaultTextMsfragger());
+        txtBinMsfragger.setToolTipText("<html>Path to MSFragger binary (.jar file).<br/>\nIt will be searched in the \"Programs\" directory (check \"Run\" tab)<br/>\nand in system's PATH.");
 
         javax.swing.GroupLayout panelMsfraggerBinLayout = new javax.swing.GroupLayout(panelMsfraggerBin);
         panelMsfraggerBin.setLayout(panelMsfraggerBinLayout);
