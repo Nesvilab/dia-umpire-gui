@@ -49,6 +49,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,7 @@ import umich.msfragger.gui.api.SimpleUniqueTableModel;
 import umich.msfragger.gui.api.TableModelColumn;
 import umich.msfragger.params.fragger.MsfraggerParams;
 import umich.msfragger.util.FileDrop;
+import umich.msfragger.util.PathUtils;
 import umich.msfragger.util.SwingUtils;
 
 /**
@@ -144,7 +146,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         if (FraggerPanel.fileNameExtensionFilter.accept(f))
                             paths.add(Paths.get(f.getAbsolutePath()));
                     } else {
-                        traverseDirectoriesAcceptingFiles(f, FraggerPanel.fileNameExtensionFilter, paths);
+                        PathUtils.traverseDirectoriesAcceptingFiles(f, FraggerPanel.fileNameExtensionFilter, paths);
                     }
                 }
                 tableModelRawFiles.dataAddAll(paths);
@@ -154,31 +156,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         
     }
     
-    private void traverseDirectoriesAcceptingFiles(File dir, FileFilter filter, List<Path> accepted) {
-        if (!dir.isDirectory()) {
-            if (filter.accept(dir)) {
-                accepted.add(Paths.get(dir.getAbsolutePath()));
-            }
-        }
-        Path dirPath = Paths.get(dir.getAbsolutePath());
-        try {
-            DirectoryStream<Path> ds = Files.newDirectoryStream(dirPath);
-            Iterator<Path> it = ds.iterator();
-            while (it.hasNext()) {
-                File next = it.next().toFile();
-                boolean isDir = next.isDirectory();
-                if (isDir) {
-                    traverseDirectoriesAcceptingFiles(next, filter, accepted);
-                } else {
-                    if (filter.accept(next)) {
-                        accepted.add(Paths.get(next.getAbsolutePath()));
-                    }
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     
     public SimpleUniqueTableModel<Path> createTableModelRawFiles() {
         if (tableModelRawFiles != null)
@@ -269,6 +246,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         lblProgramsDir = new javax.swing.JLabel();
         btnAbout = new javax.swing.JButton();
         checkDryRun = new javax.swing.JCheckBox();
+        btnCheckJavaVersion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MSFragger");
@@ -733,6 +711,13 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         checkDryRun.setText("Dry Run");
         checkDryRun.setToolTipText("<html>Only print the commands to execute, <br/>\nbut don't actually execute them.");
 
+        btnCheckJavaVersion.setText("Check Java Version");
+        btnCheckJavaVersion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCheckJavaVersionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelRunLayout = new javax.swing.GroupLayout(panelRun);
         panelRun.setLayout(panelRunLayout);
         panelRunLayout.setHorizontalGroup(
@@ -747,7 +732,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         .addComponent(btnStop)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(checkDryRun)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 296, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCheckJavaVersion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
                         .addComponent(btnAbout)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClearConsole))
@@ -786,7 +773,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     .addComponent(btnStop)
                     .addComponent(btnClearConsole)
                     .addComponent(btnAbout)
-                    .addComponent(checkDryRun))
+                    .addComponent(checkDryRun)
+                    .addComponent(btnCheckJavaVersion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
                 .addContainerGap())
@@ -910,11 +898,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         int showOpenDialog = fileChooser.showOpenDialog(this);
         switch (showOpenDialog) {
             case JFileChooser.APPROVE_OPTION:
-
-            File f = fileChooser.getSelectedFile();
-            txtWorkingDir.setText(f.getAbsolutePath());
-            ThisAppProps.saveTextFieldToCache(txtWorkingDir, ThisAppProps.PROP_LCMS_FILES_IN);
-            break;
+                File f = fileChooser.getSelectedFile();
+                txtWorkingDir.setText(f.getAbsolutePath());
+                ThisAppProps.saveTextFieldToCache(txtWorkingDir, ThisAppProps.PROP_LCMS_FILES_IN);
+                break;
         }
     }//GEN-LAST:event_btnSelectWrkingDirActionPerformed
 
@@ -991,8 +978,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             }
         } else {
             // On windows copy the files over to the working directory
-            List<ProcessBuilder> processBuildersCopyFiles = processBuildersCopyFiles(programsDir, workingDir, lcmsFilePaths);
-            processBuilders.addAll(processBuildersCopyFiles);
+//            List<ProcessBuilder> processBuildersCopyFiles = processBuildersCopyFiles(programsDir, workingDir, lcmsFilePaths);
+//            processBuilders.addAll(processBuildersCopyFiles);
         }
 
         // we will now compose parameter objects for running processes.
@@ -1020,21 +1007,14 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             return;
         }
         processBuilders.addAll(processBuildersProteinProphet);
-
-        //        List<ProcessBuilder> processBuildersUmpireQuant = processBuildersUmpireQuant(programsDir, workingDir, lcmsFilePaths, dateString);
-        //        if (processBuildersUmpireQuant == null) {
-            //            resetRunButtons(true);
-            //            return;
-            //        }
-        //        processBuilders.addAll(processBuildersUmpireQuant);
-
+        
         if (!OsUtils.isWindows()) {
             // On Linux we created symlinks to mzXML files, leave them there
         } else {
             // On windows we copied the files over to the working directory
             // so will delete them now
-            List<ProcessBuilder> processBuildersDeleteFiles = processBuildersDeleteFiles(workingDir, lcmsFilePaths);
-            processBuilders.addAll(processBuildersDeleteFiles);
+//            List<ProcessBuilder> processBuildersDeleteFiles = processBuildersDeleteFiles(workingDir, lcmsFilePaths);
+//            processBuilders.addAll(processBuildersDeleteFiles);
         }
 
         LogUtils.println(console, String.format("Will execute %d commands:", processBuilders.size()));
@@ -1044,6 +1024,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             for (String commandPart : command)
             sb.append(commandPart).append(" ");
             LogUtils.println(console, sb.toString());
+            LogUtils.println(console, "");
         }
         LogUtils.println(console, "~~~~~~~~~~~~~~~~~~~~~~");
         LogUtils.println(console, "");
@@ -1051,6 +1032,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         if (checkDryRun.isSelected()) {
             LogUtils.println(console, "Dry Run selected, not running the commands.");
+            resetRunButtons(true);
+            return;
         }
         
         try // run everything
@@ -1360,62 +1343,35 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         throw new UnsupportedOperationException("Not implemented");
     }//GEN-LAST:event_btnRawAddFolderActionPerformed
 
-
-
-    /**
-     * Returns the value for the program, that will work with process builder.<br/>
-     * Null if no working combo could be found.
-     */
-    private String testBinaryPath(String programName, String workingDir) {
-        
-        // First try running just the program, hoping that it's in the PATH
-        List<String> commands = new LinkedList<>();
-        commands.add(programName);
-        ProcessBuilder pb = new ProcessBuilder(commands);
-        try {
-            Process proc = pb.start();
-            proc.destroy();
-            return programName;
-        } catch (Exception e1) {
-            // could not run the program, it was not on PATH
-            // Try running the program using absolute path
-            if (workingDir == null || workingDir.isEmpty())
-                return null;
-            try {
-                commands = new LinkedList<>();
-                String absolutePathProgramName = Paths.get(workingDir, programName).toAbsolutePath().toString();
-                commands.add(absolutePathProgramName);
-                pb = new ProcessBuilder(commands);
-                Process proc = pb.start();
-                proc.destroy();
-                return absolutePathProgramName;
-            } catch (Exception e2) {
-                // could not run the program even with absolute path
+    private void btnCheckJavaVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckJavaVersionActionPerformed
+//        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+//        map.put("java.version", "")
+        List<String> propNames = Arrays.asList(
+                "java.version",
+                "java.vm.specification.version",
+                "java.vm.specification.vendor",
+                "java.vm.specification.name",
+                "java.vm.version",
+                "java.vm.vendor",
+                "java.vm.name",
+                "java.specification.version",
+                "java.specification.vendor",
+                "java.specification.name"
+                );
+        StringBuilder sb = new StringBuilder("Java Info:\n");
+        for (String propName : propNames) {
+            String val = System.getProperty(propName);
+            if (!StringUtils.isNullOrWhitespace(val)) {
+                sb.append(propName).append(": ").append(val).append("\n");
             }
         }
-        return null;
-    }
+        
+        LogUtils.println(console, sb.toString());
+    }//GEN-LAST:event_btnCheckJavaVersionActionPerformed
+
+
+
     
-    private String testFilePath(String fileName, String dir) {
-        try {
-            Path fileNameWasAbsolute = Paths.get(fileName);
-            if (Files.exists(fileNameWasAbsolute)) {
-                return fileNameWasAbsolute.toAbsolutePath().toString();
-            }
-        } catch (Exception e) {
-            // something wrong with the path
-        }
-        
-        try {
-            Path fileNameWasRelative = Paths.get(dir, fileName);
-            if (Files.exists(fileNameWasRelative)) {
-                return fileNameWasRelative.toAbsolutePath().toString();
-            }
-        } catch (Exception e) {
-            // something wrong with the path
-        }
-        return null;
-    }
     
     private void resetRunButtons(boolean runEnabled) {
         btnRun.setEnabled(runEnabled);
@@ -1580,7 +1536,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     
     private String getBinJava(String programsDir) {
         String binJava = "java";
-        binJava = testBinaryPath(binJava, programsDir);
+        binJava = PathUtils.testBinaryPath(binJava, programsDir);
         if (binJava != null)
             return binJava;
         JOptionPane.showMessageDialog(this, "Java could not be found.\n"
@@ -1890,7 +1846,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            bin = testBinaryPath(bin, programsDir);
+            bin = PathUtils.testFilePath(bin, programsDir);
             if (bin == null) {
                 JOptionPane.showMessageDialog(this, "Binary for running Fragger not found or could not be run.\n"
                         + "Neither on PATH, nor in the working directory",
@@ -1931,7 +1887,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 // Fragger search
                 Path path = Paths.get(filePath);
                 ArrayList<String> cmd = new ArrayList<>();
-                cmd.add(bin);
                 cmd.add("java");
                 cmd.add("-jar");
                 if (ramGb > 0) {
@@ -1939,9 +1894,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 }
                 cmd.add(bin);
                 cmd.add(savedParamsPath.toString());
+                cmd.add(path.toAbsolutePath().toString());
                 ProcessBuilder pb = new ProcessBuilder(cmd);
                 builders.add(pb);
-                cmd.clear();
                 
                 // Move the resulting file
                 String pepFile = mapRawToPep.get(filePath);
@@ -2120,7 +2075,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            bin = testBinaryPath(bin, programsDir);
+            bin = PathUtils.testBinaryPath(bin, programsDir);
             if (bin == null) {
                 JOptionPane.showMessageDialog(this, "Philosopher (PeptideProphet) binary not found.\n"
                         + "Neither on PATH, nor in the working directory",
@@ -2139,7 +2094,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 }
             }
             String fastaPathOrig = fastaPath;
-            fastaPath = testFilePath(fastaPath, workingDir);
+            fastaPath = PathUtils.testFilePath(fastaPath, workingDir);
             if (fastaPath == null) {
                 JOptionPane.showMessageDialog(this, String.format("Could not find fasta file (PeptideProphet) at:\n%s", fastaPathOrig),
                         "Errors", JOptionPane.ERROR_MESSAGE);
@@ -2210,7 +2165,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            bin = testBinaryPath(bin, programsDir);
+            bin = PathUtils.testBinaryPath(bin, programsDir);
             if (bin == null) {
                 JOptionPane.showMessageDialog(this, "ProteinProphet binary not found or could not be launched.\n"
                         + "Neither on PATH, nor in the working directory",
@@ -2423,7 +2378,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         } else {
             binaryName = bundle.getString("default.msconvert.nix");
         }
-        String testedBinaryPath = testBinaryPath(binaryName, null);
+        String testedBinaryPath = PathUtils.testBinaryPath(binaryName, null);
         if (testedBinaryPath != null && !testedBinaryPath.isEmpty())
             return testedBinaryPath;
         
@@ -2521,25 +2476,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     
 
     
-    public static class REHandler implements Runnable {
-        Runnable delegate;
-        Appendable[] outs;
-        public REHandler (Runnable delegate, Appendable... out) {
-            this.delegate = delegate;
-            this.outs = out;
-        }
-        public void run () {
-            try {
-                delegate.run ();
-            } catch (Exception e) {
-                //log.error("Something bad happened in a worker thread", e);
-                String msg = String.format("Something bad happened in a worker thread:\n%s", e.getMessage());
-                for (Appendable out : outs) {
-                    LogUtils.println(out, msg);
-                }
-            }
-        }
-    }
 
 
     private void saveProgramsDir() {
@@ -2731,6 +2667,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnAbout;
     private javax.swing.JButton btnBinProteinProphet;
     private javax.swing.JButton btnBrowseProgramsDir;
+    private javax.swing.JButton btnCheckJavaVersion;
     private javax.swing.JButton btnClearConsole;
     private javax.swing.JButton btnProteinProphetSeqDb;
     private javax.swing.JButton btnRawAddFiles;
