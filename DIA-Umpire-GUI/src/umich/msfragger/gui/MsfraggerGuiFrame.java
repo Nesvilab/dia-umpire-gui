@@ -19,7 +19,6 @@ import umich.msfragger.util.StringUtils;
 
 import java.awt.Container;
 import java.awt.Desktop;
-import static java.awt.Desktop.getDesktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
@@ -49,8 +48,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -62,23 +59,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.TransferHandler;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultCaret;
 import umich.msfragger.gui.api.DataConverter;
 import umich.msfragger.gui.api.SimpleETable;
-import umich.msfragger.gui.api.SimpleETableTransferHandler;
 import umich.msfragger.gui.api.SimpleUniqueTableModel;
 import umich.msfragger.gui.api.TableModelColumn;
 import umich.msfragger.params.fragger.MsfraggerParams;
@@ -231,8 +224,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         txtProteinProphetCmdLineOpts = new javax.swing.JTextArea();
         jLabel40 = new javax.swing.JLabel();
         chkProteinProphetInteractStar = new javax.swing.JCheckBox();
-        jLabel41 = new javax.swing.JLabel();
-        txtProteinProphetOutputFile = new javax.swing.JTextField();
+        txtCombinedProtFile = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         panelRun = new javax.swing.JPanel();
         btnRun = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
@@ -588,13 +581,12 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         jLabel40.setText("Cmd Line Options");
 
-        chkProteinProphetInteractStar.setSelected(true);
         chkProteinProphetInteractStar.setText("Use 'interact-*pep.xml' as file filter for ProteinProphet (Philosopher only)");
         chkProteinProphetInteractStar.setToolTipText("<html>If checked will use 'interact-*pep.xml' to match pep.xml files to be passed to ProteinProphet.<br/> Otherwise will add files as separate entries, \nwhich might cause problems on Windows<br/> when there are many pepxml files, as the length of command line parameter string is limited to 8192 chars."); // NOI18N
 
-        jLabel41.setText("Output File");
+        txtCombinedProtFile.setText("interact.prot.xml");
 
-        txtProteinProphetOutputFile.setText(bundle.getString("default.prot.xml.filename")); // NOI18N
+        jLabel1.setText("Output File");
 
         javax.swing.GroupLayout panelProteinProphetOptionsLayout = new javax.swing.GroupLayout(panelProteinProphetOptions);
         panelProteinProphetOptions.setLayout(panelProteinProphetOptionsLayout);
@@ -604,24 +596,26 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProteinProphetOptionsLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jLabel40)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProteinProphetOptionsLayout.createSequentialGroup()
+                        .addGap(0, 276, Short.MAX_VALUE)
+                        .addComponent(chkProteinProphetInteractStar))
+                    .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
                         .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel41)
-                            .addComponent(jLabel39))
+                            .addComponent(jLabel39)
+                            .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
                                 .addComponent(txtProteinProphetSeqDb)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnProteinProphetSeqDb))
-                            .addComponent(txtProteinProphetOutputFile)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel40)
-                        .addGap(8, 8, 8)
-                        .addComponent(jScrollPane4))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addGap(0, 276, Short.MAX_VALUE)
-                        .addComponent(chkProteinProphetInteractStar)))
+                            .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
+                                .addComponent(txtCombinedProtFile, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         panelProteinProphetOptionsLayout.setVerticalGroup(
@@ -633,19 +627,18 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     .addComponent(jLabel39))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel41)
-                    .addComponent(txtProteinProphetOutputFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCombinedProtFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                        .addComponent(jLabel40)
-                        .addGap(123, 123, 123))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkProteinProphetInteractStar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(42, 42, 42)
+                        .addComponent(jLabel40)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chkProteinProphetInteractStar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelProteinProphetLayout = new javax.swing.GroupLayout(panelProteinProphet);
@@ -671,7 +664,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addComponent(panelProteinProphetBin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelProteinProphetOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(397, Short.MAX_VALUE))
+                .addContainerGap(434, Short.MAX_VALUE))
         );
 
         tabPane.addTab("ProteinProphet", panelProteinProphet);
@@ -1585,181 +1578,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         return null;
     }
     
-//    private List<ProcessBuilder> processBuildersUmpire(String programsDir, String workingDir, List<String> lcmsFilePaths, String dateStr) {
-//        List<ProcessBuilder> processBuilders = new LinkedList<>();
-//        if (chkRunUmpire.isSelected()) {
-//            
-//            String binJava = getBinJava(programsDir);
-//            
-//            if (binJava == null)
-//                return null;
-//            
-//            String binUmpire = txtBinUmpire.getText();
-//            if (binUmpire.isEmpty()) {
-//                JOptionPane.showMessageDialog(this, "[DIA Umpire SE tab]\nDIA Umpire SE binary can't be an empty string", "Error", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            }
-//            binUmpire = testFilePath(binUmpire, programsDir);
-//            if (binUmpire == null) {
-//                JOptionPane.showMessageDialog(this, "[DIA Umpire SE tab]\nCould not locate DIA-Umpire SE jar", "Error", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            }
-//            
-//            String binMsconvert = txtBinMsconvert.getText();
-//            if (binMsconvert.isEmpty()) {
-//                JOptionPane.showMessageDialog(this, "[DIA Umpire SE tab]\nMSConvert binary can't be an empty string", "Error", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            }
-//            binMsconvert = testBinaryPath(binMsconvert, programsDir);
-//            if (binMsconvert == null) {
-//                JOptionPane.showMessageDialog(this, "MSConvert binary could not be found \n"
-//                        + "on PATH or in the working directory", "Error", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            }
-//            
-//            
-//            try {
-//                // Running Umpire
-//                UmpireParams collectedUmpireParams = collectUmpireParams();
-//                
-//                // writing umpire params file
-//                String umpireParamsFileName = UmpireParams.FILE_BASE_NAME + "_" + dateStr + "." + UmpireParams.FILE_BASE_EXT;
-//                Path umpireParamsFilePath = Paths.get(workingDir, umpireParamsFileName);
-//                FileOutputStream fos = new FileOutputStream(umpireParamsFilePath.toFile());
-//                PropertiesUtils.writePropertiesContent(collectedUmpireParams, fos);
-//                
-//                // run umpire for each file
-//                Object value = spinnerRam.getModel().getValue();
-//                int ram = (Integer)spinnerRam.getModel().getValue();
-//                if (ram < MIN_RAM)
-//                    ram = MIN_RAM;
-//                
-//                List<String> createdMgfFiles = new ArrayList<>();
-//                List<String> createdMzXmlFiles = new ArrayList<>();
-//                Path wdPath = Paths.get(workingDir).toAbsolutePath();
-//                List<Path> lcmsFileSymlinks = getLcmsFilePathsInWorkdir(wdPath);
-//                for (Path lcmsSymlink : lcmsFileSymlinks) {
-//                    Path curMzxmlPath = lcmsSymlink;
-//                    Path curMzxmlFileName = curMzxmlPath.getFileName();
-//                    Path curMzxmlFileDir = curMzxmlPath.getParent();
-//                    
-//                    // umpire
-//                    //  java -jar -Xmx8G DIA_Umpire_SE.jar mzMXL_file diaumpire_se.params
-//                    List<String> commands = new ArrayList<>();
-//                    commands.add("java");
-//                    //commands.add("-d64");
-//                    commands.add("-jar");
-//                    StringBuilder sb = new StringBuilder().append("-Xmx").append(ram).append("m");
-//                    commands.add(sb.toString());
-//                    commands.add(binUmpire);
-//                    commands.add(curMzxmlPath.toString());
-//                    commands.add(umpireParamsFilePath.toString());
-//                    
-//                    ProcessBuilder pb = new ProcessBuilder(commands);
-//                    processBuilders.add(pb);
-//                    
-//                    
-//                    // check if the working dir is the dir where the mzXML file was
-//                    // if it is, then don't do anything, if it is not, then copy
-//                    // UmpireSE outputs to the working directory
-//                    // and also create symlinks to the original files
-//                    
-//                    if (!wdPath.equals(curMzxmlFileDir)) {
-//                        // find the curernt gui JAR location
-//                        URI currentJarUri = OsUtils.getCurrentJarPath();
-//                        String currentJarPath = Paths.get(currentJarUri).toAbsolutePath().toString();
-//                        
-//                        
-//                        // working dir is different from mzXML file location, need to move output
-//                        UmpireGarbageFiles umpireGarbageFiles = getUmpireSeGarbageFiles(curMzxmlPath);
-//                        
-//                        for (String path : umpireGarbageFiles.toMove) {
-//                            List<String> commandsFileMove = new ArrayList<>();
-//                            commandsFileMove.add("java");
-//                            commandsFileMove.add("-cp");
-//                            commandsFileMove.add(currentJarPath);
-//                            commandsFileMove.add("dia.umpire.util.FileMove");
-//                            String origin = curMzxmlFileDir.resolve(Paths.get(path).getFileName()).toString();
-//                            String destination = wdPath.resolve(Paths.get(path).getFileName()).toString();
-//                            commandsFileMove.add(origin);
-//                            commandsFileMove.add(destination);
-//                            ProcessBuilder pbFileMove = new ProcessBuilder(commandsFileMove);
-//                            processBuilders.add(pbFileMove);
-//                        }
-//                        
-////                        // creating symlink
-////                        List<String> commandsSymlink = new ArrayList<>();
-////                        commandsSymlink.add("java");
-////                        commandsSymlink.add("-cp");
-////                        commandsSymlink.add(currentJarPath);
-////                        commandsSymlink.add("dia.umpire.util.FileSymlink");
-////                        String origin = curMzxmlPath.toString();
-////                        String symlink = wdPath.resolve(curMzxmlFileName).toString();
-////                        commandsSymlink.add(origin);
-////                        commandsSymlink.add(symlink);
-////                        ProcessBuilder pbSymlink = new ProcessBuilder(commandsSymlink);
-////                        processBuilders.add(pbSymlink);
-//                    }
-//                    
-//                    
-//                    // msconvert
-//                    for (int i = 1; i <= 3; i++) {
-//                        List<String> commandsMsconvert = new ArrayList<>();
-//                        commandsMsconvert.add(binMsconvert);
-//                        commandsMsconvert.add("--verbose");
-//                        commandsMsconvert.add("--32");
-//                        commandsMsconvert.add("--zlib");
-//                        commandsMsconvert.add("--mzXML");
-//                        commandsMsconvert.add("--outdir");
-//                        commandsMsconvert.add(workingDir);
-//
-//                        String s = curMzxmlFileName.toString();
-//                        int indexOf = s.toLowerCase().indexOf(".mzxml");
-//                        String baseName = curMzxmlFileName.toString().substring(0, indexOf);
-//                        Path createdMgf = Paths.get(workingDir, baseName+"_Q"+i+".mgf");
-//                        Path createdMzXml = Paths.get(workingDir, baseName+"_Q"+i+".mzxml");
-//                        commandsMsconvert.add(createdMgf.toString());
-//                        
-//                        ProcessBuilder pbMsconv = new ProcessBuilder(commandsMsconvert);
-//                        processBuilders.add(pbMsconv);
-//                        createdMgfFiles.add(createdMgf.toString());
-//                        createdMzXmlFiles.add(createdMzXml.toString());
-//                    }
-//                }
-//                
-//            } catch (ParsingException ex) {
-//                JOptionPane.showMessageDialog(this, "Error collecting user variables for Umpire SE.\n",
-//                        "Error", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            } catch (FileNotFoundException | FileWritingException ex) {
-//                JOptionPane.showMessageDialog(this, "Error writing Umpire SE parameters file to working dir.\n",
-//                        "Error", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            }
-//        }
-//        return processBuilders;
-//    }
-    
-//    private String getUmpireQuantFastaPath() {
-//        String fastaPath = txtUmpireQuantSeqDb.getText().trim();
-//        if (fastaPath.isEmpty()) {
-//            fastaPath = txtProteinProphetSeqDb.getText().trim();
-//            if (fastaPath.isEmpty()) {
-//                fastaPath = txtPeptideProphetSeqDb.getText().trim();
-//                if (fastaPath.isEmpty()) {
-//                    fastaPath = txtCometSeqDb.getText().trim();
-//                    if (fastaPath.isEmpty()) {
-//                        return null;
-//                    }
-//                }       
-//            }
-//        }
-//        return fastaPath.isEmpty() ? null : fastaPath;
-//    }
-    
     private Path getCombinedProtFilePath(String workingDir) {
-        String combinedProtFile = txtProteinProphetOutputFile.getText().trim();
-        if (combinedProtFile.isEmpty()) {
+        String combinedProtFile = txtCombinedProtFile.getText().trim();
+        if (StringUtils.isNullOrWhitespace(combinedProtFile)) {
             JOptionPane.showMessageDialog(this, String.format("Please specify ProteinProphet output path on ProteinProphet tab.\n"
                     + "This is needed even if you're not running ProteinProphet right now.\n"
                     + "In which case check the box to run it, add the filename and uncheck the filebox.\n"
@@ -1768,107 +1589,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             return null;
         } else {
             Path combinedProtFileFullPath = Paths.get(workingDir, combinedProtFile).toAbsolutePath();
-            // can't check if file exists beforehand
-//            if (!Files.exists(combinedProtFileFullPath)) {
-//                JOptionPane.showMessageDialog(this, String.format("Could not find combined protxml file (for Umpire Quant).\n"
-//                        + "Location: %s", combinedProtFileFullPath.toString()),
-//                    "Errors", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            }
             return combinedProtFileFullPath;
         }
     }
     
-//    private List<ProcessBuilder> processBuildersUmpireQuant(String programsDir, String workingDir, List<String> lcmsFilePaths, String dateStr) {
-//        List<ProcessBuilder> processBuilders = new LinkedList<>();
-//        if (chkRunUmpireQuant.isSelected()) {
-//            
-//            String binJava = "java";
-//            binJava = testBinaryPath(binJava, programsDir);
-//            if (binJava == null) {
-//                JOptionPane.showMessageDialog(this, "Java could not be found.\n"
-//                        + "please make sure you have it installed \n"
-//                        + "and that java.exe can be found on PATH", "Error", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            }
-//            
-//            
-//            String jarUmpireQuant = txtBinUmpireQuant.getText().trim();
-//            if (jarUmpireQuant.isEmpty()) {
-//                JOptionPane.showMessageDialog(this, "[DIA Umpire Quant tab]\nDIA Umpire Quant jar can't be empty string", "Error", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            }
-//            jarUmpireQuant = testFilePath(jarUmpireQuant, programsDir);
-//            if (jarUmpireQuant == null) {
-//                JOptionPane.showMessageDialog(this, "[DIA Umpire Quant tab]\nCould not locate DIA-Umpire Quant jar", "Error", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            }
-//            
-//            String fastaPath = getUmpireQuantFastaPath();
-//            if (fastaPath == null) {
-//                JOptionPane.showMessageDialog(this, "Fasta file (DIA-Umpire Quant) path can't be empty",
-//                                "Warning", JOptionPane.WARNING_MESSAGE);
-//                return null;
-//            }
-//            
-//            String fastaPathOrig = new String(fastaPath);
-//            fastaPath = testFilePath(fastaPath, workingDir);
-//            if (fastaPath == null) {
-//                JOptionPane.showMessageDialog(this, String.format("Could not find fasta file (DIA-Umpire Quant) at:\n%s", fastaPathOrig),
-//                        "Errors", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            }
-//            
-//            
-//            Path combinedProtFilePath = getCombinedProtFilePath(workingDir);
-//            if (combinedProtFilePath == null) {
-//                return null; // all popus are already shown by getCombinedProtFilePath()
-//            }
-//            
-//            
-//            
-//            try {
-//                // Running Umpire Quant
-//                UmpireQuantParams collectedParams = collectUmpireQuantParams();
-//                Properties props = collectedParams.getProps();
-//                
-//                
-//                // writing umpire params file
-//                String paramsFileName = UmpireQuantParams.FILE_BASE_NAME + "_" + dateStr + "." + UmpireQuantParams.FILE_BASE_EXT;
-//                Path paramsFilePath = Paths.get(workingDir, paramsFileName);
-//                FileOutputStream fos = new FileOutputStream(paramsFilePath.toFile());
-//                PropertiesUtils.writePropertiesContent(collectedParams, fos);
-//                
-//                // run umpire for each file
-//                Object value = spinnerRam.getModel().getValue();
-//                int ram = (Integer)spinnerRam.getModel().getValue();
-//                if (ram < MIN_RAM)
-//                    ram = MIN_RAM;
-//                
-//                // java -jar -Xmx22732m ~/dia/DIA-Umpire/DIA_Umpire_Quant.jar ~/workdir/DIA_Umpire_Quant/diaumpire_quant_params.txt
-//                List<String> commands = new ArrayList<>();
-//                commands.add("java");
-//                commands.add("-jar");
-//                StringBuilder sb = new StringBuilder().append("-Xmx").append(ram).append("m");
-//                commands.add(sb.toString());
-//                commands.add(jarUmpireQuant);
-//                commands.add(paramsFilePath.toString());
-//
-//                ProcessBuilder pb = new ProcessBuilder(commands);
-//                processBuilders.add(pb);
-//                
-//            } catch (ParsingException ex) {
-//                JOptionPane.showMessageDialog(this, "Error collecting user variables for Umpire Quant.\n",
-//                        "Error", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            } catch (FileNotFoundException | FileWritingException ex) {
-//                JOptionPane.showMessageDialog(this, "Error writing Umpire Quant parameters file to working dir.\n",
-//                        "Error", JOptionPane.ERROR_MESSAGE);
-//                return null;
-//            }
-//        }
-//        return processBuilders;
-//    }
     
     private boolean isPhilosopherBin(String binPathToCheck) {
         Pattern isPhilosopherRegex = Pattern.compile("philosopher", Pattern.CASE_INSENSITIVE);
@@ -2236,7 +1960,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 return null;
             }
             
-            String outputFileName = txtProteinProphetOutputFile.getText().trim();
+            String outputFileName = getCombinedProtFilePath(workingDir).toString();
             if (outputFileName.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "ProteinProphet output file name can not be an empty string.\n",
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -2284,19 +2008,32 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 
                 // for Philosopher command line flags go before files
                 String cmdLineOpts = proteinProphetParams.getCmdLineParams().trim();
-                if (!cmdLineOpts.isEmpty()) {
+                if (!StringUtils.isNullOrWhitespace(cmdLineOpts)) {
                     List<String> opts = StringUtils.splitCommandLine(cmdLineOpts);
                     commands.addAll(opts);
                 }
                 
                 if (chkProteinProphetInteractStar.isSelected()) {
-                    commands.add("interact-*.pep.xml");
+                    String sep = FileSystems.getDefault().getSeparator();
+                    String interactsGlob = workingDir + sep + "interact-*.pep.xml";
+                    commands.add(interactsGlob);
+                    //commands.add(getCombinedProtFilePath(workingDir).getFileName().toString());
+                    ProcessBuilder pb = new ProcessBuilder(commands);
+                    builders.add(pb);
                 } else {
                     for (String filePath : lcmsFilePaths) {
                         String interact = interacts.get(filePath);
-                        if (!StringUtils.isNullOrWhitespace(interact))
+                        if (!StringUtils.isNullOrWhitespace(interact)) {
                             createdInteractFiles.add(interact);
+                        }
                     }
+                    for (String f : createdInteractFiles) {
+                        Path interactFullPath = Paths.get(f);
+                        String interactFileName = interactFullPath.getFileName().toString();
+                        commands.add(interactFileName);
+                    }
+                    ProcessBuilder pb = new ProcessBuilder(commands);
+                    builders.add(pb);
                 }
             } else {
                 for (String filePath : lcmsFilePaths) {
@@ -2306,7 +2043,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 }
                 
                 // output file
-                commands.add(txtProteinProphetOutputFile.getText());
+                Path combinedProtFilePath = getCombinedProtFilePath(workingDir);
+                commands.add(combinedProtFilePath.toString());
                 
                 // for native ProteinProphet command line flags go in the end
                 String cmdLineOpts = proteinProphetParams.getCmdLineParams().trim();
@@ -2314,54 +2052,59 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     List<String> opts = StringUtils.splitCommandLine(cmdLineOpts);
                     commands.addAll(opts);
                 }
+                ProcessBuilder pb = new ProcessBuilder(commands);
+                builders.add(pb);
             }
             
             
-            ProcessBuilder pb = new ProcessBuilder(commands);
-            pb.directory(Paths.get(workingDir).toFile());
-            Map<String, String> env = pb.environment();
-            
-            // add this variable so that TPP didn't try to use webserver stuff
-            String ENV_XML_ONLY = "XML_ONLY";
-            env.put(ENV_XML_ONLY, "1");
+            for (ProcessBuilder pb : builders) {
+                pb.directory(Paths.get(workingDir).toFile());
+                Map<String, String> env = pb.environment();
 
-            // collect variables from system
-            StringBuilder pathEnv = new StringBuilder();
-            Set<String> mergedKeys = new HashSet<>();
-            Set<String> envKeys = env.keySet();
-            for (String key : envKeys) {
-                if (key.toLowerCase().equals("path")) {
-                    String pathVal = env.get(key);
-                    pathVal = pathVal.trim();
-                    pathEnv.append(pathVal);
-                    if (!pathVal.endsWith(";"))
-                        pathEnv.append(";");
-                    mergedKeys.add(key);
+                // add this variable so that TPP didn't try to use webserver stuff
+                String ENV_XML_ONLY = "XML_ONLY";
+                env.put(ENV_XML_ONLY, "1");
+
+                // collect variables from system
+                StringBuilder pathEnv = new StringBuilder();
+                Set<String> mergedKeys = new HashSet<>();
+                Set<String> envKeys = env.keySet();
+                for (String key : envKeys) {
+                    if (key.toLowerCase().equals("path")) {
+                        String pathVal = env.get(key);
+                        pathVal = pathVal.trim();
+                        pathEnv.append(pathVal);
+                        if (!pathVal.endsWith(";")) {
+                            pathEnv.append(";");
+                        }
+                        mergedKeys.add(key);
+                    }
                 }
-            }
-            for (String key : mergedKeys) {
-                env.remove(key);
+                for (String key : mergedKeys) {
+                    env.remove(key);
+                }
+
+                String ENV_PATH = "PATH";
+                Path binPath = Paths.get(bin);
+                String binFolder = null;
+                if (binPath.isAbsolute()) {
+                    // the path to the executable was specified as absolute, other needed files must be there as well
+                    binFolder = binPath.toAbsolutePath().getParent().toString();
+                } else if (Files.exists(binPath)) {
+                    binFolder = binPath.toAbsolutePath().getParent().toString();
+                } else {
+                    binPath = Paths.get(workingDir, bin);
+                    if (Files.exists(binPath)) {
+                        binFolder = binPath.toAbsolutePath().getParent().toString();
+                    }
+                }
+                if (binFolder != null) {
+                    pathEnv.append(";").append(binFolder);
+                }
+                String pathEnvValue = pathEnv.toString();
+                env.put(ENV_PATH, pathEnvValue);
             }
             
-            String ENV_PATH = "PATH";
-            Path binPath = Paths.get(bin);
-            String binFolder = null;
-            if (binPath.isAbsolute()) {
-                // the path to the executable was specified as absolute, other needed files must be there as well
-                binFolder = binPath.toAbsolutePath().getParent().toString();
-            } else if (Files.exists(binPath)) {
-                binFolder = binPath.toAbsolutePath().getParent().toString();
-            } else {
-                binPath = Paths.get(workingDir, bin);
-                if (Files.exists(binPath)) {
-                    binFolder = binPath.toAbsolutePath().getParent().toString();
-                }
-            }
-            if (binFolder != null) {
-                pathEnv.append(";").append(binFolder);
-            }
-            String pathEnvValue = pathEnv.toString();
-            env.put(ENV_PATH, pathEnvValue);
             
             // for native TPP we will add some magic variables
 //            if (!isPhilosopher) {
@@ -2402,9 +2145,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 //                    env.put(ENV_PATH, sbEnvPath.toString());
 //                }
 //            }
-            return Arrays.asList(pb);
+            return builders;
         }
-        return Collections.emptyList();
+        return null;
     }
     
     private Path getWorkingDir() {
@@ -2747,13 +2490,13 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkRunProteinProphet;
     private umich.msfragger.gui.TextConsole console;
     private javax.swing.JScrollPane consoleScrollPane;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblOutputDir;
@@ -2773,11 +2516,11 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JTextField txtBinPeptideProphet;
     private javax.swing.JTextField txtBinProteinProphet;
+    private javax.swing.JTextField txtCombinedProtFile;
     private javax.swing.JTextArea txtPeptideProphetCmdLineOptions;
     private javax.swing.JTextField txtPeptideProphetSeqDb;
     private javax.swing.JTextField txtProgramsDir;
     private javax.swing.JTextArea txtProteinProphetCmdLineOpts;
-    private javax.swing.JTextField txtProteinProphetOutputFile;
     private javax.swing.JTextField txtProteinProphetSeqDb;
     private javax.swing.JTextField txtWorkingDir;
     // End of variables declaration//GEN-END:variables
