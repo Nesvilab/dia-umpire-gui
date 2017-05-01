@@ -175,7 +175,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }
     
     private String getDefaultPhilosopherBinName() {
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("dia/umpire/gui/Bundle"); // NOI18N
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("umich/msfragger/gui/Bundle"); // NOI18N
         String winName = bundle.getString("default.philosopher.win"); // NOI18N
         String nixName = bundle.getString("default.philosopher.nix"); // NOI18N
         if (OsUtils.isWindows())
