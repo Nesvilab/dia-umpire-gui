@@ -517,7 +517,7 @@ public class FraggerPanel extends javax.swing.JPanel {
 
         jLabel17.setText("-");
 
-        spinnerDigestMassMax.setModel(new javax.swing.SpinnerNumberModel(7000.0d, 0.0d, null, 500.0d));
+        spinnerDigestMassMax.setModel(new javax.swing.SpinnerNumberModel(7000.0d, 0.0d, 7000.0d, 500.0d));
 
         jLabel18.setText("Max Fragment Charge");
 
