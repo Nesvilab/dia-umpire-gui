@@ -50,7 +50,7 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="panelMsfraggerBin" max="32767" attributes="0"/>
-                              <Component id="panelMsfraggerParams" pref="0" max="32767" attributes="0"/>
+                              <Component id="panelMsfraggerParams" pref="549" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -1224,10 +1224,12 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="txtBinMsfragger" min="-2" pref="388" max="-2" attributes="0"/>
+                      <Component id="txtBinMsfragger" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnSelectMsfraggerBin" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnDownloadMsfragger" min="-2" pref="150" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1239,6 +1241,7 @@
                           <Component id="btnSelectMsfraggerBin" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtBinMsfragger" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnDownloadMsfragger" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -1266,6 +1269,14 @@
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Path to MSFragger binary (.jar file).&lt;br/&gt;&#xa;It will be searched in the &quot;Programs&quot; directory (check &quot;Run&quot; tab)&lt;br/&gt;&#xa;and in system&apos;s PATH."/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnDownloadMsfragger">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Download MSFragger"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDownloadMsfraggerActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

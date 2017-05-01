@@ -17,14 +17,18 @@ package umich.msfragger.gui;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
@@ -445,6 +449,7 @@ public class FraggerPanel extends javax.swing.JPanel {
         btnSelectMsfraggerBin = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtBinMsfragger = new javax.swing.JTextField();
+        btnDownloadMsfragger = new javax.swing.JButton();
 
         panelMsfraggerParams.setBorder(javax.swing.BorderFactory.createTitledBorder("MSFragger parameters"));
 
@@ -1114,6 +1119,13 @@ public class FraggerPanel extends javax.swing.JPanel {
         txtBinMsfragger.setText(getDefaultTextMsfragger());
         txtBinMsfragger.setToolTipText("<html>Path to MSFragger binary (.jar file).<br/>\nIt will be searched in the \"Programs\" directory (check \"Run\" tab)<br/>\nand in system's PATH.");
 
+        btnDownloadMsfragger.setText("Download MSFragger");
+        btnDownloadMsfragger.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDownloadMsfraggerActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelMsfraggerBinLayout = new javax.swing.GroupLayout(panelMsfraggerBin);
         panelMsfraggerBin.setLayout(panelMsfraggerBinLayout);
         panelMsfraggerBinLayout.setHorizontalGroup(
@@ -1122,10 +1134,12 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBinMsfragger, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtBinMsfragger)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSelectMsfraggerBin)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDownloadMsfragger, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         panelMsfraggerBinLayout.setVerticalGroup(
             panelMsfraggerBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1134,7 +1148,8 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addGroup(panelMsfraggerBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSelectMsfraggerBin)
                     .addComponent(jLabel2)
-                    .addComponent(txtBinMsfragger, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBinMsfragger, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDownloadMsfragger))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1151,7 +1166,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                     .addGroup(panelMsFraggerLayout.createSequentialGroup()
                         .addGroup(panelMsFraggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(panelMsfraggerBin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(panelMsfraggerParams, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(panelMsfraggerParams, javax.swing.GroupLayout.PREFERRED_SIZE, 549, Short.MAX_VALUE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelMsFraggerLayout.setVerticalGroup(
@@ -1382,6 +1397,14 @@ public class FraggerPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_textFraggerDbFocusLost
 
+    private void btnDownloadMsfraggerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadMsfraggerActionPerformed
+        try {
+            Desktop.getDesktop().browse(URI.create("https://secure.nouvant.com/umich/technology/7143/license/633"));
+        } catch (IOException ex) {
+            Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnDownloadMsfraggerActionPerformed
+
     private Component findParentComponentForDialog(Component origin) {
         if (origin == null)
             return null;
@@ -1432,6 +1455,7 @@ public class FraggerPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDefaults;
+    private javax.swing.JButton btnDownloadMsfragger;
     private javax.swing.JButton btnLoad;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSelectMsfraggerBin;

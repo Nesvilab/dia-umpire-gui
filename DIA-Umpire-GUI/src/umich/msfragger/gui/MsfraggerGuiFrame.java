@@ -70,6 +70,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultCaret;
+import umich.msfragger.Version;
 import umich.msfragger.gui.api.DataConverter;
 import umich.msfragger.gui.api.SimpleETable;
 import umich.msfragger.gui.api.SimpleUniqueTableModel;
@@ -104,6 +105,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     
 
     private void initMore() {
+        
+        setTitle("MSFragger GUI (" + Version.getVersion() + ")");
+        
         exec = Executors.newFixedThreadPool(1);
         fraggerPanel = new FraggerPanel();
         scrollPaneMsFragger.setViewportView(fraggerPanel);
@@ -831,7 +835,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         style.append("font-size:").append(font.getSize()).append("pt;");
 
         JEditorPane ep = new JEditorPane("text/html", "<html><body style=\"" + style + "\">"
-            + "GUI Wrapper for running MSFragger - Ultrafast Proteomics Search Engine<br/>"
+            + "MSFragger - Ultrafast Proteomics Search Engine<br/>"
+            + "GUI Wrapper (" + Version.getVersion() + ")<br/>"
             + "University of Michigan, 2017<br/>"
             + "<a href=\"http://nesvilab.org/\">Alexey Nesvizhskii lab</a><br/>&nbsp;<br/>&nbsp;"
             //                + "MSFragger authors and contributors:<br/>"
