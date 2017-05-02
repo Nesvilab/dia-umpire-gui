@@ -38,6 +38,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -72,7 +73,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.Document;
 import umich.msfragger.Version;
 import umich.msfragger.gui.api.DataConverter;
 import umich.msfragger.gui.api.SimpleETable;
@@ -80,6 +83,7 @@ import umich.msfragger.gui.api.SimpleUniqueTableModel;
 import umich.msfragger.gui.api.TableModelColumn;
 import umich.msfragger.params.fragger.MsfraggerParams;
 import umich.msfragger.util.FileDrop;
+import umich.msfragger.util.GhostText;
 import umich.msfragger.util.HSLColor;
 import umich.msfragger.util.PathUtils;
 import umich.msfragger.util.SwingUtils;
@@ -94,8 +98,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     protected ExecutorService exec;
     private final List<Process> submittedProcesses = new ArrayList<>(100);
     private static final String TEXT_SAME_SEQ_DB = "<Same as in MSFragger>";
-    private WeakHashMap<Object, Color> fgColors = new WeakHashMap<>();
-    private WeakHashMap<Object, Color> bgColors = new WeakHashMap<>();
+    private Color defTextColor;
+    private GhostText ghostTextPepProph;
+    private GhostText ghostTextProtProp;
     
     SimpleETable tableRawFiles;
     SimpleUniqueTableModel<Path> tableModelRawFiles;
@@ -114,6 +119,11 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private void initMore() {
         
         setTitle("MSFragger GUI (" + Version.getVersion() + ")");
+    
+        defTextColor = UIManager.getColor("TextField.foreground");
+        if (defTextColor == null) {
+            defTextColor = Color.BLACK;
+        }
         
         exec = Executors.newFixedThreadPool(1);
         fraggerPanel = new FraggerPanel();
@@ -217,6 +227,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
         txtPeptideProphetSeqDb = new javax.swing.JTextField();
+        ghostTextPepProph = new GhostText(txtPeptideProphetSeqDb, TEXT_SAME_SEQ_DB, defTextColor);
         btnSelectPeptideProphetSeqDbPath = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtPeptideProphetCmdLineOptions = new javax.swing.JTextArea();
@@ -230,6 +241,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         panelProteinProphetOptions = new javax.swing.JPanel();
         btnProteinProphetSeqDb = new javax.swing.JButton();
         txtProteinProphetSeqDb = new javax.swing.JTextField();
+        ghostTextProtProp = new GhostText(txtProteinProphetSeqDb, TEXT_SAME_SEQ_DB, defTextColor);
         jLabel39 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         txtProteinProphetCmdLineOpts = new javax.swing.JTextArea();
@@ -428,16 +440,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         jLabel35.setText("Sequence Database");
         jLabel35.setToolTipText("If left empty, will try to get value from Comet search sequence database");
 
-        txtPeptideProphetSeqDb.setText(TEXT_SAME_SEQ_DB);
-        txtPeptideProphetSeqDb.setToolTipText("If left empty, will try to get value from Comet search sequence database");
-        txtPeptideProphetSeqDb.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtPeptideProphetSeqDbFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtPeptideProphetSeqDbFocusLost(evt);
-            }
-        });
+        txtPeptideProphetSeqDb.setToolTipText("If left empty, will try to get value from MSFragger search sequence database");
 
         btnSelectPeptideProphetSeqDbPath.setText("Browse");
         btnSelectPeptideProphetSeqDbPath.addActionListener(new java.awt.event.ActionListener() {
@@ -487,8 +490,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
                 .addContainerGap())
         );
-
-        txtPeptideProphetSeqDbFocusLost(null);
 
         javax.swing.GroupLayout panelPeptideProphetLayout = new javax.swing.GroupLayout(panelPeptideProphet);
         panelPeptideProphet.setLayout(panelPeptideProphetLayout);
@@ -589,16 +590,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             }
         });
 
-        txtProteinProphetSeqDb.setText(TEXT_SAME_SEQ_DB);
-        txtProteinProphetSeqDb.setToolTipText("If not specified, the value will be taken from PeptideProphet or Comet tabs");
-        txtProteinProphetSeqDb.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtProteinProphetSeqDbFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtProteinProphetSeqDbFocusLost(evt);
-            }
-        });
+        txtProteinProphetSeqDb.setToolTipText("If not specified, the value will be taken from PeptideProphet or MSFragger tabs");
 
         jLabel39.setText("Sequence Database");
         jLabel39.setToolTipText("Not Used Now. If not specified, the value will be taken from PeptideProphet or Comet tabs");
@@ -626,27 +618,26 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel40)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProteinProphetOptionsLayout.createSequentialGroup()
+                    .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
                         .addGap(0, 217, Short.MAX_VALUE)
                         .addComponent(chkProteinProphetInteractStar))
                     .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel39)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
+                                .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel39)
+                                    .addComponent(jLabel1))
+                                .addGap(10, 10, 10))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProteinProphetOptionsLayout.createSequentialGroup()
+                                .addComponent(jLabel40)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtCombinedProtFile)
                             .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
                                 .addComponent(txtProteinProphetSeqDb)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnProteinProphetSeqDb))
-                            .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
-                                .addComponent(txtCombinedProtFile, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                            .addComponent(jScrollPane4))))
                 .addContainerGap())
         );
         panelProteinProphetOptionsLayout.setVerticalGroup(
@@ -660,13 +651,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCombinedProtFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelProteinProphetOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelProteinProphetOptionsLayout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(jLabel40)))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel40))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chkProteinProphetInteractStar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1205,21 +1193,25 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Choose FASTA file");
         fileChooser.setMultiSelectionEnabled(false);
 
-        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
-
-        if (!txtProteinProphetSeqDb.getText().isEmpty()) {
-            File toFile = Paths.get(txtProteinProphetSeqDb.getText()).toFile();
-            fileChooser.setCurrentDirectory(toFile);
+        if (!StringUtils.isNullOrWhitespace(txtProteinProphetSeqDb.getText())
+                && !TEXT_SAME_SEQ_DB.contains(txtProteinProphetSeqDb.getText())) {
+            try {
+                File toFile = Paths.get(txtProteinProphetSeqDb.getText()).toFile();
+                fileChooser.setCurrentDirectory(toFile);
+            } catch (Exception e) {
+                SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.loadPropFromCache(ThisAppProps.PROP_DB_FILE_IN));
+            }
+        } else {
+            SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.loadPropFromCache(ThisAppProps.PROP_DB_FILE_IN));
         }
 
         int showOpenDialog = fileChooser.showOpenDialog(this);
         switch (showOpenDialog) {
             case JFileChooser.APPROVE_OPTION:
-
-            File f = fileChooser.getSelectedFile();
-            txtProteinProphetSeqDb.setText(f.getAbsolutePath());
-            txtProteinProphetSeqDbFocusLost(null);
-            break;
+                File f = fileChooser.getSelectedFile();
+                txtProteinProphetSeqDb.setText(f.getAbsolutePath());
+                ThisAppProps.savePropToCache(ThisAppProps.PROP_DB_FILE_IN, f.getAbsolutePath());
+                break;
         }
     }//GEN-LAST:event_btnProteinProphetSeqDbActionPerformed
 
@@ -1277,21 +1269,25 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Choose FASTA file");
         fileChooser.setMultiSelectionEnabled(false);
 
-        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
-
-        if (!txtPeptideProphetSeqDb.getText().isEmpty()) {
-            File toFile = Paths.get(txtPeptideProphetSeqDb.getText()).toFile();
-            fileChooser.setCurrentDirectory(toFile);
+        if (!StringUtils.isNullOrWhitespace(txtPeptideProphetSeqDb.getText())
+                && !TEXT_SAME_SEQ_DB.contains(txtPeptideProphetSeqDb.getText())) {
+            try {
+                File toFile = Paths.get(txtPeptideProphetSeqDb.getText()).toFile();
+                fileChooser.setCurrentDirectory(toFile);
+            } catch (Exception e) {
+                SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.loadPropFromCache(ThisAppProps.PROP_DB_FILE_IN));
+            }
+        } else {
+            SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.loadPropFromCache(ThisAppProps.PROP_DB_FILE_IN));
         }
 
         int showOpenDialog = fileChooser.showOpenDialog(this);
         switch (showOpenDialog) {
             case JFileChooser.APPROVE_OPTION:
-
-            File f = fileChooser.getSelectedFile();
-            txtPeptideProphetSeqDb.setText(f.getAbsolutePath());
-                txtPeptideProphetSeqDbFocusLost(null);
-            break;
+                File f = fileChooser.getSelectedFile();
+                txtPeptideProphetSeqDb.setText(f.getAbsolutePath());
+                ThisAppProps.savePropToCache(ThisAppProps.PROP_DB_FILE_IN, f.getAbsolutePath());
+                break;
         }
     }//GEN-LAST:event_btnSelectPeptideProphetSeqDbPathActionPerformed
 
@@ -1454,53 +1450,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private void btnDownloadPhilosopherProteinProphetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadPhilosopherProteinProphetActionPerformed
         downloadPhilosopher();
     }//GEN-LAST:event_btnDownloadPhilosopherProteinProphetActionPerformed
-
-    private void txtPeptideProphetSeqDbFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPeptideProphetSeqDbFocusGained
-        if (TEXT_SAME_SEQ_DB.equals(txtPeptideProphetSeqDb.getText().trim())) {
-            txtPeptideProphetSeqDb.setText("");
-        }
-    }//GEN-LAST:event_txtPeptideProphetSeqDbFocusGained
-
-    private void txtPeptideProphetSeqDbFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPeptideProphetSeqDbFocusLost
-        if (StringUtils.isNullOrWhitespace(txtPeptideProphetSeqDb.getText())) {
-            txtPeptideProphetSeqDb.setText(TEXT_SAME_SEQ_DB);
-        }
-        
-        if (TEXT_SAME_SEQ_DB.equals(txtPeptideProphetSeqDb.getText().trim())) {
-            Color fg = txtPeptideProphetSeqDb.getForeground();
-            Color lighter = getLighterColor(fg, 0.5f);
-            txtPeptideProphetSeqDb.setForeground(lighter);
-        } else {
-            final String key = "TextField.foreground";
-            Color def = UIManager.getColor(key);
-            if (def != null)
-                txtPeptideProphetSeqDb.setForeground(def);
-        }
-        
-    }//GEN-LAST:event_txtPeptideProphetSeqDbFocusLost
-
-    private void txtProteinProphetSeqDbFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProteinProphetSeqDbFocusGained
-        if (TEXT_SAME_SEQ_DB.equals(txtProteinProphetSeqDb.getText().trim())) {
-            txtProteinProphetSeqDb.setText("");
-        }
-    }//GEN-LAST:event_txtProteinProphetSeqDbFocusGained
-
-    private void txtProteinProphetSeqDbFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtProteinProphetSeqDbFocusLost
-        if (StringUtils.isNullOrWhitespace(txtProteinProphetSeqDb.getText())) {
-            txtProteinProphetSeqDb.setText(TEXT_SAME_SEQ_DB);
-        }
-        
-        if (TEXT_SAME_SEQ_DB.equals(txtProteinProphetSeqDb.getText().trim())) {
-            Color fg = txtProteinProphetSeqDb.getForeground();
-            Color lighter = getLighterColor(fg, 0.5f);
-            txtProteinProphetSeqDb.setForeground(lighter);
-        } else {
-            final String key = "TextField.foreground";
-            Color def = UIManager.getColor(key);
-            if (def != null)
-                txtProteinProphetSeqDb.setForeground(def);
-        }
-    }//GEN-LAST:event_txtProteinProphetSeqDbFocusLost
 
     private Color getLighterColor(Color original, float alpha) {
         HSLColor hslColor = new HSLColor(original);
@@ -1975,6 +1924,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
 
             String fastaPath = txtPeptideProphetSeqDb.getText().trim();
+            if (TEXT_SAME_SEQ_DB.equals(fastaPath)) {
+                fastaPath = "";
+            }
             if (StringUtils.isNullOrWhitespace(fastaPath)) {
                 fastaPath = fraggerPanel.getTxtMsfraggerDb().getText().trim();
                 if (StringUtils.isNullOrWhitespace(fastaPath)) {
@@ -2259,7 +2211,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 //            }
             return builders;
         }
-        return null;
+        return Collections.emptyList();
     }
     
     private Path getWorkingDir() {

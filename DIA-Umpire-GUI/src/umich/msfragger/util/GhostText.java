@@ -34,11 +34,11 @@ public class GhostText implements FocusListener, DocumentListener, PropertyChang
         private Color foregroundColor;
         private final String ghostText;
 
-        protected GhostText(final JTextField textfield, String ghostText) {
+        public GhostText(final JTextField textfield, String ghostText, Color ghostColor) {
             super();
             this.textfield = textfield;
             this.ghostText = ghostText;
-            this.ghostColor = Color.LIGHT_GRAY;
+            this.ghostColor = ghostColor;
             textfield.addFocusListener(this);
             registerListeners();
             updateState();

@@ -1366,20 +1366,24 @@ public class FraggerPanel extends javax.swing.JPanel {
         fileChooser.setDialogTitle("Choose FASTA file");
         fileChooser.setMultiSelectionEnabled(false);
 
-        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
-
-        if (!textMsfraggerDb.getText().isEmpty()) {
-            File toFile = Paths.get(textMsfraggerDb.getText()).toFile();
-            fileChooser.setCurrentDirectory(toFile);
+        
+        if (!StringUtils.isNullOrWhitespace(textMsfraggerDb.getText())) {
+            try {
+                File toFile = Paths.get(textMsfraggerDb.getText()).toFile();
+                fileChooser.setCurrentDirectory(toFile);
+            } catch (Exception e) {
+                SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.loadPropFromCache(ThisAppProps.PROP_DB_FILE_IN));
+            }
+        } else {
+            SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.loadPropFromCache(ThisAppProps.PROP_DB_FILE_IN));
         }
 
         int showOpenDialog = fileChooser.showOpenDialog(findParentComponentForDialog(this));
         switch (showOpenDialog) {
             case JFileChooser.APPROVE_OPTION:
-
-            File f = fileChooser.getSelectedFile();
-            textMsfraggerDb.setText(f.getAbsolutePath());
-
+                File f = fileChooser.getSelectedFile();
+                textMsfraggerDb.setText(f.getAbsolutePath());
+                ThisAppProps.savePropToCache(ThisAppProps.PROP_DB_FILE_IN, f.getAbsolutePath());
             break;
         }
     }//GEN-LAST:event_btnSelectMsfraggerDbActionPerformed
