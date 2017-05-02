@@ -36,7 +36,7 @@ public class ModificationsTableModel extends DefaultTableModel {
     private int[] modMapping;
     private static final int COL_ENABLED = 0;
     private static final int COL_SITES = 1;
-    private static final int COL_DELTA = 3;
+    private static final int COL_DELTA = 2;
     
     
 
@@ -68,10 +68,18 @@ public class ModificationsTableModel extends DefaultTableModel {
         ArrayList<Mod> list = new ArrayList<>(dataVector.size());
         for (int i = 0; i < dataVector.size(); i++) {
             Vector row = (Vector)dataVector.get(i);
-            Mod m = new Mod((Double)row.get(COL_DELTA), (String)row.get(COL_SITES), (Boolean)row.get(COL_ENABLED));
-            if (!StringUtils.isNullOrWhitespace(m.sites)) {
-                list.add(m);
+            if (row != null) {
+                Double delta = (Double)row.get(COL_DELTA);
+                String sites = (String)row.get(COL_SITES);
+                Boolean enabled = (Boolean)row.get(COL_ENABLED);
+                if (!StringUtils.isNullOrWhitespace(sites) && delta != null) {
+                    Mod m = new Mod(delta, sites, enabled);
+                    list.add(m);
+                }
+            } else {
+                // row is null? strange
             }
+            
         }
         return list;
     }

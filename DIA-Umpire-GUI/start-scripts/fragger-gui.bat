@@ -1,4 +1,4 @@
 @setlocal enableextensions
 @cd /d "%~dp0"
 
-start javaw -jar DIA-Umpire-GUI.jar
+start javaw -jar MSFragger-GUI.jar

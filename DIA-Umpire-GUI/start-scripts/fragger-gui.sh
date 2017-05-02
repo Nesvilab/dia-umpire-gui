@@ -1,1 +1,1 @@
-java -jar DIA-Umpire-GUI.jar
+java -jar MSFragger-GUI.jar

@@ -910,9 +910,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_LCMS_FILES_IN);
-        //setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_PARAMS_FILE_IN);
-
+        SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.loadPropFromCache(ThisAppProps.PROP_FILE_OUT));
+        
         if (!txtWorkingDir.getText().isEmpty()) {
             File toFile = Paths.get(txtWorkingDir.getText()).toFile();
             fileChooser.setCurrentDirectory(toFile);
@@ -923,7 +922,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             case JFileChooser.APPROVE_OPTION:
                 File f = fileChooser.getSelectedFile();
                 txtWorkingDir.setText(f.getAbsolutePath());
-                ThisAppProps.saveTextFieldToCache(txtWorkingDir, ThisAppProps.PROP_LCMS_FILES_IN);
+                ThisAppProps.savePropToCache(ThisAppProps.PROP_FILE_OUT, f.getAbsolutePath());
                 break;
         }
     }//GEN-LAST:event_btnSelectWrkingDirActionPerformed
@@ -1363,7 +1362,36 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRawRemoveActionPerformed
 
     private void btnRawAddFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawAddFolderActionPerformed
-        throw new UnsupportedOperationException("Not implemented");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select");
+        fileChooser.setApproveButtonToolTipText("Select folder to import");
+        fileChooser.setDialogTitle("Select binary to use for PeptideProphet");
+        fileChooser.setMultiSelectionEnabled(true);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.loadPropFromCache(ThisAppProps.PROP_LCMS_FILES_IN));
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                File[] files = fileChooser.getSelectedFiles();
+                ArrayList<Path> paths = new ArrayList<>(files.length);
+                for (File f : files) {
+                    boolean isDirectory = f.isDirectory();
+                    if (isDirectory) {
+                        ThisAppProps.saveFilechooserPathToCached(f, ThisAppProps.PROP_LCMS_FILES_IN);
+                        PathUtils.traverseDirectoriesAcceptingFiles(f, FraggerPanel.fileNameExtensionFilter, paths);
+                    } else {
+                        if (FraggerPanel.fileNameExtensionFilter.accept(f)) {
+                            paths.add(Paths.get(f.getAbsolutePath()));
+                        }
+                    }
+                }
+                tableModelRawFiles.dataAddAll(paths);
+                
+                
+                break;
+        }
     }//GEN-LAST:event_btnRawAddFolderActionPerformed
 
     private void btnCheckJavaVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckJavaVersionActionPerformed
@@ -1630,7 +1658,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 return null;
             }
             
-            
+            // create a params file in the output directory
             MsfraggerParams params = null;
             try {
                 params = fraggerPanel.collectParams();
@@ -1639,7 +1667,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         "Error", JOptionPane.ERROR_MESSAGE);
                     return null;
             }
-            
             Path savedParamsPath = Paths.get(workingDir, MsfraggerParams.DEFAULT_FILE);
             try {
                 params.save(new FileOutputStream(savedParamsPath.toFile()));
