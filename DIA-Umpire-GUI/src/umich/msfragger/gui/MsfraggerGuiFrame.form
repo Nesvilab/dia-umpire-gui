@@ -107,7 +107,7 @@
                                   <Component id="btnRawAddFiles" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnRawAddFolder" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="345" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="286" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -184,7 +184,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scrollPaneMsFragger" alignment="0" pref="701" max="32767" attributes="0"/>
+                  <Component id="scrollPaneMsFragger" alignment="0" pref="642" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -258,7 +258,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel33" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="txtBinPeptideProphet" pref="342" max="32767" attributes="0"/>
+                          <Component id="txtBinPeptideProphet" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnSelectPeptideProphetBin" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -352,7 +352,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnSelectPeptideProphetSeqDbPath" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPane2" pref="516" max="32767" attributes="0"/>
+                              <Component id="jScrollPane2" pref="484" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -393,8 +393,18 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtPeptideProphetSeqDb">
                   <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="TEXT_SAME_SEQ_DB" type="code"/>
+                    </Property>
                     <Property name="toolTipText" type="java.lang.String" value="If left empty, will try to get value from Comet search sequence database"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtPeptideProphetSeqDbFocusGained"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtPeptideProphetSeqDbFocusLost"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="txtPeptideProphetSeqDbFocusLost(null);"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnSelectPeptideProphetSeqDbPath">
                   <Properties>
@@ -576,7 +586,7 @@
                                   <Component id="jScrollPane4" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="0" pref="276" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="217" max="32767" attributes="0"/>
                                   <Component id="chkProteinProphetInteractStar" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -643,8 +653,15 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtProteinProphetSeqDb">
                   <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="TEXT_SAME_SEQ_DB" type="code"/>
+                    </Property>
                     <Property name="toolTipText" type="java.lang.String" value="If not specified, the value will be taken from PeptideProphet or Comet tabs"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtProteinProphetSeqDbFocusGained"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtProteinProphetSeqDbFocusLost"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel39">
                   <Properties>
@@ -721,7 +738,7 @@
                               <Component id="checkDryRun" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnCheckJavaVersion" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="187" max="32767" attributes="0"/>
+                              <EmptySpace pref="128" max="32767" attributes="0"/>
                               <Component id="btnAbout" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnClearConsole" min="-2" max="-2" attributes="0"/>

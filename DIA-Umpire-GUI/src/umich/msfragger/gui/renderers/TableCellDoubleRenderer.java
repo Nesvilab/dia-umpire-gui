@@ -18,6 +18,7 @@ package umich.msfragger.gui.renderers;
 import java.awt.Component;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -30,18 +31,11 @@ public class TableCellDoubleRenderer extends DefaultTableCellRenderer {
 
     private static final long serialVersionUID = 1L;
 
-    private final int precision;
-    private Number numberValue;
-    private NumberFormat nf;
     private DecimalFormat df0;
 
-    public TableCellDoubleRenderer(int aPrecision) {
+    public TableCellDoubleRenderer() {
         super();
-        precision = aPrecision;
-        setHorizontalAlignment(SwingConstants.LEFT);
-        nf = NumberFormat.getNumberInstance();
-        nf.setMinimumFractionDigits(aPrecision);
-        nf.setMaximumFractionDigits(aPrecision);
+        setHorizontalAlignment(SwingConstants.LEADING);
         df0 = new DecimalFormat("#.##########");
     }
 
@@ -52,15 +46,14 @@ public class TableCellDoubleRenderer extends DefaultTableCellRenderer {
 
         // First format the cell value as required
         if (value != null) {
-            if (value instanceof Double) {
+            if (value instanceof Double || value instanceof Float) {
                 value = df0.format((Double)value);
-            } else if (value instanceof Number) {
-                value = nf.format(value);
             }
         }
 
         // And pass it on to parent class
-        return super.getTableCellRendererComponent(
+        Component renderer = super.getTableCellRendererComponent(
                 table, value, isSelected, hasFocus, row, column);
+        return renderer;
     }
 }
