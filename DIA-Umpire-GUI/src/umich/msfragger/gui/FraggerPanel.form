@@ -1210,7 +1210,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnSelectMsfraggerBin" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btnDownloadMsfragger" min="-2" pref="150" max="-2" attributes="0"/>
+                      <Component id="btnDownloadMsfragger" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1250,6 +1250,9 @@
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Path to MSFragger binary (.jar file).&lt;br/&gt;&#xa;It will be searched in the &quot;Programs&quot; directory (check &quot;Run&quot; tab)&lt;br/&gt;&#xa;and in system&apos;s PATH."/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtBinMsfraggerActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnDownloadMsfragger">
               <Properties>

@@ -26,6 +26,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -1134,6 +1135,11 @@ public class FraggerPanel extends javax.swing.JPanel {
 
         txtBinMsfragger.setText(getDefaultTextMsfragger());
         txtBinMsfragger.setToolTipText("<html>Path to MSFragger binary (.jar file).<br/>\nIt will be searched in the \"Programs\" directory (check \"Run\" tab)<br/>\nand in system's PATH.");
+        txtBinMsfragger.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBinMsfraggerActionPerformed(evt);
+            }
+        });
 
         btnDownloadMsfragger.setText("Download MSFragger");
         btnDownloadMsfragger.addActionListener(new java.awt.event.ActionListener() {
@@ -1154,7 +1160,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSelectMsfraggerBin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDownloadMsfragger, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnDownloadMsfragger))
         );
         panelMsfraggerBinLayout.setVerticalGroup(
             panelMsfraggerBinLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1215,12 +1221,9 @@ public class FraggerPanel extends javax.swing.JPanel {
 
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_JAR_MSFRAGGER_IN);
-
-        if (!txtBinMsfragger.getText().isEmpty()) {
-            File toFile = Paths.get(txtBinMsfragger.getText()).toFile();
-            fileChooser.setCurrentDirectory(toFile);
-        }
+        List<String> props = Arrays.asList(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER, ThisAppProps.PROP_BINARIES_IN);
+        String fcPath = ThisAppProps.tryFindPath(props, true);
+        SwingUtils.setFileChooserPath(fileChooser, fcPath);
 
         int showOpenDialog = fileChooser.showOpenDialog(findParentComponentForDialog(this));
         switch (showOpenDialog) {
@@ -1228,7 +1231,7 @@ public class FraggerPanel extends javax.swing.JPanel {
 
             File f = fileChooser.getSelectedFile();
             txtBinMsfragger.setText(f.getAbsolutePath());
-            ThisAppProps.saveFilechooserPathToCached(f, ThisAppProps.PROP_JAR_MSFRAGGER_IN);
+            ThisAppProps.saveFilechooserPathToCached(f, ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER);
             saveBinFragger();
             break;
         }
@@ -1414,6 +1417,10 @@ public class FraggerPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnDownloadMsfraggerActionPerformed
 
+    private void txtBinMsfraggerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBinMsfraggerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBinMsfraggerActionPerformed
+
     private Component findParentComponentForDialog(Component origin) {
         if (origin == null)
             return null;
@@ -1449,7 +1456,8 @@ public class FraggerPanel extends javax.swing.JPanel {
     }
     
     private String getDefaultTextMsfragger() {
-        return "MSFragger.jar";
+        String path = ThisAppProps.loadPropFromCache(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER);
+        return path == null ? "MSFragger.jar" : path;
     }
 
     public JTextField getTxtBinMsfragger() {

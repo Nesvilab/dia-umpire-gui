@@ -19,18 +19,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
+import umich.msfragger.util.OsUtils;
 
 public class ThisAppProps extends Properties {
     //private static final Logger log = LoggerFactory.getLogger(ThisAppProps.class);
     public static final String PROP_DB_FILE_IN = "path.params.file.in";
     public static final String PROP_BINARIES_IN = "path.params.bins.in";
-    public static final String PROP_JAR_MSFRAGGER_IN = "path.params.jar.msfragger.in";
     public static final String PROP_LCMS_FILES_IN = "path.lcms.files.in";
     public static final String PROP_FILE_OUT = "path.file.out";
 
@@ -42,6 +46,11 @@ public class ThisAppProps extends Properties {
     public static final String PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET = "path.textfield.peptide-prophet";
     public static final String PROP_TEXTFIELD_PATH_PROTEIN_PROPHET = "path.textfield.protein-prophet";
 
+    public static void clearCache() {
+        ThisAppProps thisAppProps = new ThisAppProps();
+        thisAppProps.save();
+    }
+    
     public static ThisAppProps loadFromTemp()  {
         Path path = Paths.get(TEMP_DIR, TEMP_FILE_NAME);
         if (!Files.exists(path)) {
@@ -94,6 +103,30 @@ public class ThisAppProps extends Properties {
         }
         txt.setText(cached);
         return true;
+    }
+
+    /**
+     * Attempts to search for properties in cache, returns the first non-null found.
+     * @param props  List of properties to search for.
+     * @param locateJar  If no property was found, will try to locate the current jar
+     *                   and return its location.
+     * @return
+     */
+    public static String tryFindPath(List<String> props, boolean locateJar) {
+        String path = null;
+        for (String prop : props) {
+            path = ThisAppProps.loadPropFromCache(prop);
+            if (path != null) {
+                break;
+            }
+        }
+        if (path == null && locateJar) {
+            URI thisJarUri = OsUtils.getCurrentJarPath();
+            if (thisJarUri != null) {
+                path = Paths.get(thisJarUri).toString();
+            }
+        }
+        return path;
     }
 
     public void save() {

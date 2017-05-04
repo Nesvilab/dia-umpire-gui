@@ -262,7 +262,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnSelectPeptideProphetBin" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnDownloadPhilosopherPeptideProphet" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="btnDownloadPhilosopherPeptideProphet" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -501,7 +501,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnBinProteinProphet" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnDownloadPhilosopherProteinProphet" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="btnDownloadPhilosopherProteinProphet" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -698,6 +698,29 @@
             </Container>
           </SubComponents>
         </Container>
+        <Container class="javax.swing.JPanel" name="panelReport">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Report" toolTip="">
+                <Property name="tabTitle" type="java.lang.String" value="Report"/>
+                <Property name="tabToolTip" type="java.lang.String" value=""/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="642" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="751" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
         <Container class="javax.swing.JPanel" name="panelRun">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
@@ -722,7 +745,9 @@
                               <Component id="checkDryRun" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnCheckJavaVersion" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="128" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnReset" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="31" max="32767" attributes="0"/>
                               <Component id="btnAbout" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnClearConsole" min="-2" max="-2" attributes="0"/>
@@ -774,9 +799,10 @@
                           <Component id="btnAbout" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="checkDryRun" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnCheckJavaVersion" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnReset" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="consoleScrollPane" pref="623" max="32767" attributes="0"/>
+                      <Component id="consoleScrollPane" pref="637" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -885,6 +911,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCheckJavaVersionActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnReset">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Clear Cache"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnResetActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

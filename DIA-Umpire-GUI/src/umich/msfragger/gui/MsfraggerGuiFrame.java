@@ -249,6 +249,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         chkProteinProphetInteractStar = new javax.swing.JCheckBox();
         txtCombinedProtFile = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        panelReport = new javax.swing.JPanel();
         panelRun = new javax.swing.JPanel();
         btnRun = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
@@ -266,6 +267,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         btnAbout = new javax.swing.JButton();
         checkDryRun = new javax.swing.JCheckBox();
         btnCheckJavaVersion = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MSFragger");
@@ -410,7 +412,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSelectPeptideProphetBin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDownloadPhilosopherPeptideProphet, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDownloadPhilosopherPeptideProphet)
                 .addContainerGap())
         );
         panelPeptideProphetBinLayout.setVerticalGroup(
@@ -566,7 +568,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBinProteinProphet)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnDownloadPhilosopherProteinProphet, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDownloadPhilosopherProteinProphet)
                 .addContainerGap())
         );
         panelProteinProphetBinLayout.setVerticalGroup(
@@ -688,6 +690,19 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         tabPane.addTab("ProteinProphet", panelProteinProphet);
 
+        javax.swing.GroupLayout panelReportLayout = new javax.swing.GroupLayout(panelReport);
+        panelReport.setLayout(panelReportLayout);
+        panelReportLayout.setHorizontalGroup(
+            panelReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 642, Short.MAX_VALUE)
+        );
+        panelReportLayout.setVerticalGroup(
+            panelReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 751, Short.MAX_VALUE)
+        );
+
+        tabPane.addTab("Report", null, panelReport, "");
+
         btnRun.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnRun.setText("Run");
         btnRun.addActionListener(new java.awt.event.ActionListener() {
@@ -755,6 +770,13 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             }
         });
 
+        btnReset.setText("Clear Cache");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelRunLayout = new javax.swing.GroupLayout(panelRun);
         panelRun.setLayout(panelRunLayout);
         panelRunLayout.setHorizontalGroup(
@@ -771,7 +793,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         .addComponent(checkDryRun)
                         .addGap(18, 18, 18)
                         .addComponent(btnCheckJavaVersion)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnReset)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                         .addComponent(btnAbout)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClearConsole))
@@ -811,9 +835,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     .addComponent(btnClearConsole)
                     .addComponent(btnAbout)
                     .addComponent(checkDryRun)
-                    .addComponent(btnCheckJavaVersion))
+                    .addComponent(btnCheckJavaVersion)
+                    .addComponent(btnReset))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 623, Short.MAX_VALUE)
+                .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -982,11 +1007,25 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             return;
         }
         final Path workingDirPath = Paths.get(workingDir);
-        if (!Files.exists(workingDirPath) || !Files.isDirectory(workingDirPath)) {
-            JOptionPane.showMessageDialog(this, "Output directory doesn't exist\n"
-                + "or is a file rather than a directory.", "Error", JOptionPane.WARNING_MESSAGE);
-            resetRunButtons(true);
-            return;
+        
+        if (!Files.exists(workingDirPath)) {
+            int confirmCreation = JOptionPane.showConfirmDialog(this, "Output directory doesn't exist. Create?", 
+                    "Create output directory?", JOptionPane.OK_CANCEL_OPTION);
+            switch (confirmCreation) {
+                case JOptionPane.OK_OPTION:
+                    try {
+                        Files.createDirectories(workingDirPath);
+                    } catch (Exception e) {
+                        // something went not right during creation of directory structure
+                        JOptionPane.showMessageDialog(this, "Could not create directory structure", "Error", JOptionPane.ERROR_MESSAGE);
+                        resetRunButtons(true);
+                        return;
+                    }
+                    break;
+                default:
+                    resetRunButtons(true);
+                    return;
+            }
         }
 
         List<String> lcmsFilePaths = getLcmsFilePaths();
@@ -1230,22 +1269,27 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
-
-        if (!txtBinProteinProphet.getText().isEmpty()) {
-            File toFile = Paths.get(txtBinProteinProphet.getText()).toFile();
-            fileChooser.setCurrentDirectory(toFile);
-        }
+        List<String> props = Arrays.asList(ThisAppProps.PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET, ThisAppProps.PROP_BINARIES_IN);
+        String fcPath = ThisAppProps.tryFindPath(props, true);
+        SwingUtils.setFileChooserPath(fileChooser, fcPath);
 
         int showOpenDialog = fileChooser.showOpenDialog(this);
         switch (showOpenDialog) {
             case JFileChooser.APPROVE_OPTION:
-
-            File f = fileChooser.getSelectedFile();
-            txtBinProteinProphet.setText(f.getAbsolutePath());
-            ThisAppProps.saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
-            saveBinProteinProphet();
-            break;
+                
+                File f = fileChooser.getSelectedFile();
+                
+                String binPath = f.getAbsolutePath();
+                txtBinProteinProphet.setText(binPath);
+                ThisAppProps.savePropToCache(ThisAppProps.PROP_BINARIES_IN, binPath);
+                ThisAppProps.savePropToCache(ThisAppProps.PROP_TEXTFIELD_PATH_PROTEIN_PROPHET, binPath);
+                if (isPhilosopherBin(binPath)) {
+                    txtBinPeptideProphet.setText(binPath);
+                    ThisAppProps.savePropToCache(ThisAppProps.PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET, binPath);
+                }
+                
+                saveBinProteinProphet();
+                break;
         }
     }//GEN-LAST:event_btnBinProteinProphetActionPerformed
 
@@ -1306,6 +1350,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         saveBinPeptideProphet();
     }//GEN-LAST:event_txtBinPeptideProphetFocusLost
 
+    
     private void btnSelectPeptideProphetBinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectPeptideProphetBinActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setApproveButtonText("Select binary");
@@ -1316,21 +1361,25 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         //        fileChooser.setFileFilter(fileNameExtensionFilter);
 
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        ThisAppProps.setFilechooserPathToCached(fileChooser, ThisAppProps.PROP_BINARIES_IN);
-
-        if (!txtBinPeptideProphet.getText().isEmpty()) {
-            File toFile = Paths.get(txtBinPeptideProphet.getText()).toFile();
-            fileChooser.setCurrentDirectory(toFile);
-        }
+        
+        List<String> props = Arrays.asList(ThisAppProps.PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET, ThisAppProps.PROP_BINARIES_IN);
+        String fcPath = ThisAppProps.tryFindPath(props, true);
+        SwingUtils.setFileChooserPath(fileChooser, fcPath);
+        
 
         int showOpenDialog = fileChooser.showOpenDialog(this);
         switch (showOpenDialog) {
             case JFileChooser.APPROVE_OPTION:
 
             File f = fileChooser.getSelectedFile();
-            txtBinPeptideProphet.setText(f.getAbsolutePath());
-            ThisAppProps.saveFilechooserPathToCached(f, ThisAppProps.PROP_BINARIES_IN);
+            String binPath = f.getAbsolutePath();
+            
+            txtBinPeptideProphet.setText(binPath);
+            ThisAppProps.savePropToCache(ThisAppProps.PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET, binPath);
+            if (isPhilosopherBin(binPath)) {
+                txtBinProteinProphet.setText(binPath);
+                ThisAppProps.savePropToCache(ThisAppProps.PROP_TEXTFIELD_PATH_PROTEIN_PROPHET, binPath);
+            }
             saveBinPeptideProphet();
             break;
         }
@@ -1450,6 +1499,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private void btnDownloadPhilosopherProteinProphetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadPhilosopherProteinProphetActionPerformed
         downloadPhilosopher();
     }//GEN-LAST:event_btnDownloadPhilosopherProteinProphetActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        ThisAppProps.clearCache();
+    }//GEN-LAST:event_btnResetActionPerformed
 
     private Color getLighterColor(Color original, float alpha) {
         HSLColor hslColor = new HSLColor(original);
@@ -2554,6 +2607,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnRawAddFolder;
     private javax.swing.JButton btnRawClear;
     private javax.swing.JButton btnRawRemove;
+    private javax.swing.JButton btnReset;
     private javax.swing.JButton btnRun;
     private javax.swing.JButton btnSelectPeptideProphetBin;
     private javax.swing.JButton btnSelectPeptideProphetSeqDbPath;
@@ -2584,6 +2638,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JPanel panelProteinProphet;
     private javax.swing.JPanel panelProteinProphetBin;
     private javax.swing.JPanel panelProteinProphetOptions;
+    private javax.swing.JPanel panelReport;
     private javax.swing.JPanel panelRun;
     private javax.swing.JPanel panelSelectedFiles;
     private javax.swing.JScrollPane scrollPaneMsFragger;
