@@ -250,6 +250,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         txtCombinedProtFile = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         panelReport = new javax.swing.JPanel();
+        chkDoReport = new javax.swing.JCheckBox();
         panelRun = new javax.swing.JPanel();
         btnRun = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
@@ -690,15 +691,23 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         tabPane.addTab("ProteinProphet", panelProteinProphet);
 
+        chkDoReport.setText("Do Report");
+
         javax.swing.GroupLayout panelReportLayout = new javax.swing.GroupLayout(panelReport);
         panelReport.setLayout(panelReportLayout);
         panelReportLayout.setHorizontalGroup(
             panelReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 642, Short.MAX_VALUE)
+            .addGroup(panelReportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chkDoReport)
+                .addContainerGap(561, Short.MAX_VALUE))
         );
         panelReportLayout.setVerticalGroup(
             panelReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 751, Short.MAX_VALUE)
+            .addGroup(panelReportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chkDoReport)
+                .addContainerGap(721, Short.MAX_VALUE))
         );
 
         tabPane.addTab("Report", null, panelReport, "");
@@ -2053,6 +2062,15 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 }
                 builders.add(pb);
             }
+            
+            // for new philoshopher 'clean' after ourselves
+            if (isPhilosopher) {
+                List<String> cmd = new ArrayList<>();
+                cmd.add(bin);
+                cmd.add("clean");
+                ProcessBuilder pb = new ProcessBuilder(cmd);
+                builders.add(pb);
+            }
         }
         return builders;
     }
@@ -2262,6 +2280,16 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 //                    env.put(ENV_PATH, sbEnvPath.toString());
 //                }
 //            }
+            
+            // for new philoshopher 'clean' after ourselves
+            if (isPhilosopher) {
+                List<String> cmd = new ArrayList<>();
+                cmd.add(bin);
+                cmd.add("clean");
+                ProcessBuilder pb = new ProcessBuilder(cmd);
+                builders.add(pb);
+            }
+
             return builders;
         }
         return Collections.emptyList();
@@ -2614,6 +2642,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnSelectWrkingDir;
     private javax.swing.JButton btnStop;
     private javax.swing.JCheckBox checkDryRun;
+    private javax.swing.JCheckBox chkDoReport;
     private javax.swing.JCheckBox chkProteinProphetInteractStar;
     private javax.swing.JCheckBox chkRunPeptideProphet;
     private javax.swing.JCheckBox chkRunProteinProphet;
