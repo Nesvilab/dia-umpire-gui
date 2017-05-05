@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import umich.msfragger.util.OsUtils;
+import umich.msfragger.util.PathUtils;
 
 public class ThisAppProps extends Properties {
     //private static final Logger log = LoggerFactory.getLogger(ThisAppProps.class);
@@ -42,8 +43,8 @@ public class ThisAppProps extends Properties {
     public static final String TEMP_FILE_NAME = "msfragger.cache";
     
     public static final String PROP_TEXTFIELD_PATH_MSCONVERT = "path.textfield.msconvert";
-    public static final String PROP_TEXTFIELD_PATH_MSFRAGGER = "path.textfield.msfragger";
-    public static final String PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET = "path.textfield.peptide-prophet";
+    public static final String PROP_BIN_PATH_MSFRAGGER = "path.textfield.msfragger";
+    public static final String PROP_BIN_PATH_PHILOSOPHER = "path.textfield.peptide-prophet";
     public static final String PROP_TEXTFIELD_PATH_PROTEIN_PROPHET = "path.textfield.protein-prophet";
 
     public static void clearCache() {
@@ -127,7 +128,7 @@ public class ThisAppProps extends Properties {
             }
         }
         if (path == null && locateJar) {
-            URI thisJarUri = OsUtils.getCurrentJarPath();
+            URI thisJarUri = PathUtils.getCurrentJarPath();
             if (thisJarUri != null) {
                 path = Paths.get(thisJarUri).toString();
             }

@@ -17,6 +17,26 @@ import java.util.logging.Logger;
  * @author Dmitry Avtonomov
  */
 public class OsUtils {
+    
+    public static enum ARCH {
+        X86(32),
+        AMD64(64),
+        IA64(64);
+        
+        public final int bit;
+        
+        ARCH(int bit) {
+            this.bit = bit;
+        }
+    }
+    
+    public static enum OS_FAMILY {
+        WINDOWS,
+        MAC,
+        LINUX,
+        FREEBSD
+    }
+    
     private OsUtils() {}
     
     public static boolean isWindows() {
@@ -26,14 +46,42 @@ public class OsUtils {
         return osName.toLowerCase().startsWith("win");
     }
     
-    public static URI getCurrentJarPath() {
+    
+    
+    /**
+     * OS name. E.g. 'Linux' or 'Windows XP'.
+     * @return 
+     */
+    public static String getOsName() {
+        String osName = System.getProperty("os.name");
+        return osName;
+    }
+    
+    
+    /**
+     * Tries to determine processor architecture from system properties.
+     * @return  null if could not determine.
+     */
+    public static ARCH getSystemArch() {
+        
         try {
-            CodeSource codeSource = OsUtils.class.getProtectionDomain().getCodeSource();
-            URL location = codeSource.getLocation();
-            return location.toURI();
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(OsUtils.class.getName()).log(Level.SEVERE, null, ex);
+            if (isWindows()) {
+                String arch = System.getenv("PROCESSOR_ARCHITECTURE");
+                String wow64 = System.getenv("PROCESSOR_ARCHITEW6432");
+
+                if (wow64 != null)
+                    return ARCH.valueOf(wow64.toUpperCase());
+                else if (arch != null)
+                    return ARCH.valueOf(arch.toUpperCase());
+            } else {
+                //String osName = System.getProperty("os.name");
+                String osArch = System.getProperty("os.arch");
+                return ARCH.valueOf(osArch.toUpperCase());
+            }
+        } catch (IllegalArgumentException e) {
+            // could not map os.arch or whatever to our enum values, not biggie
         }
+        
         return null;
     }
 }

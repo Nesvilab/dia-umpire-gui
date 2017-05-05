@@ -17,15 +17,23 @@ package umich.msfragger.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.CodeSource;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.filechooser.FileFilter;
 import umich.msfragger.gui.MsfraggerGuiFrame;
 
@@ -55,37 +63,148 @@ public class PathUtils {
         }
         return null;
     }
-
+    
+    /**
+     * Searches for a file first in provided paths, then in working dir, then in system path.<br/>
+     * If you want to search near the JAR file currently being executed, add
+     * its path to the 'paths' parameter.
+     * 
+     * @param searchSystemPath
+     * @see #getCurrentJarPath() 
+     * 
+     * @param name  File name to search for.
+     * @param paths
+     * @return 
+     */
+    public static Path findFile(String name, boolean searchSystemPath, String... paths) {
+        
+        // provided paths
+        for (String path : paths) {
+            if (StringUtils.isNullOrWhitespace(path))
+                continue;
+            Path p = Paths.get(path, name);
+            if (Files.exists(p)) {
+                return p;
+            }
+        }
+        
+        Path wdPath = Paths.get(name).toAbsolutePath();
+        if (Files.exists(wdPath)) {
+            return wdPath;
+        }
+        
+        // system PATH
+        String envPath = System.getenv("PATH");
+        if (!StringUtils.isNullOrWhitespace(envPath)) {
+            String[] split = envPath.split(File.pathSeparator);
+            for (String s : split) {
+                Path p = Paths.get(s, name);
+                if (Files.exists(p)) {
+                    return p;
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Searches for a file first in provided paths, then in system path.<br/>
+     * If you want to search near the JAR file currently being executed, add
+     * its path to the 'paths' parameter.
+     * 
+     * @param searchSystemPath
+     * @see #getCurrentJarPath() 
+     * 
+     * @param name  File name to search for.
+     * @param paths
+     * @return 
+     */
+    public static Path findFile(Pattern name, boolean searchSystemPath, String... paths) {
+        
+        List<String> searchPaths = new ArrayList<>(paths.length);
+        for (String path : paths) {
+            if (StringUtils.isNullOrWhitespace(path)) {
+                searchPaths.add(path);
+            }
+        }
+        if (searchSystemPath) {
+            String envPath = System.getenv("PATH");
+            if (!StringUtils.isNullOrWhitespace(envPath)) {
+                String[] split = envPath.split(File.pathSeparator);
+                for (String s : split) {
+                    if (!StringUtils.isNullOrWhitespace(s)) {
+                        searchPaths.add(s);
+                    }
+                }
+            }
+        }
+        
+        // search the paths
+        for (String path : searchPaths) {
+            Path dirSearch = searchDirectory(name, Paths.get(path));
+            if (dirSearch != null) {
+                return dirSearch;
+            }
+        }
+        
+        return null;
+    }
+    
+    private static Path searchDirectory(Pattern name, Path p) {
+        if (!Files.isDirectory(p))
+            return null;
+        try {
+            Iterator<Path> dirIt = Files.newDirectoryStream(p).iterator();
+            while(dirIt.hasNext()) {
+                Path next = dirIt.next();
+                if (!Files.isDirectory(next) && name.matcher(next.getFileName().toString()).matches()) {
+                    return next;
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(PathUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     /**
      * Returns the value for the program, that will work with process builder.<br/>
-     * Null if no working combo could be found.
+     * Tries the supplied paths first, then tries to run without any path, i.e.
+     * uses the system's PATH variable.
+     * @param program  Name of the program to run, e.g. 'start.exe'.
+     * @param paths  Additional paths to search in.
+     * @return  Null if no working combo has been found.
      */
-    public static String testBinaryPath(String programName, String workingDir) {
-        // First try running just the program, hoping that it's in the PATH
+    public static String testBinaryPath(String program, String... paths) {
+        
+        // look in provided paths
+        for (String path : paths) {
+            if (StringUtils.isNullOrWhitespace(path))
+                continue;
+            try {
+                List<String> commands = new LinkedList<>();
+                String absPath = Paths.get(path, program).toAbsolutePath().toString();
+                commands.add(absPath);
+                ProcessBuilder pb = new ProcessBuilder(commands);
+                Process proc = pb.start();
+                proc.destroy();
+                return absPath;
+            } catch (Exception e1) {
+                // could not run the program with absolute path
+            }
+        }
+        
+        // now final resort - try running just the program, hoping that it's in the PATH
         List<String> commands = new LinkedList<>();
-        commands.add(programName);
+        commands.add(program);
         ProcessBuilder pb = new ProcessBuilder(commands);
         try {
             Process proc = pb.start();
             proc.destroy();
-            return programName;
+            return program;
         } catch (Exception e1) {
-            // could not run the program, it was not on PATH
-            // Try running the program using absolute path
-            if (StringUtils.isNullOrWhitespace(workingDir)) {
-                return null;
-            }
-            try {
-                commands = new LinkedList<>();
-                String absolutePathProgramName = Paths.get(workingDir, programName).toAbsolutePath().toString();
-                commands.add(absolutePathProgramName);
-                pb = new ProcessBuilder(commands);
-                Process proc = pb.start();
-                proc.destroy();
-                return absolutePathProgramName;
-            } catch (Exception e2) {
-                // could not run the program even with absolute path
-            }
+            
         }
         return null;
     }
@@ -114,6 +233,17 @@ public class PathUtils {
         } catch (IOException ex) {
             Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public static URI getCurrentJarPath() {
+        try {
+            CodeSource codeSource = OsUtils.class.getProtectionDomain().getCodeSource();
+            URL location = codeSource.getLocation();
+            return location.toURI();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(OsUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
     private PathUtils() {}
