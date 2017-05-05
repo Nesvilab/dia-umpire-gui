@@ -75,6 +75,7 @@ import umich.msfragger.gui.api.SimpleUniqueTableModel;
 import umich.msfragger.gui.api.TableModelColumn;
 import umich.msfragger.params.fragger.MsfraggerParams;
 import umich.msfragger.util.FileDrop;
+import umich.msfragger.util.FileListing;
 import umich.msfragger.util.GhostText;
 import umich.msfragger.util.HSLColor;
 import umich.msfragger.util.PathUtils;
@@ -1676,6 +1677,16 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
      * @return  True if it's a real JAR file with MSFragger.class at the top level inside.
      */
     private boolean validateAndSaveMsfraggerPath(String path) {
+        boolean isValid = validateMsfraggerPath(path);
+        if (isValid) {
+            textBinMsfragger.setText(path);
+            ThisAppProps.save(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, path);
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean validateMsfraggerPath(String path) {
         File f = new File(path);
         if (!f.getName().toLowerCase().endsWith(".jar"))
             return false;
@@ -1686,8 +1697,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             while(entries.hasMoreElements()) {
                 ZipEntry ze = entries.nextElement();
                 if ("MSFragger.class".equals(ze.getName())) {
-                    textBinMsfragger.setText(f.getAbsolutePath());
-                    ThisAppProps.save(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, f.getAbsolutePath());
                     return true;
                 }
             }
@@ -1748,51 +1757,62 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private void btnFindToolsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindToolsActionPerformed
         
         String fraggerFoundPath = null;
-        Pattern regexFragger = Pattern.compile("MSFragger.*?.jar", Pattern.CASE_INSENSITIVE);
-        Path fraggerPossbilePath = PathUtils.findFile(regexFragger, true, false);
+        String philosopherFoundPath = null;
         
-        if (fraggerPossbilePath == null) {
-            // did not find fragger jar, need to ask for a path to look for it
-            int res = JOptionPane.showConfirmDialog(this, "Could not locate MSFragger jar automatically.\n"
-                    + "Would you like to provide a directory to look in?", "Question", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-            switch (res) {
-                case JOptionPane.OK_OPTION:
-                    JFileChooser fileChooser = new JFileChooser();
-                    fileChooser.setApproveButtonText("Search here");
-                    fileChooser.setApproveButtonToolTipText("Search this directory recursively");
-                    fileChooser.setDialogTitle("Select path to search for binaries");
-                    fileChooser.setMultiSelectionEnabled(false);
-                    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Search here");
+        fileChooser.setApproveButtonToolTipText("Search this directory recursively");
+        fileChooser.setDialogTitle("Select path to search for binaries");
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-                    List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, ThisAppProps.PROP_BIN_PATH_PHILOSOPHER, ThisAppProps.PROP_BINARIES_IN);
-                    String fcPath = ThisAppProps.tryFindPath(props, true);
-                    SwingUtils.setFileChooserPath(fileChooser, fcPath);
-                    
-                    int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
-                    switch (showOpenDialog) {
-                        case JFileChooser.APPROVE_OPTION:
-                            File f = fileChooser.getSelectedFile();
-                            Path foundFile = PathUtils.findFile(regexFragger, false, true, new String[] {f.getAbsolutePath()});
-                            if (foundFile == null) {
-                                JOptionPane.showMessageDialog(this, "Could not locate MSFragger jar.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                            } else {
-                                if (validateAndSaveMsfraggerPath(foundFile.toString())) {
-                                    fraggerFoundPath = foundFile.toString();
-                                    ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
-                                }
-                            }
+        List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, ThisAppProps.PROP_BINARIES_IN, ThisAppProps.PROP_BIN_PATH_PHILOSOPHER);
+        String fcPath = ThisAppProps.tryFindPath(props, true);
+        SwingUtils.setFileChooserPath(fileChooser, fcPath);
+
+        // Fragger first
+        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                File f = fileChooser.getSelectedFile();
+                
+                Pattern regexFragger = Pattern.compile(".*?MSFragger[^\\/]?\\.jar", Pattern.CASE_INSENSITIVE);
+                FileListing listing = new FileListing(Paths.get(f.getAbsolutePath()), regexFragger);
+                List<Path> foundFiles = listing.findFiles();
+                if (foundFiles.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Could not locate MSFragger jar.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    for(Path foundFile : foundFiles) {
+                        if (validateAndSaveMsfraggerPath(foundFile.toString())) {
+                            fraggerFoundPath = foundFile.toString();
+                            ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
+                            JOptionPane.showMessageDialog(this, "Found MSFragger jar.\n"
+                                    + fraggerFoundPath, "Info", JOptionPane.INFORMATION_MESSAGE);
+                            break;
+                        }
+                    }
+                }
+                break;
+        }
+        
+        
+        // now philosopher
+        Pattern regexPhilosopher = Pattern.compile(".*?philosopher[^\\/]*", Pattern.CASE_INSENSITIVE);
+        if (fraggerFoundPath != null) {
+            FileListing listing = new FileListing(Paths.get(fraggerFoundPath), regexPhilosopher);
+            List<Path> findFiles = listing.findFiles();
+            if (!findFiles.isEmpty()) {
+                for (Path foundFile : findFiles) {
+                    if (validateAndSavePhilosopherPath(foundFile.toString())) {
+                        philosopherFoundPath = foundFile.toString();
+                        ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, philosopherFoundPath);
+                        JOptionPane.showMessageDialog(this, "Found Philosopher executable.\n"
+                                    + philosopherFoundPath, "Info", JOptionPane.INFORMATION_MESSAGE);
                             break;
                     }
-                    
-                    break;
-            }
-        } else {
-            if (validateAndSaveMsfraggerPath(fraggerPossbilePath.toString())) {
-                fraggerFoundPath = fraggerPossbilePath.toString();
-                ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
+                }
             }
         }
-
         
     }//GEN-LAST:event_btnFindToolsActionPerformed
 
@@ -1825,13 +1845,17 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPhilosopherBinBrowseActionPerformed
 
     private boolean validateAndSavePhilosopherPath(String path) {
-        String tested = PathUtils.testBinaryPath(path);
-        if (tested == null)
-            return false;
-        // validation passed
-        textBinPhilosopher.setText(tested);
-        ThisAppProps.save(ThisAppProps.PROP_BIN_PATH_PHILOSOPHER, tested);
-        return true;
+        String validated = validatePhilosopherPath(path);
+        if (validated != null) {
+            textBinPhilosopher.setText(validated);
+            ThisAppProps.save(ThisAppProps.PROP_BIN_PATH_PHILOSOPHER, validated);
+            return true;
+        }
+        return false;
+    }
+    
+    private String validatePhilosopherPath(String path) {
+        return PathUtils.testBinaryPath(path);
     }
     
     private Color getLighterColor(Color original, float alpha) {
