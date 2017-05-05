@@ -21,7 +21,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.DirectoryStream;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,7 +31,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.filechooser.FileFilter;
 import umich.msfragger.gui.MsfraggerGuiFrame;
@@ -70,38 +68,36 @@ public class PathUtils {
      * its path to the 'paths' parameter.
      * 
      * @param searchSystemPath
+     * @param recursive
      * @see #getCurrentJarPath() 
      * 
      * @param name  File name to search for.
      * @param paths
      * @return 
      */
-    public static Path findFile(String name, boolean searchSystemPath, String... paths) {
+    public static Path findFile(String name, boolean searchSystemPath, boolean recursive, String... paths) {
         
-        // provided paths
+        List<String> searchPaths = new ArrayList<>(paths.length);
         for (String path : paths) {
-            if (StringUtils.isNullOrWhitespace(path))
-                continue;
-            Path p = Paths.get(path, name);
-            if (Files.exists(p)) {
-                return p;
+            if (StringUtils.isNullOrWhitespace(path)) {
+                searchPaths.add(path);
+            }
+        }
+        if (searchSystemPath) {
+            searchPaths.addAll(getSystemPaths());
+        }
+        
+        // search the paths
+        for (String path : searchPaths) {
+            Path search = Paths.get(path, name);
+            if (Files.exists(search)) {
+                return search;
             }
         }
         
-        Path wdPath = Paths.get(name).toAbsolutePath();
-        if (Files.exists(wdPath)) {
-            return wdPath;
-        }
-        
-        // system PATH
-        String envPath = System.getenv("PATH");
-        if (!StringUtils.isNullOrWhitespace(envPath)) {
-            String[] split = envPath.split(File.pathSeparator);
-            for (String s : split) {
-                Path p = Paths.get(s, name);
-                if (Files.exists(p)) {
-                    return p;
-                }
+        if (recursive) {
+            for (String path : searchPaths) {
+                return findFile(name, false, true);
             }
         }
         
@@ -114,37 +110,55 @@ public class PathUtils {
      * its path to the 'paths' parameter.
      * 
      * @param searchSystemPath
+     * @param recursive
      * @see #getCurrentJarPath() 
      * 
      * @param name  File name to search for.
      * @param paths
      * @return 
      */
-    public static Path findFile(Pattern name, boolean searchSystemPath, String... paths) {
+    public static Path findFile(Pattern name, boolean searchSystemPath, boolean recursive, String... paths) {
         
         List<String> searchPaths = new ArrayList<>(paths.length);
         for (String path : paths) {
-            if (StringUtils.isNullOrWhitespace(path)) {
+            if (!StringUtils.isNullOrWhitespace(path)) {
                 searchPaths.add(path);
             }
         }
         if (searchSystemPath) {
-            String envPath = System.getenv("PATH");
-            if (!StringUtils.isNullOrWhitespace(envPath)) {
-                String[] split = envPath.split(File.pathSeparator);
-                for (String s : split) {
-                    if (!StringUtils.isNullOrWhitespace(s)) {
-                        searchPaths.add(s);
-                    }
-                }
-            }
+            searchPaths.addAll(getSystemPaths());
         }
         
         // search the paths
         for (String path : searchPaths) {
-            Path dirSearch = searchDirectory(name, Paths.get(path));
-            if (dirSearch != null) {
-                return dirSearch;
+            Path search = searchDirectory(name, Paths.get(path));
+            if (search != null) {
+                return search;
+            }
+        }
+        
+        if (recursive) {
+            List<String> deeperSearchPaths = new ArrayList<>();
+            for (String path : searchPaths) {
+                Path p = Paths.get(path);
+                if (Files.isDirectory(p)) {
+                    
+                    try {
+                        Iterator<Path> dirIt = Files.newDirectoryStream(p).iterator();
+                        while (dirIt.hasNext()) {
+                            Path deeperFile = dirIt.next();
+                            if (Files.isDirectory(deeperFile)) {
+                                deeperSearchPaths.add(deeperFile.toString());
+                            }
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(PathUtils.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    return findFile(name, false, true);
+                }
+            }
+            if (!deeperSearchPaths.isEmpty()) {
+                return findFile(name, false, true, deeperSearchPaths.toArray(new String[deeperSearchPaths.size()]));
             }
         }
         
@@ -166,6 +180,20 @@ public class PathUtils {
             Logger.getLogger(PathUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public static List<String> getSystemPaths() {
+        List<String> res = new ArrayList<>();
+        String envPath = System.getenv("PATH");
+        if (!StringUtils.isNullOrWhitespace(envPath)) {
+            String[] split = envPath.split(File.pathSeparator);
+            for (String s : split) {
+                if (!StringUtils.isNullOrWhitespace(s)) {
+                    res.add(s);
+                }
+            }
+        }
+        return res;
     }
     
     /**

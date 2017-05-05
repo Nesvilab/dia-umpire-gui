@@ -77,7 +77,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="panelMsfraggerConfig" max="32767" attributes="0"/>
                           <Component id="panelPhilosopherConfig" max="32767" attributes="0"/>
-                          <Component id="jLabel4" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel4" alignment="1" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -85,7 +85,7 @@
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Component id="btnFindTools" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblFindAutomatically" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -96,15 +96,15 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnFindTools" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblFindAutomatically" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="panelMsfraggerConfig" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="panelPhilosopherConfig" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="451" max="32767" attributes="0"/>
+                      <EmptySpace pref="438" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -170,6 +170,7 @@
                 <Component class="javax.swing.JButton" name="btnMsfraggerBinDownload">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Download"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Open the download web-page for MSFragger&lt;br/&gt;&#xa;You need to agree to the license terms." noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMsfraggerBinDownloadActionPerformed"/>
@@ -207,7 +208,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JEditorPane" name="jEditorPane1">
+                    <Component class="javax.swing.JEditorPane" name="editorMsfraggerCitation">
                       <Properties>
                         <Property name="editable" type="boolean" value="false"/>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -227,7 +228,7 @@
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="hyperlinkUpdate" listener="javax.swing.event.HyperlinkListener" parameters="javax.swing.event.HyperlinkEvent" handler="urlHandlerMsfraggerPaper"/>
+                        <EventHandler event="hyperlinkUpdate" listener="javax.swing.event.HyperlinkListener" parameters="javax.swing.event.HyperlinkEvent" handler="urlHandlerViaSystemBrowser"/>
                       </Events>
                     </Component>
                   </SubComponents>
@@ -246,17 +247,18 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel3" max="32767" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Component id="textBinPhilosopher" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="jLabel5" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="textBinPhilosopher" pref="432" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnPhilosopherBinBrowse" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnPhilosopherBinDownload" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="jLabel3" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -272,6 +274,8 @@
                               <Component id="btnPhilosopherBinBrowse" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -282,6 +286,7 @@
                 <Component class="javax.swing.JButton" name="btnPhilosopherBinDownload">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Download"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Opens the web-page for Philosopher download.&lt;br/&gt;&#xa;Choose the right version for your platform."/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPhilosopherBinDownloadActionPerformed"/>
@@ -291,6 +296,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Browse"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPhilosopherBinBrowseActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="textBinPhilosopher">
                   <Properties>
@@ -304,18 +312,32 @@
                     <Property name="text" type="java.lang.String" value="If provided, philosopher binary will be used for Peptide and Protein Prophets and Report"/>
                   </Properties>
                 </Component>
+                <Component class="javax.swing.JLabel" name="jLabel5">
+                  <Properties>
+                    <Property name="horizontalAlignment" type="int" value="11"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="createSysInfoPhilosopherText()" type="code"/>
+                    </Property>
+                  </Properties>
+                </Component>
               </SubComponents>
             </Container>
             <Component class="javax.swing.JButton" name="btnFindTools">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Attempt to find automatically"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection component="lblFindAutomatically" name="toolTipText" type="property"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFindToolsActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel5">
+            <Component class="javax.swing.JLabel" name="lblFindAutomatically">
               <Properties>
+                <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                  <ComponentRef name="lblFindAutomatically"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Recursively search for tools in a directory"/>
                 <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;If you have the tools downloaded somewhere already, you can&lt;br/&gt;&#xa;use this button to automatically look for them."/>
               </Properties>

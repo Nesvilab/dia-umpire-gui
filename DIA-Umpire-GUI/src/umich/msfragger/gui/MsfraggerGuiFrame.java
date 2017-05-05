@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -54,6 +55,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
@@ -205,14 +208,15 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         textBinMsfragger = new javax.swing.JTextField();
         lblMsfraggerCitation = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
+        editorMsfraggerCitation = new javax.swing.JEditorPane();
         panelPhilosopherConfig = new javax.swing.JPanel();
         btnPhilosopherBinDownload = new javax.swing.JButton();
         btnPhilosopherBinBrowse = new javax.swing.JButton();
         textBinPhilosopher = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        btnFindTools = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        btnFindTools = new javax.swing.JButton();
+        lblFindAutomatically = new javax.swing.JLabel();
         panelSelectFiles = new javax.swing.JPanel();
         panelSelectedFiles = new javax.swing.JPanel();
         btnRawAddFiles = new javax.swing.JButton();
@@ -291,6 +295,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         panelMsfraggerConfig.setBorder(javax.swing.BorderFactory.createTitledBorder("MSFragger"));
 
         btnMsfraggerBinDownload.setText("Download");
+        btnMsfraggerBinDownload.setToolTipText("<html>Open the download web-page for MSFragger<br/>\nYou need to agree to the license terms."); // NOI18N
         btnMsfraggerBinDownload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMsfraggerBinDownloadActionPerformed(evt);
@@ -310,18 +315,18 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         jScrollPane1.setBorder(null);
 
-        jEditorPane1.setEditable(false);
-        jEditorPane1.setBackground(lblMsfraggerCitation.getBackground());
-        jEditorPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        jEditorPane1.setContentType("text/html"); // NOI18N
-        jEditorPane1.setFont(lblMsfraggerCitation.getFont());
-        jEditorPane1.setText(getFraggerCitationHtml());
-        jEditorPane1.addHyperlinkListener(new javax.swing.event.HyperlinkListener() {
+        editorMsfraggerCitation.setEditable(false);
+        editorMsfraggerCitation.setBackground(lblMsfraggerCitation.getBackground());
+        editorMsfraggerCitation.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        editorMsfraggerCitation.setContentType("text/html"); // NOI18N
+        editorMsfraggerCitation.setFont(lblMsfraggerCitation.getFont());
+        editorMsfraggerCitation.setText(getFraggerCitationHtml());
+        editorMsfraggerCitation.addHyperlinkListener(new javax.swing.event.HyperlinkListener() {
             public void hyperlinkUpdate(javax.swing.event.HyperlinkEvent evt) {
-                urlHandlerMsfraggerPaper(evt);
+                urlHandlerViaSystemBrowser(evt);
             }
         });
-        jScrollPane1.setViewportView(jEditorPane1);
+        jScrollPane1.setViewportView(editorMsfraggerCitation);
 
         javax.swing.GroupLayout panelMsfraggerConfigLayout = new javax.swing.GroupLayout(panelMsfraggerConfig);
         panelMsfraggerConfig.setLayout(panelMsfraggerConfigLayout);
@@ -360,6 +365,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         panelPhilosopherConfig.setBorder(javax.swing.BorderFactory.createTitledBorder("Philosopher"));
 
         btnPhilosopherBinDownload.setText("Download");
+        btnPhilosopherBinDownload.setToolTipText("<html>Opens the web-page for Philosopher download.<br/>\nChoose the right version for your platform.");
         btnPhilosopherBinDownload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPhilosopherBinDownloadActionPerformed(evt);
@@ -367,25 +373,34 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         });
 
         btnPhilosopherBinBrowse.setText("Browse");
+        btnPhilosopherBinBrowse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPhilosopherBinBrowseActionPerformed(evt);
+            }
+        });
 
         textBinPhilosopher.setText(getDefaultBinPhilosopher());
 
         jLabel3.setText("If provided, philosopher binary will be used for Peptide and Protein Prophets and Report");
 
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel5.setText(createSysInfoPhilosopherText());
+
         javax.swing.GroupLayout panelPhilosopherConfigLayout = new javax.swing.GroupLayout(panelPhilosopherConfig);
         panelPhilosopherConfig.setLayout(panelPhilosopherConfigLayout);
         panelPhilosopherConfigLayout.setHorizontalGroup(
             panelPhilosopherConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPhilosopherConfigLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPhilosopherConfigLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelPhilosopherConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelPhilosopherConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelPhilosopherConfigLayout.createSequentialGroup()
-                        .addComponent(textBinPhilosopher)
+                        .addComponent(textBinPhilosopher, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPhilosopherBinBrowse)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnPhilosopherBinDownload)))
+                        .addComponent(btnPhilosopherBinDownload))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelPhilosopherConfigLayout.setVerticalGroup(
@@ -397,19 +412,23 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     .addComponent(btnPhilosopherBinDownload)
                     .addComponent(btnPhilosopherBinBrowse))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btnFindTools.setText("Attempt to find automatically");
+        btnFindTools.setToolTipText(lblFindAutomatically.getToolTipText());
         btnFindTools.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFindToolsActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("Recursively search for tools in a directory");
-        jLabel5.setToolTipText("<html>If you have the tools downloaded somewhere already, you can<br/>\nuse this button to automatically look for them.");
+        lblFindAutomatically.setLabelFor(lblFindAutomatically);
+        lblFindAutomatically.setText("Recursively search for tools in a directory");
+        lblFindAutomatically.setToolTipText("<html>If you have the tools downloaded somewhere already, you can<br/>\nuse this button to automatically look for them.");
 
         javax.swing.GroupLayout panelConfigLayout = new javax.swing.GroupLayout(panelConfig);
         panelConfig.setLayout(panelConfigLayout);
@@ -420,13 +439,13 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelMsfraggerConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelPhilosopherConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
             .addGroup(panelConfigLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(btnFindTools)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
+                .addComponent(lblFindAutomatically)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelConfigLayout.setVerticalGroup(
@@ -435,14 +454,14 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFindTools)
-                    .addComponent(jLabel5))
+                    .addComponent(lblFindAutomatically))
                 .addGap(18, 18, 18)
                 .addComponent(panelMsfraggerConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelPhilosopherConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(451, Short.MAX_VALUE))
+                .addContainerGap(438, Short.MAX_VALUE))
         );
 
         tabPane.addTab("Config", null, panelConfig, "Set up paths to tools");
@@ -1627,9 +1646,59 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnMsfraggerBinBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMsfraggerBinBrowseActionPerformed
-        
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select");
+        fileChooser.setDialogTitle("Select MSFragger jar");
+        fileChooser.setMultiSelectionEnabled(false);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, ThisAppProps.PROP_BINARIES_IN);
+        String fcPath = ThisAppProps.tryFindPath(props, true);
+        SwingUtils.setFileChooserPath(fileChooser, fcPath);
+
+        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                File f = fileChooser.getSelectedFile();
+                if (validateAndSaveMsfraggerPath(f.getAbsolutePath())) {
+                    ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, f.getAbsolutePath());
+                }
+                break;
+        }
     }//GEN-LAST:event_btnMsfraggerBinBrowseActionPerformed
 
+    /**
+     * Checks if a file is a JAR file and that it contains MSFragger.class at the top level.
+     * @param f  file to check.
+     * @return  True if it's a real JAR file with MSFragger.class at the top level inside.
+     */
+    private boolean validateAndSaveMsfraggerPath(String path) {
+        File f = new File(path);
+        if (!f.getName().toLowerCase().endsWith(".jar"))
+            return false;
+        
+        try {
+            ZipFile zf = new ZipFile(f);
+            Enumeration<? extends ZipEntry> entries = zf.entries();
+            while(entries.hasMoreElements()) {
+                ZipEntry ze = entries.nextElement();
+                if ("MSFragger.class".equals(ze.getName())) {
+                    textBinMsfragger.setText(f.getAbsolutePath());
+                    ThisAppProps.save(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, f.getAbsolutePath());
+                    return true;
+                }
+            }
+        } catch (IOException ex) {
+            // doesn't matter
+            Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return false;
+    }
+    
     private void btnMsfraggerBinDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMsfraggerBinDownloadActionPerformed
         try {
             Desktop.getDesktop().browse(URI.create("https://secure.nouvant.com/umich/technology/7143/license/633"));
@@ -1642,7 +1711,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBinPeptideProphetActionPerformed
 
-    private void urlHandlerMsfraggerPaper(javax.swing.event.HyperlinkEvent evt) {//GEN-FIRST:event_urlHandlerMsfraggerPaper
+    private void urlHandlerViaSystemBrowser(javax.swing.event.HyperlinkEvent evt) {//GEN-FIRST:event_urlHandlerViaSystemBrowser
         if (evt.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
             
             URI uri;
@@ -1670,7 +1739,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         "Cannot Open Link", JOptionPane.WARNING_MESSAGE);
             }
         }
-    }//GEN-LAST:event_urlHandlerMsfraggerPaper
+    }//GEN-LAST:event_urlHandlerViaSystemBrowser
 
     private void btnPhilosopherBinDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhilosopherBinDownloadActionPerformed
         downloadPhilosopher();
@@ -1678,8 +1747,93 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
     private void btnFindToolsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindToolsActionPerformed
         
+        String fraggerFoundPath = null;
+        Pattern regexFragger = Pattern.compile("MSFragger.*?.jar", Pattern.CASE_INSENSITIVE);
+        Path fraggerPossbilePath = PathUtils.findFile(regexFragger, true, false);
+        
+        if (fraggerPossbilePath == null) {
+            // did not find fragger jar, need to ask for a path to look for it
+            int res = JOptionPane.showConfirmDialog(this, "Could not locate MSFragger jar automatically.\n"
+                    + "Would you like to provide a directory to look in?", "Question", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            switch (res) {
+                case JOptionPane.OK_OPTION:
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setApproveButtonText("Search here");
+                    fileChooser.setApproveButtonToolTipText("Search this directory recursively");
+                    fileChooser.setDialogTitle("Select path to search for binaries");
+                    fileChooser.setMultiSelectionEnabled(false);
+                    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+                    List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, ThisAppProps.PROP_BIN_PATH_PHILOSOPHER, ThisAppProps.PROP_BINARIES_IN);
+                    String fcPath = ThisAppProps.tryFindPath(props, true);
+                    SwingUtils.setFileChooserPath(fileChooser, fcPath);
+                    
+                    int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
+                    switch (showOpenDialog) {
+                        case JFileChooser.APPROVE_OPTION:
+                            File f = fileChooser.getSelectedFile();
+                            Path foundFile = PathUtils.findFile(regexFragger, false, true, new String[] {f.getAbsolutePath()});
+                            if (foundFile == null) {
+                                JOptionPane.showMessageDialog(this, "Could not locate MSFragger jar.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                if (validateAndSaveMsfraggerPath(foundFile.toString())) {
+                                    fraggerFoundPath = foundFile.toString();
+                                    ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
+                                }
+                            }
+                            break;
+                    }
+                    
+                    break;
+            }
+        } else {
+            if (validateAndSaveMsfraggerPath(fraggerPossbilePath.toString())) {
+                fraggerFoundPath = fraggerPossbilePath.toString();
+                ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
+            }
+        }
+
+        
     }//GEN-LAST:event_btnFindToolsActionPerformed
 
+    private void btnPhilosopherBinBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhilosopherBinBrowseActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select");
+        fileChooser.setDialogTitle("Select Philosopher binary");
+        fileChooser.setMultiSelectionEnabled(false);
+        if (OsUtils.isWindows()) {
+            FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Executables", "exe");
+            fileChooser.setFileFilter(fileNameExtensionFilter);
+        }
+        
+
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_PHILOSOPHER, ThisAppProps.PROP_BINARIES_IN);
+        String fcPath = ThisAppProps.tryFindPath(props, true);
+        SwingUtils.setFileChooserPath(fileChooser, fcPath);
+
+        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                File f = fileChooser.getSelectedFile();
+                if (validateAndSavePhilosopherPath(f.getAbsolutePath())) {
+                    ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, f.getAbsolutePath());
+                }
+                break;
+        }
+    }//GEN-LAST:event_btnPhilosopherBinBrowseActionPerformed
+
+    private boolean validateAndSavePhilosopherPath(String path) {
+        String tested = PathUtils.testBinaryPath(path);
+        if (tested == null)
+            return false;
+        // validation passed
+        textBinPhilosopher.setText(tested);
+        ThisAppProps.save(ThisAppProps.PROP_BIN_PATH_PHILOSOPHER, tested);
+        return true;
+    }
+    
     private Color getLighterColor(Color original, float alpha) {
         HSLColor hslColor = new HSLColor(original);
         Color lighter = HSLColor.toRGB(hslColor.getHSL(), alpha);
@@ -1819,6 +1973,15 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         sb.append("</html>");
   
         return sb.toString();
+    }
+
+    private String createSysInfoPhilosopherText() {
+        String os = OsUtils.getOsName();
+        os = os != null ? os : "?";
+        OsUtils.ARCH arch = OsUtils.getSystemArch();
+        String archStr = arch != null ? arch.toString().toLowerCase() : "?";
+        String sysInfo = String.format("System OS: %s, Architecture: %s", os, archStr);
+        return sysInfo;
     }
     
     private static class UmpireGarbageFiles {
@@ -2525,7 +2688,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         } else {
             binaryName = bundle.getString("default.msconvert.nix");
         }
-        String testedBinaryPath = PathUtils.testBinaryPath(binaryName, null);
+        String testedBinaryPath = PathUtils.testBinaryPath(binaryName);
         if (testedBinaryPath != null && !testedBinaryPath.isEmpty())
             return testedBinaryPath;
         
@@ -2748,7 +2911,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkRunProteinProphet;
     private umich.msfragger.gui.TextConsole console;
     private javax.swing.JScrollPane consoleScrollPane;
-    private javax.swing.JEditorPane jEditorPane1;
+    private javax.swing.JEditorPane editorMsfraggerCitation;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -2763,6 +2926,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lblFindAutomatically;
     private javax.swing.JLabel lblMsfraggerCitation;
     private javax.swing.JLabel lblOutputDir;
     private javax.swing.JLabel lblProgramsDir;
