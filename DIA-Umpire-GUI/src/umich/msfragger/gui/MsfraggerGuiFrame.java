@@ -6,14 +6,10 @@
 package umich.msfragger.gui;
 
 import java.awt.Color;
-import umich.msfragger.params.UmpireQuantParams;
-import umich.msfragger.exceptions.ParsingException;
-import umich.msfragger.params.CometParams;
 import umich.msfragger.params.PeptideProphetParams;
 import umich.msfragger.params.Philosopher;
 import umich.msfragger.params.ProteinProphetParams;
 import umich.msfragger.params.ThisAppProps;
-import umich.msfragger.params.UmpireParams;
 import umich.msfragger.util.LogUtils;
 import umich.msfragger.util.OsUtils;
 import umich.msfragger.util.StringUtils;
@@ -25,8 +21,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +32,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -55,7 +48,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -67,15 +59,12 @@ import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
-import javax.swing.text.Document;
 import umich.msfragger.Version;
 import umich.msfragger.gui.api.DataConverter;
 import umich.msfragger.gui.api.SimpleETable;
@@ -1453,38 +1442,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBinProteinProphetFocusLost
 
     private void btnBinProteinProphetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinProteinProphetActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setApproveButtonText("Select binary");
-        fileChooser.setApproveButtonToolTipText("Select ProteinProphet or Philosopher binary");
-        fileChooser.setDialogTitle("Select binary to use for ProteinProphet");
-        fileChooser.setMultiSelectionEnabled(false);
-        //        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
-        //        fileChooser.setFileFilter(fileNameExtensionFilter);
-
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        List<String> props = Arrays.asList(ThisAppProps.PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET, ThisAppProps.PROP_BINARIES_IN);
-        String fcPath = ThisAppProps.tryFindPath(props, true);
-        SwingUtils.setFileChooserPath(fileChooser, fcPath);
-
-        int showOpenDialog = fileChooser.showOpenDialog(this);
-        switch (showOpenDialog) {
-            case JFileChooser.APPROVE_OPTION:
-                
-                File f = fileChooser.getSelectedFile();
-                
-                String binPath = f.getAbsolutePath();
-                txtBinProteinProphet.setText(binPath);
-                ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, binPath);
-                ThisAppProps.save(ThisAppProps.PROP_TEXTFIELD_PATH_PROTEIN_PROPHET, binPath);
-                if (isPhilosopherBin(binPath)) {
-                    txtBinPeptideProphet.setText(binPath);
-                    ThisAppProps.save(ThisAppProps.PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET, binPath);
-                }
-                
-                saveBinProteinProphet();
-                break;
-        }
+        
     }//GEN-LAST:event_btnBinProteinProphetActionPerformed
 
     private void chkRunProteinProphetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRunProteinProphetActionPerformed
@@ -1546,37 +1504,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
     
     private void btnSelectPeptideProphetBinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectPeptideProphetBinActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setApproveButtonText("Select binary");
-        fileChooser.setApproveButtonToolTipText("Select PeptideProphet or Philosopher binary");
-        fileChooser.setDialogTitle("Select binary to use for PeptideProphet");
-        fileChooser.setMultiSelectionEnabled(false);
-        //        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
-        //        fileChooser.setFileFilter(fileNameExtensionFilter);
-
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         
-        List<String> props = Arrays.asList(ThisAppProps.PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET, ThisAppProps.PROP_BINARIES_IN);
-        String fcPath = ThisAppProps.tryFindPath(props, true);
-        SwingUtils.setFileChooserPath(fileChooser, fcPath);
-        
-
-        int showOpenDialog = fileChooser.showOpenDialog(this);
-        switch (showOpenDialog) {
-            case JFileChooser.APPROVE_OPTION:
-
-            File f = fileChooser.getSelectedFile();
-            String binPath = f.getAbsolutePath();
-            
-            txtBinPeptideProphet.setText(binPath);
-            ThisAppProps.save(ThisAppProps.PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET, binPath);
-            if (isPhilosopherBin(binPath)) {
-                txtBinProteinProphet.setText(binPath);
-                ThisAppProps.save(ThisAppProps.PROP_TEXTFIELD_PATH_PROTEIN_PROPHET, binPath);
-            }
-            saveBinPeptideProphet();
-            break;
-        }
     }//GEN-LAST:event_btnSelectPeptideProphetBinActionPerformed
 
     private void btnRawClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawClearActionPerformed
@@ -1699,28 +1627,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void btnMsfraggerBinBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMsfraggerBinBrowseActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setApproveButtonText("Select binary");
-        fileChooser.setApproveButtonToolTipText("Select MSFragger jar");
-        fileChooser.setDialogTitle("Select MSFragger jar");
-        fileChooser.setMultiSelectionEnabled(false);
-        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
-        fileChooser.setFileFilter(fileNameExtensionFilter);
-
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        List<String> props = Arrays.asList(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER, ThisAppProps.PROP_BINARIES_IN);
-        String fcPath = ThisAppProps.tryFindPath(props, true);
-        SwingUtils.setFileChooserPath(fileChooser, fcPath);
-
-        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
-        switch (showOpenDialog) {
-            case JFileChooser.APPROVE_OPTION:
-                File f = fileChooser.getSelectedFile();
-                textBinMsfragger.setText(f.getAbsolutePath());
-                ThisAppProps.save(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER, f.getAbsolutePath());
-                break;
-        }
+        
     }//GEN-LAST:event_btnMsfraggerBinBrowseActionPerformed
 
     private void btnMsfraggerBinDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMsfraggerBinDownloadActionPerformed
@@ -1770,28 +1677,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPhilosopherBinDownloadActionPerformed
 
     private void btnFindToolsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindToolsActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setApproveButtonText("Search here");
-        fileChooser.setApproveButtonToolTipText("Search this directory recursively");
-        fileChooser.setDialogTitle("Select path to search for binaries");
-        fileChooser.setMultiSelectionEnabled(false);
-        //FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
-        //fileChooser.setFileFilter(fileNameExtensionFilter);
-
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-        List<String> props = Arrays.asList(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER, ThisAppProps.PROP_BINARIES_IN);
-        String fcPath = ThisAppProps.tryFindPath(props, true);
-        SwingUtils.setFileChooserPath(fileChooser, fcPath);
-
-        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
-        switch (showOpenDialog) {
-            case JFileChooser.APPROVE_OPTION:
-                File f = fileChooser.getSelectedFile();
-                textBinMsfragger.setText(f.getAbsolutePath());
-                ThisAppProps.save(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER, f.getAbsolutePath());
-                break;
-        }
+        
     }//GEN-LAST:event_btnFindToolsActionPerformed
 
     private Color getLighterColor(Color original, float alpha) {
@@ -1948,7 +1834,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private List<ProcessBuilder> processBuildersCopyFiles(String programsDir, String workingDir, List<String> lcmsFilePaths) {
         List<ProcessBuilder> processBuilders = new LinkedList<>();
         
-        URI currentJarUri = OsUtils.getCurrentJarPath();
+        URI currentJarUri = PathUtils.getCurrentJarPath();
         String currentJarPath = Paths.get(currentJarUri).toAbsolutePath().toString();
         Path wd = Paths.get(workingDir);
         
@@ -1981,7 +1867,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private List<ProcessBuilder> processBuildersDeleteFiles(String workingDir, List<String> lcmsFilePaths) {
         List<ProcessBuilder> processBuilders = new LinkedList<>();
         
-        URI currentJarUri = OsUtils.getCurrentJarPath();
+        URI currentJarUri = PathUtils.getCurrentJarPath();
         String currentJarPath = Paths.get(currentJarUri).toAbsolutePath().toString();
         
         Path wd = Paths.get(workingDir);
@@ -2110,7 +1996,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
                 if (!wdPath.equals(pepPath.getParent())) {
                     // find the curernt gui JAR location
-                    URI currentJarUri = OsUtils.getCurrentJarPath();
+                    URI currentJarUri = PathUtils.getCurrentJarPath();
                     String currentJarPath = Paths.get(currentJarUri).toAbsolutePath().toString();
 
                     // working dir is different from pepxml file location, need to move output
@@ -2615,7 +2501,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }
 
     private String getDefaultTextMsfragger() {
-        String value = ThisAppProps.load(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER);
+        String value = ThisAppProps.load(ThisAppProps.PROP_BIN_PATH_MSFRAGGER);
         if (value != null)
             return value;
         ResourceBundle bundle = ResourceBundle.getBundle("umich/msfragger/gui/Bundle"); // NOI18N
@@ -2721,7 +2607,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }
 
     private String getDefaultTextPeptideProphet() {
-        String value = ThisAppProps.load(ThisAppProps.PROP_TEXTFIELD_PATH_PEPTIDE_PROPHET);
+        String value = ThisAppProps.load(ThisAppProps.PROP_BIN_PATH_PHILOSOPHER);
         if (value != null)
             return value;
         return getDefaultPhilosopherBinName();
@@ -2818,7 +2704,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     }
     
     private String getDefaultBinMsfragger() {
-        String path = ThisAppProps.load(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER);
+        String path = ThisAppProps.load(ThisAppProps.PROP_BIN_PATH_MSFRAGGER);
         return path == null ? "MSFragger.jar" : path;
     }
     

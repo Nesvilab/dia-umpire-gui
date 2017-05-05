@@ -1221,7 +1221,7 @@ public class FraggerPanel extends javax.swing.JPanel {
 
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-        List<String> props = Arrays.asList(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER, ThisAppProps.PROP_BINARIES_IN);
+        List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, ThisAppProps.PROP_BINARIES_IN);
         String fcPath = ThisAppProps.tryFindPath(props, true);
         SwingUtils.setFileChooserPath(fileChooser, fcPath);
 
@@ -1231,7 +1231,7 @@ public class FraggerPanel extends javax.swing.JPanel {
 
                 File f = fileChooser.getSelectedFile();
                 txtBinMsfragger.setText(f.getAbsolutePath());
-                ThisAppProps.save(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER, f);
+                ThisAppProps.save(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, f);
                 break;
         }
     }//GEN-LAST:event_btnSelectMsfraggerBinActionPerformed
@@ -1443,7 +1443,7 @@ public class FraggerPanel extends javax.swing.JPanel {
     }
         
     private String getDefaultTextMsfragger() {
-        String path = ThisAppProps.load(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER);
+        String path = ThisAppProps.load(ThisAppProps.PROP_BIN_PATH_MSFRAGGER);
         return path == null ? "MSFragger.jar" : path;
     }
 
