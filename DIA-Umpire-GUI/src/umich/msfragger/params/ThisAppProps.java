@@ -68,7 +68,13 @@ public class ThisAppProps extends Properties {
         return null;
     }
 
-    public static void setFilechooserPathToCached(JFileChooser fileChooser, String propName) {
+    
+    /**
+     * Attempts to set file chooser's directory to the one saved in the property.
+     * @param fileChooser
+     * @param propName 
+     */
+    public static void load(String propName, JFileChooser fileChooser) {
         ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
         if (thisAppProps == null) {
             return;
@@ -80,14 +86,14 @@ public class ThisAppProps extends Properties {
         }
     }
 
-    public static void saveTextFieldToCache(JTextField txt, String propName) {
+    public static void save(String propName, JTextField txt) {
         String text = txt.getText().trim();
         if (!text.isEmpty()) {
-            ThisAppProps.savePropToCache(propName, text);
+            ThisAppProps.save(propName, text);
         }
     }
 
-    public static void saveFilechooserPathToCached(File file, String propName) {
+    public static void save(String propName, File file) {
         ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
         if (thisAppProps == null) {
             thisAppProps = new ThisAppProps();
@@ -96,8 +102,8 @@ public class ThisAppProps extends Properties {
         thisAppProps.save();
     }
 
-    public static boolean loadTextFieldFromCache(JTextField txt, String propName) {
-        String cached = ThisAppProps.loadPropFromCache(propName);
+    public static boolean load(String propName, JTextField txt) {
+        String cached = ThisAppProps.load(propName);
         if (cached == null) {
             return false;
         }
@@ -115,7 +121,7 @@ public class ThisAppProps extends Properties {
     public static String tryFindPath(List<String> props, boolean locateJar) {
         String path = null;
         for (String prop : props) {
-            path = ThisAppProps.loadPropFromCache(prop);
+            path = ThisAppProps.load(prop);
             if (path != null) {
                 break;
             }
@@ -138,7 +144,7 @@ public class ThisAppProps extends Properties {
         }
     }
     
-    public static void savePropToCache(String propName, String propVal) {
+    public static void save(String propName, String propVal) {
         if (propName == null || propVal == null)
             throw new IllegalArgumentException("Both property name and value must be non-null");
         ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();
@@ -148,7 +154,7 @@ public class ThisAppProps extends Properties {
         thisAppProps.save();
     }
     
-    public static String loadPropFromCache(String propName) {
+    public static String load(String propName) {
         if (propName == null)
             throw new IllegalArgumentException("Property name must be non-null");
         ThisAppProps thisAppProps = ThisAppProps.loadFromTemp();

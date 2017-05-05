@@ -1225,15 +1225,14 @@ public class FraggerPanel extends javax.swing.JPanel {
         String fcPath = ThisAppProps.tryFindPath(props, true);
         SwingUtils.setFileChooserPath(fileChooser, fcPath);
 
-        int showOpenDialog = fileChooser.showOpenDialog(findParentComponentForDialog(this));
+        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
         switch (showOpenDialog) {
             case JFileChooser.APPROVE_OPTION:
 
-            File f = fileChooser.getSelectedFile();
-            txtBinMsfragger.setText(f.getAbsolutePath());
-            ThisAppProps.saveFilechooserPathToCached(f, ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER);
-            saveBinFragger();
-            break;
+                File f = fileChooser.getSelectedFile();
+                txtBinMsfragger.setText(f.getAbsolutePath());
+                ThisAppProps.save(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER, f);
+                break;
         }
     }//GEN-LAST:event_btnSelectMsfraggerBinActionPerformed
 
@@ -1255,7 +1254,7 @@ public class FraggerPanel extends javax.swing.JPanel {
         fc.setApproveButtonToolTipText("Load into the form");
         fc.setDialogTitle("Select saved file");
         fc.setMultiSelectionEnabled(false);
-        String cached = ThisAppProps.loadPropFromCache(PROP_FILECHOOSER_LAST_PATH);
+        String cached = ThisAppProps.load(PROP_FILECHOOSER_LAST_PATH);
         SwingUtils.setFileChooserPath(fc, cached);
         if (cached != null) {
             Path p = Paths.get(cached);
@@ -1266,7 +1265,7 @@ public class FraggerPanel extends javax.swing.JPanel {
         FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Properties/Params", "properties", "params", "para", "conf");
         fc.setFileFilter(fileNameExtensionFilter);
 
-        Component parent = findParentComponentForDialog(this);
+        Component parent = SwingUtils.findParentComponentForDialog(this);
         int saveResult = fc.showOpenDialog(parent);
         if (JFileChooser.APPROVE_OPTION == saveResult) {
             File selectedFile = fc.getSelectedFile();
@@ -1302,9 +1301,9 @@ public class FraggerPanel extends javax.swing.JPanel {
         fc.setApproveButtonToolTipText("Save to a file");
         fc.setDialogTitle("Choose where params file should be saved");
         fc.setMultiSelectionEnabled(false);
-        SwingUtils.setFileChooserPath(fc, ThisAppProps.loadPropFromCache(PROP_FILECHOOSER_LAST_PATH));
+        SwingUtils.setFileChooserPath(fc, ThisAppProps.load(PROP_FILECHOOSER_LAST_PATH));
         fc.setSelectedFile(new File(MsfraggerParams.DEFAULT_FILE));
-        Component parent = findParentComponentForDialog(this);
+        Component parent = SwingUtils.findParentComponentForDialog(this);
         int saveResult = fc.showSaveDialog(parent);
         if (JFileChooser.APPROVE_OPTION == saveResult) {
             File selectedFile = fc.getSelectedFile();
@@ -1322,7 +1321,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                 }
             }
             try {
-                ThisAppProps.savePropToCache(PROP_FILECHOOSER_LAST_PATH, path.toAbsolutePath().toString());
+                ThisAppProps.save(PROP_FILECHOOSER_LAST_PATH, path.toAbsolutePath().toString());
                 MsfraggerParams saved = new MsfraggerParams();
                 saved.load();               // load defaults
                 fillParamsFromForm(saved);  // overwrite with data from form
@@ -1336,7 +1335,7 @@ public class FraggerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnDefaultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDefaultsActionPerformed
-        int confirmation = JOptionPane.showConfirmDialog(findParentComponentForDialog(this),
+        int confirmation = JOptionPane.showConfirmDialog(SwingUtils.findParentComponentForDialog(this),
             "Are you sure you want to load defaults?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
         if (JOptionPane.OK_OPTION == confirmation) {
             try {
@@ -1375,18 +1374,18 @@ public class FraggerPanel extends javax.swing.JPanel {
                 File toFile = Paths.get(textMsfraggerDb.getText()).toFile();
                 fileChooser.setCurrentDirectory(toFile);
             } catch (Exception e) {
-                SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.loadPropFromCache(ThisAppProps.PROP_DB_FILE_IN));
+                SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_DB_FILE_IN));
             }
         } else {
-            SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.loadPropFromCache(ThisAppProps.PROP_DB_FILE_IN));
+            SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_DB_FILE_IN));
         }
 
-        int showOpenDialog = fileChooser.showOpenDialog(findParentComponentForDialog(this));
+        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
         switch (showOpenDialog) {
             case JFileChooser.APPROVE_OPTION:
                 File f = fileChooser.getSelectedFile();
                 textMsfraggerDb.setText(f.getAbsolutePath());
-                ThisAppProps.savePropToCache(ThisAppProps.PROP_DB_FILE_IN, f.getAbsolutePath());
+                ThisAppProps.save(ThisAppProps.PROP_DB_FILE_IN, f.getAbsolutePath());
             break;
         }
     }//GEN-LAST:event_btnSelectMsfraggerDbActionPerformed
@@ -1421,15 +1420,6 @@ public class FraggerPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBinMsfraggerActionPerformed
 
-    private Component findParentComponentForDialog(Component origin) {
-        if (origin == null)
-            return null;
-        Container parent = origin.getParent();
-        if (parent instanceof JFrame) {
-            return parent;
-        }
-        return findParentComponentForDialog(parent);
-    }
     
     public static PlainDocument getFilterIsotopeCorrection() {
         final String filteredCharsRegex = "[^\\-\\d/]";
@@ -1451,12 +1441,9 @@ public class FraggerPanel extends javax.swing.JPanel {
         });
         return doc;
     }
-    private void saveBinFragger() {
-        ThisAppProps.saveTextFieldToCache(txtBinMsfragger, ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER);
-    }
-    
+        
     private String getDefaultTextMsfragger() {
-        String path = ThisAppProps.loadPropFromCache(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER);
+        String path = ThisAppProps.load(ThisAppProps.PROP_TEXTFIELD_PATH_MSFRAGGER);
         return path == null ? "MSFragger.jar" : path;
     }
 

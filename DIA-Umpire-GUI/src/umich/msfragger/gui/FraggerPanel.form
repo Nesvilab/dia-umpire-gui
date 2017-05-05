@@ -171,9 +171,7 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Digest">
-                      <Border PropertyName="innerBorder" info="null"/>
-                    </TitledBorder>
+                    <TitledBorder title="Digest"/>
                   </Border>
                 </Property>
               </Properties>
@@ -434,9 +432,7 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Modifications">
-                      <Border PropertyName="innerBorder" info="null"/>
-                    </TitledBorder>
+                    <TitledBorder title="Modifications"/>
                   </Border>
                 </Property>
               </Properties>
@@ -583,9 +579,7 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Spectral Processing">
-                      <Border PropertyName="innerBorder" info="null"/>
-                    </TitledBorder>
+                    <TitledBorder title="Spectral Processing"/>
                   </Border>
                 </Property>
               </Properties>
@@ -759,9 +753,7 @@
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Open Search Parameters">
-                      <Border PropertyName="innerBorder" info="null"/>
-                    </TitledBorder>
+                    <TitledBorder title="Open Search Parameters"/>
                   </Border>
                 </Property>
               </Properties>

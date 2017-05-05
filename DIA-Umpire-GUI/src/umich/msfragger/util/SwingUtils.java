@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -38,6 +39,17 @@ import javax.swing.text.JTextComponent;
  * @author Dmitry Avtonomov
  */
 public class SwingUtils {
+
+    public static Component findParentComponentForDialog(Component origin) {
+        if (origin == null) {
+            return null;
+        }
+        Container parent = origin.getParent();
+        if (parent instanceof JFrame) {
+            return parent;
+        }
+        return findParentComponentForDialog(parent);
+    }
 
     private SwingUtils() {}
     
