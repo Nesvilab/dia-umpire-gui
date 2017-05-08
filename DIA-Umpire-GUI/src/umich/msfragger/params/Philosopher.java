@@ -23,6 +23,9 @@ public class Philosopher {
     public static final String CMD_COMET = "comet";
     public static final String CMD_PEPTIDE_PROPHET = "peptideprophet";
     public static final String CMD_PROTEIN_PROPHET = "proteinprophet";
+    public static final String CMD_DATABASE = "database";
+    public static final String CMD_FILTER = "filter";
+    public static final String CMD_REPORT = "report";
     
     public static final String PROTEIN_PROPHET_OUTPUT_FILE = "interact.prot.xml";
 }

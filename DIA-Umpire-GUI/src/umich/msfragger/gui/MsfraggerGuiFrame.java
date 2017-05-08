@@ -273,6 +273,11 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         panelReport = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        checkReportDbAnnotate = new javax.swing.JCheckBox();
+        textReportDbAnnotate = new javax.swing.JTextField();
+        ghostTextPepProph = new GhostText(textReportDbAnnotate, TEXT_SAME_SEQ_DB, defTextColor);
+        checkReportFilter = new javax.swing.JCheckBox();
+        textReportFilter = new javax.swing.JTextField();
         checkCreateReport = new javax.swing.JCheckBox();
         panelRun = new javax.swing.JPanel();
         btnRun = new javax.swing.JButton();
@@ -395,6 +400,11 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         });
 
         textBinPhilosopher.setText(getDefaultBinPhilosopher());
+        textBinPhilosopher.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textBinPhilosopherActionPerformed(evt);
+            }
+        });
         textBinPhilosopher.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 textBinPhilosopherFocusLost(evt);
@@ -787,15 +797,43 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
 
+        checkReportDbAnnotate.setSelected(true);
+        checkReportDbAnnotate.setText("Database Annotation");
+
+        textReportDbAnnotate.setToolTipText("Path to database fasta file. Preferrably leave it as is.");
+
+        checkReportFilter.setSelected(true);
+        checkReportFilter.setText("Filter");
+
+        textReportFilter.setToolTipText("<html>Additional flags for Philosopher<br/>\n--pepxml path-to-pepxml --protxml path-to-combined-protxml<br/>\nwill be added automatically based on previous tabs.");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(checkReportFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(checkReportDbAnnotate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textReportDbAnnotate)
+                    .addComponent(textReportFilter))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 129, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(checkReportDbAnnotate)
+                    .addComponent(textReportDbAnnotate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(checkReportFilter)
+                    .addComponent(textReportFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         checkCreateReport.setSelected(true);
@@ -821,7 +859,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addComponent(checkCreateReport)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(606, Short.MAX_VALUE))
+                .addContainerGap(662, Short.MAX_VALUE))
         );
 
         tabPane.addTab("Report", null, panelReport, "");
@@ -1149,6 +1187,13 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             return;
         }
         processBuilders.addAll(processBuildersProteinProphet);
+        
+        List<ProcessBuilder> processBuildersReport = processBuildersReport("", workingDir, lcmsFilePaths);
+        if (processBuildersReport == null) {
+            resetRunButtons(true);
+            return;
+        }
+        processBuilders.addAll(processBuildersReport);
         
         if (!OsUtils.isWindows()) {
             // On Linux we created symlinks to mzXML files, leave them there
@@ -1685,6 +1730,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         validateAndSavePhilosopherPath(textBinPhilosopher.getText());
     }//GEN-LAST:event_textBinPhilosopherFocusLost
 
+    private void textBinPhilosopherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textBinPhilosopherActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textBinPhilosopherActionPerformed
+
     private boolean validateAndSavePhilosopherPath(String path) {
         String validated = validatePhilosopherPath(path);
         boolean isValid = validated != null;
@@ -1940,7 +1989,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     "Errors", JOptionPane.ERROR_MESSAGE);
             return null;
         } else {
-            Path combinedProtFileFullPath = Paths.get(workingDir, combinedProtFile).toAbsolutePath();
+            Path combinedProtFileFullPath = Paths.get(workingDir, combinedProtFile).toAbsolutePath().normalize();
             return combinedProtFileFullPath;
         }
     }
@@ -2188,6 +2237,25 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 //        }
 //        return processBuilders;
 //    }
+    
+    /**
+     * Compares the value of the textfield to the "ghost text" value and returns
+     * the one from MSFragger panel, if it matches or is empty.
+     * @return 
+     */
+    private String getActualDbPath(String fastaPath) {
+        fastaPath = fastaPath.trim();
+        if (TEXT_SAME_SEQ_DB.equals(fastaPath)) {
+            fastaPath = "";
+        }
+        if (StringUtils.isNullOrWhitespace(fastaPath)) {
+            fastaPath = fraggerPanel.getTxtMsfraggerDb().getText().trim();
+            if (StringUtils.isNullOrWhitespace(fastaPath)) {
+                return null;
+            }
+        }
+        return fastaPath;
+    }
     
     /**
      * Creates the ProcessBuilders for running PeptideProphet.
@@ -2523,6 +2591,123 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         return Collections.emptyList();
     }
     
+    /**
+     * Creates the processBuilders for running ProteinProphet.
+     * @return null in case of error, empty list if nothing needs to be added.
+     */
+    private List<ProcessBuilder> processBuildersReport(String programsDir, String workingDir, List<String> lcmsFilePaths) {
+        if (checkCreateReport.isSelected()) {
+            String bin = textBinPhilosopher.getText().trim();
+            if (StringUtils.isNullOrWhitespace(bin)) {
+                JOptionPane.showMessageDialog(this, "Philosopher binary can not be an empty string.\n",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            bin = PathUtils.testBinaryPath(bin, programsDir);
+            if (bin == null) {
+                JOptionPane.showMessageDialog(this, "Philosopher binary not found or could not be launched.\n"
+                        + "Neither on PATH, nor in the working directory",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            
+            String outputFileName = getCombinedProtFilePath(workingDir).toString();
+            if (outputFileName.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "ProteinProphet output file name can not be an empty string.\n",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            } else if (!outputFileName.toLowerCase().endsWith(".prot.xml")) {
+                JOptionPane.showMessageDialog(this, "ProteinProphet output file name must end with '.prot.xml'.\n",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            } else {
+                int index = outputFileName.trim().toLowerCase().indexOf(".prot.xml");
+                if (index <= 0) {
+                    JOptionPane.showMessageDialog(this, "ProteinProphet output file name must have content before '.prot.xml'.\n",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                    return null;
+                }
+            }
+
+            List<ProcessBuilder> builders = new ArrayList<>();
+            boolean isPhilosopher = isPhilosopherBin(bin);
+            
+            // for new philoshopher we need to run 'init' command first
+            if (isPhilosopher) {
+                List<String> cmd = new ArrayList<>();
+                cmd.add(bin);
+                cmd.add("init");
+                builders.add(new ProcessBuilder(cmd));
+            }
+            
+            Map<String, String> pepxmlDirty = createPepxmlFilePathsDirty(lcmsFilePaths, fraggerPanel.getOutputFileExt());
+            Map<String, String> pepxmlClean = createPepxmlFilePathsAfterMove(pepxmlDirty, workingDir);
+            Map<String, String> interacts = createInteractFilePaths(pepxmlClean, workingDir);
+            Path combinedProtFilePath = getCombinedProtFilePath(workingDir);
+            
+            if (checkReportDbAnnotate.isSelected()) {
+                List<String> cmd = new ArrayList<>();
+                cmd.add(bin);
+                cmd.add(Philosopher.CMD_DATABASE);
+                cmd.add("--annotate");
+                String fastaPath = getActualDbPath(textReportDbAnnotate.getText());
+                if (fastaPath == null) {
+                    JOptionPane.showMessageDialog(this, "Fasta file path can't be empty (Report)",
+                            "Warning", JOptionPane.WARNING_MESSAGE);
+                    return null;
+                }
+                cmd.add(fastaPath);
+                builders.add(new ProcessBuilder(cmd));
+            }
+            
+            // philosopher filter
+            if (checkReportFilter.isSelected()) {
+                List<String> cmd = new ArrayList<>();
+                cmd.add(bin);
+                cmd.add(Philosopher.CMD_FILTER);
+                String filterParams = textReportFilter.getText().trim();
+                if (!StringUtils.isNullOrWhitespace(filterParams)) {
+                    String[] params = filterParams.split("[\\s]+");
+                    for (String p : params) {
+                        cmd.add(p);
+                    }
+                }
+                cmd.add("--pepxml");
+                cmd.add(workingDir);
+                cmd.add("--protxml");
+                cmd.add(combinedProtFilePath.toString());
+                builders.add(new ProcessBuilder(cmd));
+            }
+            
+            // philosopher report
+            if (true) {
+                List<String> cmd = new ArrayList<>();
+                cmd.add(bin);
+                cmd.add(Philosopher.CMD_REPORT);
+                builders.add(new ProcessBuilder(cmd));
+            }
+                    
+            
+            // for new philoshopher 'clean' after ourselves
+            if (isPhilosopher) {
+                List<String> cmd = new ArrayList<>();
+                cmd.add(bin);
+                cmd.add("clean");
+                ProcessBuilder pb = new ProcessBuilder(cmd);
+                builders.add(pb);
+            }
+
+            // set working dir for all processes
+            final File wd = new File(workingDir);
+            for (ProcessBuilder pb : builders) {
+                pb.directory(wd);
+            }
+            
+            return builders;
+        }
+        return Collections.emptyList();
+    }
+    
     private Path getWorkingDir() {
         String wdStr = txtWorkingDir.getText().trim();
         Path path = Paths.get(wdStr).toAbsolutePath();
@@ -2744,6 +2929,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnStop;
     private javax.swing.JCheckBox checkCreateReport;
     private javax.swing.JCheckBox checkDryRun;
+    private javax.swing.JCheckBox checkReportDbAnnotate;
+    private javax.swing.JCheckBox checkReportFilter;
     private javax.swing.JCheckBox chkProteinProphetInteractStar;
     private javax.swing.JCheckBox chkRunPeptideProphet;
     private javax.swing.JCheckBox chkRunProteinProphet;
@@ -2783,6 +2970,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tabPane;
     private javax.swing.JTextField textBinMsfragger;
     private javax.swing.JTextField textBinPhilosopher;
+    private javax.swing.JTextField textReportDbAnnotate;
+    private javax.swing.JTextField textReportFilter;
     private javax.swing.JTextField txtCombinedProtFile;
     private javax.swing.JTextArea txtPeptideProphetCmdLineOptions;
     private javax.swing.JTextField txtPeptideProphetSeqDb;

@@ -310,6 +310,7 @@
                     </Property>
                   </Properties>
                   <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textBinPhilosopherActionPerformed"/>
                     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="textBinPhilosopherFocusLost"/>
                   </Events>
                 </Component>
@@ -870,7 +871,7 @@
                       <Component id="checkCreateReport" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="606" max="32767" attributes="0"/>
+                      <EmptySpace pref="662" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -888,15 +889,66 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="checkReportFilter" max="32767" attributes="0"/>
+                              <Component id="checkReportDbAnnotate" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="textReportDbAnnotate" max="32767" attributes="0"/>
+                              <Component id="textReportFilter" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="129" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="checkReportDbAnnotate" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="textReportDbAnnotate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="checkReportFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="textReportFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JCheckBox" name="checkReportDbAnnotate">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="Database Annotation"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="textReportDbAnnotate">
+                  <Properties>
+                    <Property name="toolTipText" type="java.lang.String" value="Path to database fasta file. Preferrably leave it as is."/>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="ghostTextPepProph = new GhostText(textReportDbAnnotate, TEXT_SAME_SEQ_DB, defTextColor);"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="checkReportFilter">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="Filter"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="textReportFilter">
+                  <Properties>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Additional flags for Philosopher&lt;br/&gt;&#xa;--pepxml path-to-pepxml --protxml path-to-combined-protxml&lt;br/&gt;&#xa;will be added automatically based on previous tabs."/>
+                  </Properties>
+                </Component>
+              </SubComponents>
             </Container>
             <Component class="javax.swing.JCheckBox" name="checkCreateReport">
               <Properties>
