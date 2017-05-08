@@ -1095,7 +1095,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         if (
             !fraggerPanel.isRunMsfragger() &&
             !chkRunPeptideProphet.isSelected() &&
-            !chkRunProteinProphet.isSelected()) {
+            !chkRunProteinProphet.isSelected() &&
+            !checkCreateReport.isSelected()) {
             JOptionPane.showMessageDialog(this, "Nothing to run.\n"
                 + "Please mark checkboxes in other tabs to run processing tools.", "Error", JOptionPane.WARNING_MESSAGE);
             resetRunButtons(true);
