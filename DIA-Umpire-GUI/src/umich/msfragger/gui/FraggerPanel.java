@@ -182,10 +182,11 @@ public class FraggerPanel extends javax.swing.JPanel {
         spinnerClearMzRangeMin.setValue(params.getClearMzRange()[0]);
         spinnerClearMzRangeMax.setValue(params.getClearMzRange()[1]);
         
-        checkZeroBinAcceptExpect.setSelected(params.getZeroBinAcceptExpect());
-        checkZeroBinMultiplyExpect.setSelected(params.getZeroBinMultExpect());
-        checkTrackZeroTopN.setSelected(params.getTrackZeroTopN());
-        checkAddTopNComplementary.setSelected(params.getAddTopNComplementary());
+//        checkZeroBinAcceptExpect.setSelected(params.getZeroBinAcceptExpect());
+//        checkZeroBinMultiplyExpect.setSelected(params.getZeroBinMultExpect());
+//        checkTrackZeroTopN.setSelected(params.getTrackZeroTopN());
+//        checkAddTopNComplementary.setSelected(params.getAddTopNComplementary());
+        spinnerZeroBinAcceptExpect.setValue(params.getZer);
         
         checkMultipleVarMods.setSelected(params.getAllowMultipleVariableModsOnResidue());
         spinnerMaxVarModsPerMod.setValue(params.getMaxVariableModsPerMod());
@@ -427,10 +428,14 @@ public class FraggerPanel extends javax.swing.JPanel {
         jLabel26 = new javax.swing.JLabel();
         spinnerClearMzRangeMax = new javax.swing.JSpinner();
         jPanel4 = new javax.swing.JPanel();
-        checkTrackZeroTopN = new javax.swing.JCheckBox();
-        checkZeroBinAcceptExpect = new javax.swing.JCheckBox();
-        checkZeroBinMultiplyExpect = new javax.swing.JCheckBox();
-        checkAddTopNComplementary = new javax.swing.JCheckBox();
+        spinnerTrackZeroTopN = new javax.swing.JSpinner();
+        lblTrackZeroTopN = new javax.swing.JLabel();
+        lblZeroBinAcceptExpect = new javax.swing.JLabel();
+        spinnerZeroBinAcceptExpect = new javax.swing.JSpinner();
+        lblZeroBinMultiplyExpect = new javax.swing.JLabel();
+        spinnerZeroBinMultiplyExpect = new javax.swing.JSpinner();
+        lblAddTopNComplementary = new javax.swing.JLabel();
+        spinnerAddTopNComplementary = new javax.swing.JSpinner();
         btnDefaults = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         btnLoad = new javax.swing.JButton();
@@ -492,7 +497,7 @@ public class FraggerPanel extends javax.swing.JPanel {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Digest"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Digest"));
 
         comboCleavage.setModel(createCleavageComboBoxModel());
 
@@ -639,18 +644,18 @@ public class FraggerPanel extends javax.swing.JPanel {
                     .addComponent(checkClipNTerm)))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Modifications"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Modifications"));
 
         checkMultipleVarMods.setSelected(true);
         checkMultipleVarMods.setText("Multiple variable mods on residue");
 
         jLabel12.setText("Max var mods per mod");
 
-        spinnerMaxVarModsPerMod.setModel(new javax.swing.SpinnerNumberModel(3, 0, 5, 1));
+        spinnerMaxVarModsPerMod.setModel(new javax.swing.SpinnerNumberModel(2, 0, 5, 1));
 
         jLabel13.setText("Max combos");
 
-        spinnerMaxCombos.setModel(new javax.swing.SpinnerNumberModel(100, 1, 65534, 50));
+        spinnerMaxCombos.setModel(new javax.swing.SpinnerNumberModel(5000, 1, 65534, 50));
 
         tableVarMods.setModel(getDefaultVarModTableModel());
         tableVarMods.setToolTipText("<html>Variable Modifications.<br/>\nValues:<br/>\n<ul>\n<li>A-Z amino acid codes</li>\n<li>\"*\" for any amino acid</li>\n<li>\"[\" and \"]\" specifies protein termini</li>\n<li>\"n\" and \"c\" specifies peptide termini</li>\n</ul>");
@@ -672,19 +677,19 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(checkMultipleVarMods, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel12)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(spinnerMaxVarModsPerMod, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jLabel13)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(spinnerMaxCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jLabel13))
+                                    .addComponent(checkMultipleVarMods))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(spinnerMaxCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -713,7 +718,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Spectral Processing"));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Spectral Processing"));
 
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel19.setText("Min peaks");
@@ -810,16 +815,31 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Open Search Parameters"));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Open Search Parameters"));
 
-        checkTrackZeroTopN.setText("Track Zero Top N");
+        spinnerTrackZeroTopN.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 5));
+        spinnerTrackZeroTopN.setToolTipText(lblTrackZeroTopN.getToolTipText());
 
-        checkZeroBinAcceptExpect.setText("Zero Bin Accept Expect");
+        lblTrackZeroTopN.setText("Track Zero Top N");
+        lblTrackZeroTopN.setToolTipText("<html>Track top N unmodified peptide results separately<br/>\nfrom main results internally for boosting features.<br/>\nShould be set to a number greater than<br/>\noutput_report_topN if zero bin boosting is desired<br/>"); // NOI18N
 
-        checkZeroBinMultiplyExpect.setSelected(true);
-        checkZeroBinMultiplyExpect.setText("Zero Bin Multiply Expect");
+        lblZeroBinAcceptExpect.setText("Zero Bin Accept Expect");
+        lblZeroBinAcceptExpect.setToolTipText("<html>Ranks a zero-bin hit above all non-zero-bin hit if it<br/>\nhas expectation less than this value.");
 
-        checkAddTopNComplementary.setText("Add Top N Complementary");
+        spinnerZeroBinAcceptExpect.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, null, 0.1d));
+        spinnerZeroBinAcceptExpect.setToolTipText(lblZeroBinAcceptExpect.getToolTipText());
+
+        lblZeroBinMultiplyExpect.setText("Zero Bin Multiply Expect");
+        lblZeroBinMultiplyExpect.setToolTipText("<html>Multiplies expect value of PSMs in the zero-bin<br/>\nduring results ordering (set to less than 1 for<br/>\nboosting)"); // NOI18N
+
+        spinnerZeroBinMultiplyExpect.setModel(new javax.swing.SpinnerNumberModel(1.0d, 0.0d, 1.0d, 0.05d));
+        spinnerZeroBinMultiplyExpect.setToolTipText(lblZeroBinMultiplyExpect.getToolTipText());
+
+        lblAddTopNComplementary.setText("Add Top N Complementary");
+        lblAddTopNComplementary.setToolTipText("<html>Inserts complementary ions corresponding to the top<br/>\nN most intense fragments in each experimental<br/>\nspectra. Useful for recovery of modified peptides<br/>\nnear C-terminal in open search. Should be set to 0<br/>\n(disabled) otherwise"); // NOI18N
+
+        spinnerAddTopNComplementary.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 2));
+        spinnerAddTopNComplementary.setToolTipText(lblAddTopNComplementary.getToolTipText());
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -828,12 +848,22 @@ public class FraggerPanel extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(checkZeroBinAcceptExpect)
-                    .addComponent(checkTrackZeroTopN))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(checkAddTopNComplementary)
-                    .addComponent(checkZeroBinMultiplyExpect))
+                    .addComponent(lblZeroBinAcceptExpect)
+                    .addComponent(lblTrackZeroTopN))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(spinnerZeroBinAcceptExpect, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24)
+                        .addComponent(lblZeroBinMultiplyExpect))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(spinnerTrackZeroTopN, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblAddTopNComplementary)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(spinnerZeroBinMultiplyExpect, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                    .addComponent(spinnerAddTopNComplementary))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -841,13 +871,17 @@ public class FraggerPanel extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkZeroBinAcceptExpect)
-                    .addComponent(checkZeroBinMultiplyExpect))
+                    .addComponent(spinnerTrackZeroTopN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTrackZeroTopN)
+                    .addComponent(lblAddTopNComplementary)
+                    .addComponent(spinnerAddTopNComplementary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(checkTrackZeroTopN)
-                    .addComponent(checkAddTopNComplementary))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblZeroBinAcceptExpect)
+                    .addComponent(spinnerZeroBinAcceptExpect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblZeroBinMultiplyExpect)
+                    .addComponent(spinnerZeroBinMultiplyExpect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         btnDefaults.setText("Defaults");
@@ -971,18 +1005,14 @@ public class FraggerPanel extends javax.swing.JPanel {
                             .addComponent(textIsotopeError))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(checkOverrideCharge)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(checkOverrideCharge)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel28)
                                     .addComponent(jLabel30))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel5Layout.createSequentialGroup()
-                                        .addComponent(comboMsLevel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(comboMsLevel, 0, 100, Short.MAX_VALUE)
                                     .addComponent(spinnerOutputMaxExpect)))))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1004,9 +1034,9 @@ public class FraggerPanel extends javax.swing.JPanel {
                             .addComponent(jLabel25))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spinnerReportTopN)
-                            .addComponent(textOutputFileExt, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))))
-                .addContainerGap())
+                            .addComponent(spinnerReportTopN, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textOutputFileExt))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1054,7 +1084,7 @@ public class FraggerPanel extends javax.swing.JPanel {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelMsfraggerParamsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelMsfraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1469,13 +1499,9 @@ public class FraggerPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSelectMsfraggerBin;
     private javax.swing.JButton btnSelectMsfraggerDb;
-    private javax.swing.JCheckBox checkAddTopNComplementary;
     private javax.swing.JCheckBox checkClipNTerm;
     private javax.swing.JCheckBox checkMultipleVarMods;
     private javax.swing.JCheckBox checkOverrideCharge;
-    private javax.swing.JCheckBox checkTrackZeroTopN;
-    private javax.swing.JCheckBox checkZeroBinAcceptExpect;
-    private javax.swing.JCheckBox checkZeroBinMultiplyExpect;
     private javax.swing.JCheckBox chkRunMsfragger;
     private javax.swing.JComboBox<String> comboCleavage;
     private javax.swing.JComboBox<String> comboFragMassTol;
@@ -1525,9 +1551,14 @@ public class FraggerPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblAddTopNComplementary;
+    private javax.swing.JLabel lblTrackZeroTopN;
+    private javax.swing.JLabel lblZeroBinAcceptExpect;
+    private javax.swing.JLabel lblZeroBinMultiplyExpect;
     private javax.swing.JPanel panelMsFragger;
     private javax.swing.JPanel panelMsfraggerBin;
     private javax.swing.JPanel panelMsfraggerParams;
+    private javax.swing.JSpinner spinnerAddTopNComplementary;
     private javax.swing.JSpinner spinnerClearMzRangeMax;
     private javax.swing.JSpinner spinnerClearMzRangeMin;
     private javax.swing.JSpinner spinnerDigestLenMax;
@@ -1551,7 +1582,10 @@ public class FraggerPanel extends javax.swing.JPanel {
     private javax.swing.JSpinner spinnerPrecursorMassTol;
     private javax.swing.JSpinner spinnerPrecursorTrueTol;
     private javax.swing.JSpinner spinnerReportTopN;
+    private javax.swing.JSpinner spinnerTrackZeroTopN;
     private javax.swing.JSpinner spinnerUseTopNPeaks;
+    private javax.swing.JSpinner spinnerZeroBinAcceptExpect;
+    private javax.swing.JSpinner spinnerZeroBinMultiplyExpect;
     private javax.swing.JTable tableAdditionalMods;
     private javax.swing.JTable tableVarMods;
     private javax.swing.JTextField textButNotAfter;

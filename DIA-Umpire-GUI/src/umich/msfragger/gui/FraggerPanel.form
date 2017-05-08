@@ -72,7 +72,7 @@
                   <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanel3" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jPanel1" alignment="0" pref="505" max="32767" attributes="0"/>
+                  <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -445,21 +445,21 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="jScrollPane2" alignment="0" pref="473" max="32767" attributes="0"/>
+                                      <Component id="jScrollPane2" alignment="0" pref="477" max="32767" attributes="0"/>
                                       <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="1" attributes="0">
-                                              <Component id="checkMultipleVarMods" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Component id="spinnerMaxVarModsPerMod" min="-2" pref="50" max="-2" attributes="0"/>
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                                   <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="spinnerMaxCombos" min="-2" pref="70" max="-2" attributes="0"/>
                                               </Group>
+                                              <Component id="checkMultipleVarMods" alignment="0" min="-2" max="-2" attributes="0"/>
                                           </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="spinnerMaxCombos" min="-2" pref="70" max="-2" attributes="0"/>
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -514,7 +514,7 @@
                 <Component class="javax.swing.JSpinner" name="spinnerMaxVarModsPerMod">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                      <SpinnerModel initial="3" maximum="5" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                      <SpinnerModel initial="2" maximum="5" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -526,7 +526,7 @@
                 <Component class="javax.swing.JSpinner" name="spinnerMaxCombos">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                      <SpinnerModel initial="100" maximum="65534" minimum="1" numberType="java.lang.Integer" stepSize="50" type="number"/>
+                      <SpinnerModel initial="5000" maximum="65534" minimum="1" numberType="java.lang.Integer" stepSize="50" type="number"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -764,13 +764,26 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="checkZeroBinAcceptExpect" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="checkTrackZeroTopN" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblZeroBinAcceptExpect" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTrackZeroTopN" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="checkAddTopNComplementary" min="-2" max="-2" attributes="0"/>
-                              <Component id="checkZeroBinMultiplyExpect" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="spinnerZeroBinAcceptExpect" min="-2" pref="75" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                  <Component id="lblZeroBinMultiplyExpect" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="spinnerTrackZeroTopN" min="-2" pref="75" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="lblAddTopNComplementary" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="spinnerZeroBinMultiplyExpect" pref="75" max="32767" attributes="0"/>
+                              <Component id="spinnerAddTopNComplementary" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -781,39 +794,86 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="checkZeroBinAcceptExpect" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="checkZeroBinMultiplyExpect" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="spinnerTrackZeroTopN" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTrackZeroTopN" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAddTopNComplementary" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="spinnerAddTopNComplementary" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="checkTrackZeroTopN" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="checkAddTopNComplementary" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblZeroBinAcceptExpect" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="spinnerZeroBinAcceptExpect" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblZeroBinMultiplyExpect" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="spinnerZeroBinMultiplyExpect" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="12" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JCheckBox" name="checkTrackZeroTopN">
+                <Component class="javax.swing.JSpinner" name="spinnerTrackZeroTopN">
+                  <Properties>
+                    <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                      <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="5" type="number"/>
+                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="lblTrackZeroTopN" name="toolTipText" type="property"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblTrackZeroTopN">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Track Zero Top N"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Track top N unmodified peptide results separately&lt;br/&gt;&#xa;from main results internally for boosting features.&lt;br/&gt;&#xa;Should be set to a number greater than&lt;br/&gt;&#xa;output_report_topN if zero bin boosting is desired&lt;br/&gt;" noResource="true"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="checkZeroBinAcceptExpect">
+                <Component class="javax.swing.JLabel" name="lblZeroBinAcceptExpect">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Zero Bin Accept Expect"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Ranks a zero-bin hit above all non-zero-bin hit if it&lt;br/&gt;&#xa;has expectation less than this value."/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="checkZeroBinMultiplyExpect">
+                <Component class="javax.swing.JSpinner" name="spinnerZeroBinAcceptExpect">
                   <Properties>
-                    <Property name="selected" type="boolean" value="true"/>
-                    <Property name="text" type="java.lang.String" value="Zero Bin Multiply Expect"/>
+                    <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                      <SpinnerModel initial="0.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.1" type="number"/>
+                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="lblZeroBinAcceptExpect" name="toolTipText" type="property"/>
+                    </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="checkAddTopNComplementary">
+                <Component class="javax.swing.JLabel" name="lblZeroBinMultiplyExpect">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Zero Bin Multiply Expect"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Multiplies expect value of PSMs in the zero-bin&lt;br/&gt;&#xa;during results ordering (set to less than 1 for&lt;br/&gt;&#xa;boosting)" noResource="true"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JSpinner" name="spinnerZeroBinMultiplyExpect">
+                  <Properties>
+                    <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                      <SpinnerModel initial="1.0" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.05" type="number"/>
+                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="lblZeroBinMultiplyExpect" name="toolTipText" type="property"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblAddTopNComplementary">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Add Top N Complementary"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Inserts complementary ions corresponding to the top&lt;br/&gt;&#xa;N most intense fragments in each experimental&lt;br/&gt;&#xa;spectra. Useful for recovery of modified peptides&lt;br/&gt;&#xa;near C-terminal in open search. Should be set to 0&lt;br/&gt;&#xa;(disabled) otherwise" noResource="true"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JSpinner" name="spinnerAddTopNComplementary">
+                  <Properties>
+                    <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                      <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="2" type="number"/>
+                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="lblAddTopNComplementary" name="toolTipText" type="property"/>
+                    </Property>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -913,21 +973,15 @@
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="checkOverrideCharge" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      </Group>
+                                      <Component id="checkOverrideCharge" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="1" attributes="0">
                                               <Component id="jLabel28" min="-2" max="-2" attributes="0"/>
                                               <Component id="jLabel30" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" attributes="0">
-                                                  <Component id="comboMsLevel" min="-2" pref="70" max="-2" attributes="0"/>
-                                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                              </Group>
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Component id="comboMsLevel" pref="100" max="32767" attributes="0"/>
                                               <Component id="spinnerOutputMaxExpect" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
@@ -957,12 +1011,12 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="spinnerReportTopN" max="32767" attributes="0"/>
-                                      <Component id="textOutputFileExt" pref="100" max="32767" attributes="0"/>
+                                      <Component id="spinnerReportTopN" min="-2" pref="100" max="-2" attributes="0"/>
+                                      <Component id="textOutputFileExt" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
