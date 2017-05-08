@@ -419,7 +419,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnFindTools.setText("Attempt to find automatically");
+        btnFindTools.setText("Search tools");
         btnFindTools.setToolTipText(lblFindAutomatically.getToolTipText());
         btnFindTools.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -428,7 +428,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         });
 
         lblFindAutomatically.setLabelFor(lblFindAutomatically);
-        lblFindAutomatically.setText("Recursively search for tools in a directory");
+        lblFindAutomatically.setText("Recursively search for tools in a directory (e.g. Downloads)");
         lblFindAutomatically.setToolTipText("<html>If you have the tools downloaded somewhere already, you can<br/>\nuse this button to automatically look for them.");
 
         javax.swing.GroupLayout panelConfigLayout = new javax.swing.GroupLayout(panelConfig);
@@ -1770,50 +1770,47 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         String fcPath = ThisAppProps.tryFindPath(props, true);
         SwingUtils.setFileChooserPath(fileChooser, fcPath);
 
-        // Fragger first
+        
         int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
         switch (showOpenDialog) {
             case JFileChooser.APPROVE_OPTION:
                 File f = fileChooser.getSelectedFile();
                 
+                // Fragger first
                 Pattern regexFragger = Pattern.compile(".*?MSFragger[^\\/]?\\.jar", Pattern.CASE_INSENSITIVE);
                 FileListing listing = new FileListing(Paths.get(f.getAbsolutePath()), regexFragger);
                 List<Path> foundFiles = listing.findFiles();
-                if (foundFiles.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Could not locate MSFragger jar.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    for(Path foundFile : foundFiles) {
-                        if (validateAndSaveMsfraggerPath(foundFile.toString())) {
-                            fraggerFoundPath = foundFile.toString();
-                            ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
-                            JOptionPane.showMessageDialog(this, "Found MSFragger jar.\n"
-                                    + fraggerFoundPath, "Info", JOptionPane.INFORMATION_MESSAGE);
-                            break;
-                        }
+                for(Path foundFile : foundFiles) {
+                    if (validateAndSaveMsfraggerPath(foundFile.toString())) {
+                        fraggerFoundPath = foundFile.toString();
+                        ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
+                        JOptionPane.showMessageDialog(this, "Found MSFragger jar.\n"
+                                + fraggerFoundPath, "Info", JOptionPane.INFORMATION_MESSAGE);
+                        break;
                     }
                 }
-                break;
-        }
-        
-        
-        // now philosopher
-        Pattern regexPhilosopher = Pattern.compile(".*?philosopher[^\\/]*", Pattern.CASE_INSENSITIVE);
-        if (fraggerFoundPath != null) {
-            FileListing listing = new FileListing(Paths.get(fraggerFoundPath), regexPhilosopher);
-            List<Path> findFiles = listing.findFiles();
-            if (!findFiles.isEmpty()) {
-                for (Path foundFile : findFiles) {
+                if (fraggerFoundPath == null) {
+                    JOptionPane.showMessageDialog(this, "Could not locate MSFragger jar.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                } 
+                
+                // now philosopher
+                Pattern regexPhilosopher = Pattern.compile(".*?philosopher[^\\/]*", Pattern.CASE_INSENSITIVE);
+                foundFiles = new FileListing(Paths.get(f.getAbsolutePath()), regexPhilosopher).findFiles();
+                for(Path foundFile : foundFiles) {
                     if (validateAndSavePhilosopherPath(foundFile.toString())) {
                         philosopherFoundPath = foundFile.toString();
-                        ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, philosopherFoundPath);
-                        JOptionPane.showMessageDialog(this, "Found Philosopher executable.\n"
-                                    + philosopherFoundPath, "Info", JOptionPane.INFORMATION_MESSAGE);
-                            break;
+                        ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
+                        JOptionPane.showMessageDialog(this, "Found Philosopher.\n"
+                                + philosopherFoundPath, "Info", JOptionPane.INFORMATION_MESSAGE);
+                        break;
                     }
                 }
-            }
-        }
-        
+                if (philosopherFoundPath == null) {
+                    JOptionPane.showMessageDialog(this, "Could not locate Philosopher.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                }
+                
+                break;
+        } 
     }//GEN-LAST:event_btnFindToolsActionPerformed
 
     private void btnPhilosopherBinBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhilosopherBinBrowseActionPerformed

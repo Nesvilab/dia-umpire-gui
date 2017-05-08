@@ -324,7 +324,7 @@
             </Container>
             <Component class="javax.swing.JButton" name="btnFindTools">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Attempt to find automatically"/>
+                <Property name="text" type="java.lang.String" value="Search tools"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection component="lblFindAutomatically" name="toolTipText" type="property"/>
                 </Property>
@@ -338,7 +338,7 @@
                 <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                   <ComponentRef name="lblFindAutomatically"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Recursively search for tools in a directory"/>
+                <Property name="text" type="java.lang.String" value="Recursively search for tools in a directory (e.g. Downloads)"/>
                 <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;If you have the tools downloaded somewhere already, you can&lt;br/&gt;&#xa;use this button to automatically look for them."/>
               </Properties>
             </Component>
