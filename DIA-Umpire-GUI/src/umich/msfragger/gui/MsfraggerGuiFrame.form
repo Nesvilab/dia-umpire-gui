@@ -353,8 +353,8 @@
         <Container class="javax.swing.JPanel" name="panelSelectFiles">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Select Raw Files">
-                <Property name="tabTitle" type="java.lang.String" value="Select Raw Files"/>
+              <JTabbedPaneConstraints tabName="Select LC/MS Files">
+                <Property name="tabTitle" type="java.lang.String" value="Select LC/MS Files"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -452,6 +452,7 @@
                 <Component class="javax.swing.JButton" name="btnRawAddFolder">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Add Folder"/>
+                    <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Recursively search a directory, importing&lt;br/&gt;&#xa;all compatible LC/MS files."/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRawAddFolderActionPerformed"/>

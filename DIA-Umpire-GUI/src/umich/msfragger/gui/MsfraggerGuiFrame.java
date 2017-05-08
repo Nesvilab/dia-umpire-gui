@@ -503,6 +503,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         });
 
         btnRawAddFolder.setText("Add Folder");
+        btnRawAddFolder.setToolTipText("<html>Recursively search a directory, importing<br/>\nall compatible LC/MS files.");
         btnRawAddFolder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRawAddFolderActionPerformed(evt);
@@ -566,7 +567,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tabPane.addTab("Select Raw Files", panelSelectFiles);
+        tabPane.addTab("Select LC/MS Files", panelSelectFiles);
 
         javax.swing.GroupLayout panelMsFraggerLayout = new javax.swing.GroupLayout(panelMsFragger);
         panelMsFragger.setLayout(panelMsFraggerLayout);
@@ -1423,7 +1424,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setApproveButtonText("Select");
         fileChooser.setApproveButtonToolTipText("Select folder to import");
-        fileChooser.setDialogTitle("Select binary to use for PeptideProphet");
+        fileChooser.setDialogTitle("Select a folder with LC/MS files (searched recursively)");
         fileChooser.setMultiSelectionEnabled(true);
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
@@ -1955,7 +1956,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         List<ProcessBuilder> builders = new LinkedList<>();
         if (fraggerPanel.isRunMsfragger()) {
             
-            String bin = fraggerPanel.getFraggerBin();
+            String bin = textBinMsfragger.getText().trim();
             if (StringUtils.isNullOrWhitespace(bin)) {
                 JOptionPane.showMessageDialog(this, "Binary for running Fragger can not be an empty string.\n",
                     "Error", JOptionPane.ERROR_MESSAGE);
