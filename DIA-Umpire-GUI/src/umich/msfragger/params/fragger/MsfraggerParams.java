@@ -488,52 +488,40 @@ public class MsfraggerParams {
 //        props.setProp(PROP_track_zero_topN, Integer.toString(v));
 //    }
     
-    public boolean getTrackZeroTopN() {
+    public int getTrackZeroTopN() {
         int v = Integer.parseInt(props.getProp(PROP_track_zero_topN, "0").value);
-        return v == 1;
+        return v;
     }
     
-    public void setTrackZeroTopN(boolean v) {
-        int vInt = v ? 1 : 0;
-        props.setProp(PROP_track_zero_topN, Integer.toString(vInt));
+    public void setTrackZeroTopN(int v) {
+        props.setProp(PROP_track_zero_topN, Integer.toString(v));
     }
     
-    public boolean getZeroBinAcceptExpect() {
-        int v = Integer.parseInt(props.getProp(PROP_zero_bin_accept_expect, "0").value);
-        return v == 1;
+    public double getZeroBinAcceptExpect() {
+        double v = Double.parseDouble(props.getProp(PROP_zero_bin_accept_expect, "0.0").value);
+        return v;
     }
     
-    public void setZeroBinAcceptExpect(boolean v) {
-        int vInt = v ? 1 : 0;
-        props.setProp(PROP_zero_bin_accept_expect, Integer.toString(vInt));
+    public void setZeroBinAcceptExpect(double v) {
+        props.setProp(PROP_zero_bin_accept_expect, DF.format(v));
     }
     
-    public boolean getZeroBinMultExpect() {
-        int v = Integer.parseInt(props.getProp(PROP_zero_bin_mult_expect, "1").value);
-        return v == 1;
+    public double getZeroBinMultExpect() {
+        double v = Double.parseDouble(props.getProp(PROP_zero_bin_mult_expect, "1.0").value);
+        return v;
     }
     
-    public void setZeroBinMultExpect(boolean v) {
-        int vInt = v ? 1 : 0;
-        props.setProp(PROP_zero_bin_mult_expect, Integer.toString(vInt));
+    public void setZeroBinMultExpect(double v) {
+        props.setProp(PROP_zero_bin_mult_expect, DF.format(v));
     }
     
-//    public int getAddTopNComplementary() {
-//        return Integer.parseInt(props.getProp(PROP_add_topN_complementary, "0").value);
-//    }
-//    
-//    public void setAddTopNComplementary(int v) {
-//        props.setProp(PROP_add_topN_complementary, Integer.toString(v));
-//    }
-    
-    public boolean getAddTopNComplementary() {
+    public int getAddTopNComplementary() {
         int v = Integer.parseInt(props.getProp(PROP_add_topN_complementary, "0").value);
-        return v == 1;
+        return v;
     }
     
-    public void setAddTopNComplementary(boolean v) {
-        int vInt = v ? 1 : 0;
-        props.setProp(PROP_add_topN_complementary, Integer.toString(vInt));
+    public void setAddTopNComplementary(int v) {
+        props.setProp(PROP_add_topN_complementary, Integer.toString(v));
     }
     
     public int getMinimumPeaks() {

@@ -186,7 +186,10 @@ public class FraggerPanel extends javax.swing.JPanel {
 //        checkZeroBinMultiplyExpect.setSelected(params.getZeroBinMultExpect());
 //        checkTrackZeroTopN.setSelected(params.getTrackZeroTopN());
 //        checkAddTopNComplementary.setSelected(params.getAddTopNComplementary());
-        spinnerZeroBinAcceptExpect.setValue(params.getZer);
+        spinnerZeroBinAcceptExpect.setValue(params.getZeroBinAcceptExpect());
+        spinnerZeroBinMultiplyExpect.setValue(params.getZeroBinMultExpect());
+        spinnerTrackZeroTopN.setValue(params.getTrackZeroTopN());
+        spinnerAddTopNComplementary.setValue(params.getAddTopNComplementary());
         
         checkMultipleVarMods.setSelected(params.getAllowMultipleVariableModsOnResidue());
         spinnerMaxVarModsPerMod.setValue(params.getMaxVariableModsPerMod());
@@ -284,10 +287,14 @@ public class FraggerPanel extends javax.swing.JPanel {
         double clearMzHi = (Double)spinnerClearMzRangeMax.getValue();
         params.setClearMzRange(new double[] {clearMzLo, clearMzHi});
         
-        params.setZeroBinAcceptExpect(checkZeroBinAcceptExpect.isSelected());
-        params.setZeroBinMultExpect(checkZeroBinMultiplyExpect.isSelected());
-        params.setTrackZeroTopN(checkTrackZeroTopN.isSelected());
-        params.setAddTopNComplementary(checkAddTopNComplementary.isSelected());
+//        params.setZeroBinAcceptExpect(checkZeroBinAcceptExpect.isSelected());
+//        params.setZeroBinMultExpect(checkZeroBinMultiplyExpect.isSelected());
+//        params.setTrackZeroTopN(checkTrackZeroTopN.isSelected());
+//        params.setAddTopNComplementary(checkAddTopNComplementary.isSelected());
+        params.setTrackZeroTopN((Integer)spinnerTrackZeroTopN.getValue());
+        params.setZeroBinAcceptExpect((Double)spinnerZeroBinAcceptExpect.getValue());
+        params.setZeroBinMultExpect((Double)spinnerZeroBinMultiplyExpect.getValue());
+        params.setAddTopNComplementary((Integer)spinnerAddTopNComplementary.getValue());
         
         params.setAllowMultipleVariableModsOnResidue(checkMultipleVarMods.isSelected());
         params.setMaxVariableModsPerMod((Integer)spinnerMaxVarModsPerMod.getValue());
@@ -302,6 +309,10 @@ public class FraggerPanel extends javax.swing.JPanel {
     
     private<T> T utilSpinnerValue(JSpinner spinner, Class<T> clazz) {
         return (T)spinner.getValue();
+    }
+    
+    public String getPepxmlExtension() {
+        return textOutputFileExt.getText().trim();
     }
     
     public MsfraggerParams getParamsFromForm() {
