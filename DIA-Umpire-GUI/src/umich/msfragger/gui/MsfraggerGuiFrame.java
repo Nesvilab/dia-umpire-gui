@@ -239,6 +239,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         btnFindTools = new javax.swing.JButton();
         lblFindAutomatically = new javax.swing.JLabel();
+        btnClearCache = new javax.swing.JButton();
         panelSelectFiles = new javax.swing.JPanel();
         panelSelectedFiles = new javax.swing.JPanel();
         btnRawAddFiles = new javax.swing.JButton();
@@ -280,7 +281,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         textReportFilter = new javax.swing.JTextField();
         checkCreateReport = new javax.swing.JCheckBox();
         panelRun = new javax.swing.JPanel();
-        btnRun = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
         btnClearConsole = new javax.swing.JButton();
         consoleScrollPane = new javax.swing.JScrollPane();
@@ -293,7 +293,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         btnAbout = new javax.swing.JButton();
         checkDryRun = new javax.swing.JCheckBox();
         btnCheckJavaVersion = new javax.swing.JButton();
-        btnReset = new javax.swing.JButton();
+        btnRun = new javax.swing.JButton();
 
         jLabel2.setText("jLabel2");
 
@@ -460,23 +460,33 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         lblFindAutomatically.setText("Recursively search for tools in a directory (e.g. Downloads)");
         lblFindAutomatically.setToolTipText("<html>If you have the tools downloaded somewhere already, you can<br/>\nuse this button to automatically look for them.");
 
+        btnClearCache.setText("Clear Cache");
+        btnClearCache.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearCacheActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelConfigLayout = new javax.swing.GroupLayout(panelConfig);
         panelConfig.setLayout(panelConfigLayout);
         panelConfigLayout.setHorizontalGroup(
             panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelConfigLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelMsfraggerConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelPhilosopherConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(panelConfigLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelMsfraggerConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panelPhilosopherConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(panelConfigLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnFindTools)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblFindAutomatically)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnClearCache)))
                 .addContainerGap())
-            .addGroup(panelConfigLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(btnFindTools)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblFindAutomatically)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelConfigLayout.setVerticalGroup(
             panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -484,7 +494,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnFindTools)
-                    .addComponent(lblFindAutomatically))
+                    .addComponent(lblFindAutomatically)
+                    .addComponent(btnClearCache))
                 .addGap(18, 18, 18)
                 .addComponent(panelMsfraggerConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -864,14 +875,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
         tabPane.addTab("Report", null, panelReport, "");
 
-        btnRun.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnRun.setText("Run");
-        btnRun.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRunActionPerformed(evt);
-            }
-        });
-
         btnStop.setText("Stop");
         btnStop.setEnabled(false);
         btnStop.addActionListener(new java.awt.event.ActionListener() {
@@ -918,10 +921,10 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             }
         });
 
-        btnReset.setText("Clear Cache");
-        btnReset.addActionListener(new java.awt.event.ActionListener() {
+        btnRun.setText("RUN");
+        btnRun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnResetActionPerformed(evt);
+                btnRunActionPerformed(evt);
             }
         });
 
@@ -939,11 +942,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                         .addComponent(btnStop)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(checkDryRun)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
                         .addComponent(btnCheckJavaVersion)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnReset)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                         .addComponent(btnAbout)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClearConsole))
@@ -965,13 +966,12 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                     .addComponent(txtWorkingDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelRunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRun)
                     .addComponent(btnStop)
                     .addComponent(btnClearConsole)
                     .addComponent(btnAbout)
                     .addComponent(checkDryRun)
                     .addComponent(btnCheckJavaVersion)
-                    .addComponent(btnReset))
+                    .addComponent(btnRun))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(consoleScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
                 .addContainerGap())
@@ -1089,7 +1089,411 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         submittedProcesses.clear();
     }//GEN-LAST:event_btnStopActionPerformed
 
+    private void btnProteinProphetSeqDbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProteinProphetSeqDbActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("FASTA files", "fa", "fasta");
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+        fileChooser.setApproveButtonText("Select file");
+        fileChooser.setApproveButtonToolTipText("Select");
+        fileChooser.setDialogTitle("Choose FASTA file");
+        fileChooser.setMultiSelectionEnabled(false);
+
+        if (!StringUtils.isNullOrWhitespace(txtProteinProphetSeqDb.getText())
+                && !TEXT_SAME_SEQ_DB.contains(txtProteinProphetSeqDb.getText())) {
+            try {
+                File toFile = Paths.get(txtProteinProphetSeqDb.getText()).toFile();
+                fileChooser.setCurrentDirectory(toFile);
+            } catch (Exception e) {
+                SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_DB_FILE_IN));
+            }
+        } else {
+            SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_DB_FILE_IN));
+        }
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                File f = fileChooser.getSelectedFile();
+                txtProteinProphetSeqDb.setText(f.getAbsolutePath());
+                ThisAppProps.save(ThisAppProps.PROP_DB_FILE_IN, f.getAbsolutePath());
+                break;
+        }
+    }//GEN-LAST:event_btnProteinProphetSeqDbActionPerformed
+
+    private void chkRunProteinProphetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRunProteinProphetActionPerformed
+        boolean selected = chkRunProteinProphet.isSelected();
+        Container[] comps = new Container[] {
+            panelProteinProphetOptions
+        };
+        for (Container c : comps) {
+            SwingUtils.enableComponents(c, selected);
+        }
+    }//GEN-LAST:event_chkRunProteinProphetActionPerformed
+
+    private void btnSelectPeptideProphetSeqDbPathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectPeptideProphetSeqDbPathActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("FASTA files", "fa", "fasta");
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+        fileChooser.setApproveButtonText("Select file");
+        fileChooser.setApproveButtonToolTipText("Select");
+        fileChooser.setDialogTitle("Choose FASTA file");
+        fileChooser.setMultiSelectionEnabled(false);
+
+        if (!StringUtils.isNullOrWhitespace(txtPeptideProphetSeqDb.getText())
+                && !TEXT_SAME_SEQ_DB.contains(txtPeptideProphetSeqDb.getText())) {
+            try {
+                File toFile = Paths.get(txtPeptideProphetSeqDb.getText()).toFile();
+                fileChooser.setCurrentDirectory(toFile);
+            } catch (Exception e) {
+                SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_DB_FILE_IN));
+            }
+        } else {
+            SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_DB_FILE_IN));
+        }
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                File f = fileChooser.getSelectedFile();
+                txtPeptideProphetSeqDb.setText(f.getAbsolutePath());
+                ThisAppProps.save(ThisAppProps.PROP_DB_FILE_IN, f.getAbsolutePath());
+                break;
+        }
+    }//GEN-LAST:event_btnSelectPeptideProphetSeqDbPathActionPerformed
+
+    private void chkRunPeptideProphetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRunPeptideProphetActionPerformed
+        boolean selected = chkRunPeptideProphet.isSelected();
+        Container[] comps = new Container[] {
+            panelPeptideProphetOptions
+        };
+        for (Container c : comps) {
+            SwingUtils.enableComponents(c, selected);
+        }
+    }//GEN-LAST:event_chkRunPeptideProphetActionPerformed
+
+    
+    private void btnRawClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawClearActionPerformed
+        tableModelRawFiles.dataClear();
+    }//GEN-LAST:event_btnRawClearActionPerformed
+
+    private void btnRawAddFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawAddFilesActionPerformed
+        if (btnRawAddFiles == evt.getSource()) {
+            String approveText = "Select";
+            JFileChooser fc = new JFileChooser();
+            fc.setAcceptAllFileFilterUsed(true);
+            FileNameExtensionFilter fileNameExtensionFilter = FraggerPanel.fileNameExtensionFilter;
+            fc.setFileFilter(fileNameExtensionFilter);
+            fc.setApproveButtonText(approveText);
+            fc.setDialogTitle("Choose raw data files");
+            fc.setMultiSelectionEnabled(true);
+            fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+            ThisAppProps.load(ThisAppProps.PROP_LCMS_FILES_IN, fc);
+
+            int retVal = fc.showDialog(this, approveText);
+            if (retVal == JFileChooser.APPROVE_OPTION) {
+                File[] files = fc.getSelectedFiles();
+                if (files.length > 0) {
+                    ThisAppProps.save(ThisAppProps.PROP_LCMS_FILES_IN, files[0]);
+                    List<Path> paths = new ArrayList<>(files.length);
+                    for (File f : files) {
+                        paths.add(Paths.get(f.getAbsolutePath()));
+                    }
+                    tableModelRawFiles.dataAddAll(paths);
+                }
+
+            } else {
+
+            }
+        }
+    }//GEN-LAST:event_btnRawAddFilesActionPerformed
+
+    private void btnRawRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawRemoveActionPerformed
+        int[] sel = tableRawFiles.getSelectedRows();
+        if (sel.length == 0)
+            return;
+        List<Path> toRemove = new ArrayList<>();
+        for (int i = 0; i < sel.length; i++) {
+            toRemove.add(tableModelRawFiles.dataGet(sel[i]));
+        }
+        tableRawFiles.getSelectionModel().clearSelection();
+        tableModelRawFiles.dataRemoveAll(toRemove);
+    }//GEN-LAST:event_btnRawRemoveActionPerformed
+
+    private void btnRawAddFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawAddFolderActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select");
+        fileChooser.setApproveButtonToolTipText("Select folder to import");
+        fileChooser.setDialogTitle("Select a folder with LC/MS files (searched recursively)");
+        fileChooser.setAcceptAllFileFilterUsed(true);
+        FileNameExtensionFilter fileNameExtensionFilter = FraggerPanel.fileNameExtensionFilter;
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+        fileChooser.setMultiSelectionEnabled(true);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+        SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_LCMS_FILES_IN));
+
+        int showOpenDialog = fileChooser.showOpenDialog(this);
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                File[] files = fileChooser.getSelectedFiles();
+                ArrayList<Path> paths = new ArrayList<>(files.length);
+                for (File f : files) {
+                    boolean isDirectory = f.isDirectory();
+                    if (isDirectory) {
+                        ThisAppProps.save(ThisAppProps.PROP_LCMS_FILES_IN, f);
+                        PathUtils.traverseDirectoriesAcceptingFiles(f, FraggerPanel.fileNameExtensionFilter, paths);
+                    } else {
+                        if (FraggerPanel.fileNameExtensionFilter.accept(f)) {
+                            paths.add(Paths.get(f.getAbsolutePath()));
+                        }
+                    }
+                }
+                tableModelRawFiles.dataAddAll(paths);
+                
+                
+                break;
+        }
+    }//GEN-LAST:event_btnRawAddFolderActionPerformed
+
+    private void btnCheckJavaVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckJavaVersionActionPerformed
+//        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+//        map.put("java.version", "")
+        List<String> propNames = Arrays.asList(
+                "java.version",
+                "java.vm.specification.version",
+                "java.vm.specification.vendor",
+                "java.vm.specification.name",
+                "java.vm.version",
+                "java.vm.vendor",
+                "java.vm.name",
+                "java.specification.version",
+                "java.specification.vendor",
+                "java.specification.name"
+                );
+        StringBuilder sb = new StringBuilder("Java Info:\n");
+        for (String propName : propNames) {
+            String val = System.getProperty(propName);
+            if (!StringUtils.isNullOrWhitespace(val)) {
+                sb.append(propName).append(": ").append(val).append("\n");
+            }
+        }
+        
+        LogUtils.println(console, sb.toString());
+    }//GEN-LAST:event_btnCheckJavaVersionActionPerformed
+
+    private void btnMsfraggerBinBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMsfraggerBinBrowseActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select");
+        fileChooser.setDialogTitle("Select MSFragger jar");
+        fileChooser.setMultiSelectionEnabled(false);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
+        fileChooser.setFileFilter(fileNameExtensionFilter);
+
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, ThisAppProps.PROP_BINARIES_IN);
+        String fcPath = ThisAppProps.tryFindPath(props, true);
+        SwingUtils.setFileChooserPath(fileChooser, fcPath);
+
+        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                File f = fileChooser.getSelectedFile();
+                if (validateAndSaveMsfraggerPath(f.getAbsolutePath())) {
+                    ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, f.getAbsolutePath());
+                }
+                break;
+        }
+    }//GEN-LAST:event_btnMsfraggerBinBrowseActionPerformed
+
+    /**
+     * Checks if a file is a JAR file and that it contains MSFragger.class at the top level.
+     * @param f  file to check.
+     * @return  True if it's a real JAR file with MSFragger.class at the top level inside.
+     */
+    private boolean validateAndSaveMsfraggerPath(String path) {
+        boolean isValid = validateMsfraggerPath(path);
+        if (isValid) {
+            textBinMsfragger.setText(path);
+            ThisAppProps.save(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, path);
+        }
+        enableMsfraggerPanels(isValid);
+        return isValid;
+    }
+    
+    private boolean validateMsfraggerPath(String path) {
+        File f = new File(path);
+        if (!f.getName().toLowerCase().endsWith(".jar"))
+            return false;
+        if (!Files.exists(Paths.get(f.getAbsolutePath()))) {
+            return false;
+        }
+        
+        try {
+            ZipFile zf = new ZipFile(f);
+            Enumeration<? extends ZipEntry> entries = zf.entries();
+            while(entries.hasMoreElements()) {
+                ZipEntry ze = entries.nextElement();
+                if ("MSFragger.class".equals(ze.getName())) {
+                    return true;
+                }
+            }
+        } catch (IOException ex) {
+            // doesn't matter
+            Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return false;
+    }
+    
+    private void btnMsfraggerBinDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMsfraggerBinDownloadActionPerformed
+        try {
+            Desktop.getDesktop().browse(URI.create("https://secure.nouvant.com/umich/technology/7143/license/633"));
+        } catch (IOException ex) {
+            Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnMsfraggerBinDownloadActionPerformed
+
+    private void urlHandlerViaSystemBrowser(javax.swing.event.HyperlinkEvent evt) {//GEN-FIRST:event_urlHandlerViaSystemBrowser
+        if (evt.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
+            
+            URI uri;
+            try {
+                uri = evt.getURL().toURI();
+            } catch (URISyntaxException ex) {
+                JOptionPane.showMessageDialog(null,
+                            "Could not convert URL to URI: " + evt.getURL(),
+                            "Cannot Open Link", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                try {
+                    desktop.browse(uri);
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null,
+                            "Failed to open " + uri + " - your computer is likely misconfigured.\n"
+                            + "Error Message: " + e.getMessage(),
+                            "Cannot Open Link", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Java is not able to open a browser on your computer.",
+                        "Cannot Open Link", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_urlHandlerViaSystemBrowser
+
+    private void btnPhilosopherBinDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhilosopherBinDownloadActionPerformed
+        downloadPhilosopher();
+    }//GEN-LAST:event_btnPhilosopherBinDownloadActionPerformed
+
+    private void btnFindToolsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindToolsActionPerformed
+        
+        String fraggerFoundPath = null;
+        String philosopherFoundPath = null;
+        
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Search here");
+        fileChooser.setApproveButtonToolTipText("Search this directory recursively");
+        fileChooser.setDialogTitle("Select path to search for binaries");
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, ThisAppProps.PROP_BINARIES_IN, ThisAppProps.PROP_BIN_PATH_PHILOSOPHER);
+        String fcPath = ThisAppProps.tryFindPath(props, true);
+        SwingUtils.setFileChooserPath(fileChooser, fcPath);
+
+        
+        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                File f = fileChooser.getSelectedFile();
+                
+                // Fragger first
+                Pattern regexFragger = Pattern.compile(".*?MSFragger[^\\/]?\\.jar", Pattern.CASE_INSENSITIVE);
+                FileListing listing = new FileListing(Paths.get(f.getAbsolutePath()), regexFragger);
+                List<Path> foundFiles = listing.findFiles();
+                for(Path foundFile : foundFiles) {
+                    if (validateAndSaveMsfraggerPath(foundFile.toString())) {
+                        fraggerFoundPath = foundFile.toString();
+                        ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
+                        JOptionPane.showMessageDialog(this, "Found MSFragger jar.\n"
+                                + fraggerFoundPath, "Info", JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    }
+                }
+                if (fraggerFoundPath == null) {
+                    JOptionPane.showMessageDialog(this, "Could not locate MSFragger jar.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                } 
+                
+                // now philosopher
+                Pattern regexPhilosopher = Pattern.compile(".*?philosopher[^\\/]*", Pattern.CASE_INSENSITIVE);
+                foundFiles = new FileListing(Paths.get(f.getAbsolutePath()), regexPhilosopher).findFiles();
+                for(Path foundFile : foundFiles) {
+                    if (validateAndSavePhilosopherPath(foundFile.toString())) {
+                        philosopherFoundPath = foundFile.toString();
+                        ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
+                        JOptionPane.showMessageDialog(this, "Found Philosopher.\n"
+                                + philosopherFoundPath, "Info", JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    }
+                }
+                if (philosopherFoundPath == null) {
+                    JOptionPane.showMessageDialog(this, "Could not locate Philosopher.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                }
+                
+                break;
+        } 
+    }//GEN-LAST:event_btnFindToolsActionPerformed
+
+    private void btnPhilosopherBinBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhilosopherBinBrowseActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Select");
+        fileChooser.setDialogTitle("Select Philosopher binary");
+        fileChooser.setMultiSelectionEnabled(false);
+        if (OsUtils.isWindows()) {
+            FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Executables", "exe");
+            fileChooser.setFileFilter(fileNameExtensionFilter);
+        }
+        
+
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_PHILOSOPHER, ThisAppProps.PROP_BINARIES_IN);
+        String fcPath = ThisAppProps.tryFindPath(props, true);
+        SwingUtils.setFileChooserPath(fileChooser, fcPath);
+
+        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
+        switch (showOpenDialog) {
+            case JFileChooser.APPROVE_OPTION:
+                File f = fileChooser.getSelectedFile();
+                if (validateAndSavePhilosopherPath(f.getAbsolutePath())) {
+                    ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, f.getAbsolutePath());
+                }
+                break;
+        }
+    }//GEN-LAST:event_btnPhilosopherBinBrowseActionPerformed
+
+    private void textBinMsfraggerFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textBinMsfraggerFocusLost
+        validateAndSaveMsfraggerPath(textBinMsfragger.getText());
+    }//GEN-LAST:event_textBinMsfraggerFocusLost
+
+    private void textBinPhilosopherFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textBinPhilosopherFocusLost
+        validateAndSavePhilosopherPath(textBinPhilosopher.getText());
+    }//GEN-LAST:event_textBinPhilosopherFocusLost
+
+    private void textBinPhilosopherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textBinPhilosopherActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textBinPhilosopherActionPerformed
+
+    private void btnClearCacheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearCacheActionPerformed
+        ThisAppProps.clearCache();
+    }//GEN-LAST:event_btnClearCacheActionPerformed
+
     private void btnRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRunActionPerformed
+                                               
         resetRunButtons(false);
 
         if (
@@ -1333,407 +1737,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         exec.submit(finalizerTask);
 
         exec.shutdown();
+    
     }//GEN-LAST:event_btnRunActionPerformed
-
-    private void btnProteinProphetSeqDbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProteinProphetSeqDbActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("FASTA files", "fa", "fasta");
-        fileChooser.setFileFilter(fileNameExtensionFilter);
-        fileChooser.setApproveButtonText("Select file");
-        fileChooser.setApproveButtonToolTipText("Select");
-        fileChooser.setDialogTitle("Choose FASTA file");
-        fileChooser.setMultiSelectionEnabled(false);
-
-        if (!StringUtils.isNullOrWhitespace(txtProteinProphetSeqDb.getText())
-                && !TEXT_SAME_SEQ_DB.contains(txtProteinProphetSeqDb.getText())) {
-            try {
-                File toFile = Paths.get(txtProteinProphetSeqDb.getText()).toFile();
-                fileChooser.setCurrentDirectory(toFile);
-            } catch (Exception e) {
-                SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_DB_FILE_IN));
-            }
-        } else {
-            SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_DB_FILE_IN));
-        }
-
-        int showOpenDialog = fileChooser.showOpenDialog(this);
-        switch (showOpenDialog) {
-            case JFileChooser.APPROVE_OPTION:
-                File f = fileChooser.getSelectedFile();
-                txtProteinProphetSeqDb.setText(f.getAbsolutePath());
-                ThisAppProps.save(ThisAppProps.PROP_DB_FILE_IN, f.getAbsolutePath());
-                break;
-        }
-    }//GEN-LAST:event_btnProteinProphetSeqDbActionPerformed
-
-    private void chkRunProteinProphetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRunProteinProphetActionPerformed
-        boolean selected = chkRunProteinProphet.isSelected();
-        Container[] comps = new Container[] {
-            panelProteinProphetOptions
-        };
-        for (Container c : comps) {
-            SwingUtils.enableComponents(c, selected);
-        }
-    }//GEN-LAST:event_chkRunProteinProphetActionPerformed
-
-    private void btnSelectPeptideProphetSeqDbPathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectPeptideProphetSeqDbPathActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("FASTA files", "fa", "fasta");
-        fileChooser.setFileFilter(fileNameExtensionFilter);
-        fileChooser.setApproveButtonText("Select file");
-        fileChooser.setApproveButtonToolTipText("Select");
-        fileChooser.setDialogTitle("Choose FASTA file");
-        fileChooser.setMultiSelectionEnabled(false);
-
-        if (!StringUtils.isNullOrWhitespace(txtPeptideProphetSeqDb.getText())
-                && !TEXT_SAME_SEQ_DB.contains(txtPeptideProphetSeqDb.getText())) {
-            try {
-                File toFile = Paths.get(txtPeptideProphetSeqDb.getText()).toFile();
-                fileChooser.setCurrentDirectory(toFile);
-            } catch (Exception e) {
-                SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_DB_FILE_IN));
-            }
-        } else {
-            SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_DB_FILE_IN));
-        }
-
-        int showOpenDialog = fileChooser.showOpenDialog(this);
-        switch (showOpenDialog) {
-            case JFileChooser.APPROVE_OPTION:
-                File f = fileChooser.getSelectedFile();
-                txtPeptideProphetSeqDb.setText(f.getAbsolutePath());
-                ThisAppProps.save(ThisAppProps.PROP_DB_FILE_IN, f.getAbsolutePath());
-                break;
-        }
-    }//GEN-LAST:event_btnSelectPeptideProphetSeqDbPathActionPerformed
-
-    private void chkRunPeptideProphetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRunPeptideProphetActionPerformed
-        boolean selected = chkRunPeptideProphet.isSelected();
-        Container[] comps = new Container[] {
-            panelPeptideProphetOptions
-        };
-        for (Container c : comps) {
-            SwingUtils.enableComponents(c, selected);
-        }
-    }//GEN-LAST:event_chkRunPeptideProphetActionPerformed
-
-    
-    private void btnRawClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawClearActionPerformed
-        tableModelRawFiles.dataClear();
-    }//GEN-LAST:event_btnRawClearActionPerformed
-
-    private void btnRawAddFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawAddFilesActionPerformed
-        if (btnRawAddFiles == evt.getSource()) {
-            String approveText = "Select";
-            JFileChooser fc = new JFileChooser();
-            fc.setAcceptAllFileFilterUsed(true);
-            FileNameExtensionFilter fileNameExtensionFilter = FraggerPanel.fileNameExtensionFilter;
-            fc.setFileFilter(fileNameExtensionFilter);
-            fc.setApproveButtonText(approveText);
-            fc.setDialogTitle("Choose raw data files");
-            fc.setMultiSelectionEnabled(true);
-            fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-            ThisAppProps.load(ThisAppProps.PROP_LCMS_FILES_IN, fc);
-
-            int retVal = fc.showDialog(this, approveText);
-            if (retVal == JFileChooser.APPROVE_OPTION) {
-                File[] files = fc.getSelectedFiles();
-                if (files.length > 0) {
-                    ThisAppProps.save(ThisAppProps.PROP_LCMS_FILES_IN, files[0]);
-                    List<Path> paths = new ArrayList<>(files.length);
-                    for (File f : files) {
-                        paths.add(Paths.get(f.getAbsolutePath()));
-                    }
-                    tableModelRawFiles.dataAddAll(paths);
-                }
-
-            } else {
-
-            }
-        }
-    }//GEN-LAST:event_btnRawAddFilesActionPerformed
-
-    private void btnRawRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawRemoveActionPerformed
-        int[] sel = tableRawFiles.getSelectedRows();
-        if (sel.length == 0)
-            return;
-        List<Path> toRemove = new ArrayList<>();
-        for (int i = 0; i < sel.length; i++) {
-            toRemove.add(tableModelRawFiles.dataGet(sel[i]));
-        }
-        tableRawFiles.getSelectionModel().clearSelection();
-        tableModelRawFiles.dataRemoveAll(toRemove);
-    }//GEN-LAST:event_btnRawRemoveActionPerformed
-
-    private void btnRawAddFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRawAddFolderActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setApproveButtonText("Select");
-        fileChooser.setApproveButtonToolTipText("Select folder to import");
-        fileChooser.setDialogTitle("Select a folder with LC/MS files (searched recursively)");
-        fileChooser.setMultiSelectionEnabled(true);
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-        SwingUtils.setFileChooserPath(fileChooser, ThisAppProps.load(ThisAppProps.PROP_LCMS_FILES_IN));
-
-        int showOpenDialog = fileChooser.showOpenDialog(this);
-        switch (showOpenDialog) {
-            case JFileChooser.APPROVE_OPTION:
-                File[] files = fileChooser.getSelectedFiles();
-                ArrayList<Path> paths = new ArrayList<>(files.length);
-                for (File f : files) {
-                    boolean isDirectory = f.isDirectory();
-                    if (isDirectory) {
-                        ThisAppProps.save(ThisAppProps.PROP_LCMS_FILES_IN, f);
-                        PathUtils.traverseDirectoriesAcceptingFiles(f, FraggerPanel.fileNameExtensionFilter, paths);
-                    } else {
-                        if (FraggerPanel.fileNameExtensionFilter.accept(f)) {
-                            paths.add(Paths.get(f.getAbsolutePath()));
-                        }
-                    }
-                }
-                tableModelRawFiles.dataAddAll(paths);
-                
-                
-                break;
-        }
-    }//GEN-LAST:event_btnRawAddFolderActionPerformed
-
-    private void btnCheckJavaVersionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckJavaVersionActionPerformed
-//        LinkedHashMap<String, String> map = new LinkedHashMap<>();
-//        map.put("java.version", "")
-        List<String> propNames = Arrays.asList(
-                "java.version",
-                "java.vm.specification.version",
-                "java.vm.specification.vendor",
-                "java.vm.specification.name",
-                "java.vm.version",
-                "java.vm.vendor",
-                "java.vm.name",
-                "java.specification.version",
-                "java.specification.vendor",
-                "java.specification.name"
-                );
-        StringBuilder sb = new StringBuilder("Java Info:\n");
-        for (String propName : propNames) {
-            String val = System.getProperty(propName);
-            if (!StringUtils.isNullOrWhitespace(val)) {
-                sb.append(propName).append(": ").append(val).append("\n");
-            }
-        }
-        
-        LogUtils.println(console, sb.toString());
-    }//GEN-LAST:event_btnCheckJavaVersionActionPerformed
-
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        ThisAppProps.clearCache();
-    }//GEN-LAST:event_btnResetActionPerformed
-
-    private void btnMsfraggerBinBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMsfraggerBinBrowseActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setApproveButtonText("Select");
-        fileChooser.setDialogTitle("Select MSFragger jar");
-        fileChooser.setMultiSelectionEnabled(false);
-        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("JAR files", "jar");
-        fileChooser.setFileFilter(fileNameExtensionFilter);
-
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, ThisAppProps.PROP_BINARIES_IN);
-        String fcPath = ThisAppProps.tryFindPath(props, true);
-        SwingUtils.setFileChooserPath(fileChooser, fcPath);
-
-        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
-        switch (showOpenDialog) {
-            case JFileChooser.APPROVE_OPTION:
-                File f = fileChooser.getSelectedFile();
-                if (validateAndSaveMsfraggerPath(f.getAbsolutePath())) {
-                    ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, f.getAbsolutePath());
-                }
-                break;
-        }
-    }//GEN-LAST:event_btnMsfraggerBinBrowseActionPerformed
-
-    /**
-     * Checks if a file is a JAR file and that it contains MSFragger.class at the top level.
-     * @param f  file to check.
-     * @return  True if it's a real JAR file with MSFragger.class at the top level inside.
-     */
-    private boolean validateAndSaveMsfraggerPath(String path) {
-        boolean isValid = validateMsfraggerPath(path);
-        if (isValid) {
-            textBinMsfragger.setText(path);
-            ThisAppProps.save(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, path);
-        }
-        enableMsfraggerPanels(isValid);
-        return isValid;
-    }
-    
-    private boolean validateMsfraggerPath(String path) {
-        File f = new File(path);
-        if (!f.getName().toLowerCase().endsWith(".jar"))
-            return false;
-        if (!Files.exists(Paths.get(f.getAbsolutePath()))) {
-            return false;
-        }
-        
-        try {
-            ZipFile zf = new ZipFile(f);
-            Enumeration<? extends ZipEntry> entries = zf.entries();
-            while(entries.hasMoreElements()) {
-                ZipEntry ze = entries.nextElement();
-                if ("MSFragger.class".equals(ze.getName())) {
-                    return true;
-                }
-            }
-        } catch (IOException ex) {
-            // doesn't matter
-            Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return false;
-    }
-    
-    private void btnMsfraggerBinDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMsfraggerBinDownloadActionPerformed
-        try {
-            Desktop.getDesktop().browse(URI.create("https://secure.nouvant.com/umich/technology/7143/license/633"));
-        } catch (IOException ex) {
-            Logger.getLogger(MsfraggerGuiFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_btnMsfraggerBinDownloadActionPerformed
-
-    private void urlHandlerViaSystemBrowser(javax.swing.event.HyperlinkEvent evt) {//GEN-FIRST:event_urlHandlerViaSystemBrowser
-        if (evt.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
-            
-            URI uri;
-            try {
-                uri = evt.getURL().toURI();
-            } catch (URISyntaxException ex) {
-                JOptionPane.showMessageDialog(null,
-                            "Could not convert URL to URI: " + evt.getURL(),
-                            "Cannot Open Link", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            
-            if (Desktop.isDesktopSupported()) {
-                Desktop desktop = Desktop.getDesktop();
-                try {
-                    desktop.browse(uri);
-                } catch (IOException e) {
-                    JOptionPane.showMessageDialog(null,
-                            "Failed to open " + uri + " - your computer is likely misconfigured.\n"
-                            + "Error Message: " + e.getMessage(),
-                            "Cannot Open Link", JOptionPane.WARNING_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Java is not able to open a browser on your computer.",
-                        "Cannot Open Link", JOptionPane.WARNING_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_urlHandlerViaSystemBrowser
-
-    private void btnPhilosopherBinDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhilosopherBinDownloadActionPerformed
-        downloadPhilosopher();
-    }//GEN-LAST:event_btnPhilosopherBinDownloadActionPerformed
-
-    private void btnFindToolsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindToolsActionPerformed
-        
-        String fraggerFoundPath = null;
-        String philosopherFoundPath = null;
-        
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setApproveButtonText("Search here");
-        fileChooser.setApproveButtonToolTipText("Search this directory recursively");
-        fileChooser.setDialogTitle("Select path to search for binaries");
-        fileChooser.setMultiSelectionEnabled(false);
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-        List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, ThisAppProps.PROP_BINARIES_IN, ThisAppProps.PROP_BIN_PATH_PHILOSOPHER);
-        String fcPath = ThisAppProps.tryFindPath(props, true);
-        SwingUtils.setFileChooserPath(fileChooser, fcPath);
-
-        
-        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
-        switch (showOpenDialog) {
-            case JFileChooser.APPROVE_OPTION:
-                File f = fileChooser.getSelectedFile();
-                
-                // Fragger first
-                Pattern regexFragger = Pattern.compile(".*?MSFragger[^\\/]?\\.jar", Pattern.CASE_INSENSITIVE);
-                FileListing listing = new FileListing(Paths.get(f.getAbsolutePath()), regexFragger);
-                List<Path> foundFiles = listing.findFiles();
-                for(Path foundFile : foundFiles) {
-                    if (validateAndSaveMsfraggerPath(foundFile.toString())) {
-                        fraggerFoundPath = foundFile.toString();
-                        ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
-                        JOptionPane.showMessageDialog(this, "Found MSFragger jar.\n"
-                                + fraggerFoundPath, "Info", JOptionPane.INFORMATION_MESSAGE);
-                        break;
-                    }
-                }
-                if (fraggerFoundPath == null) {
-                    JOptionPane.showMessageDialog(this, "Could not locate MSFragger jar.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                } 
-                
-                // now philosopher
-                Pattern regexPhilosopher = Pattern.compile(".*?philosopher[^\\/]*", Pattern.CASE_INSENSITIVE);
-                foundFiles = new FileListing(Paths.get(f.getAbsolutePath()), regexPhilosopher).findFiles();
-                for(Path foundFile : foundFiles) {
-                    if (validateAndSavePhilosopherPath(foundFile.toString())) {
-                        philosopherFoundPath = foundFile.toString();
-                        ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, fraggerFoundPath);
-                        JOptionPane.showMessageDialog(this, "Found Philosopher.\n"
-                                + philosopherFoundPath, "Info", JOptionPane.INFORMATION_MESSAGE);
-                        break;
-                    }
-                }
-                if (philosopherFoundPath == null) {
-                    JOptionPane.showMessageDialog(this, "Could not locate Philosopher.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                }
-                
-                break;
-        } 
-    }//GEN-LAST:event_btnFindToolsActionPerformed
-
-    private void btnPhilosopherBinBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhilosopherBinBrowseActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setApproveButtonText("Select");
-        fileChooser.setDialogTitle("Select Philosopher binary");
-        fileChooser.setMultiSelectionEnabled(false);
-        if (OsUtils.isWindows()) {
-            FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Executables", "exe");
-            fileChooser.setFileFilter(fileNameExtensionFilter);
-        }
-        
-
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        List<String> props = Arrays.asList(ThisAppProps.PROP_BIN_PATH_PHILOSOPHER, ThisAppProps.PROP_BINARIES_IN);
-        String fcPath = ThisAppProps.tryFindPath(props, true);
-        SwingUtils.setFileChooserPath(fileChooser, fcPath);
-
-        int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
-        switch (showOpenDialog) {
-            case JFileChooser.APPROVE_OPTION:
-                File f = fileChooser.getSelectedFile();
-                if (validateAndSavePhilosopherPath(f.getAbsolutePath())) {
-                    ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, f.getAbsolutePath());
-                }
-                break;
-        }
-    }//GEN-LAST:event_btnPhilosopherBinBrowseActionPerformed
-
-    private void textBinMsfraggerFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textBinMsfraggerFocusLost
-        validateAndSaveMsfraggerPath(textBinMsfragger.getText());
-    }//GEN-LAST:event_textBinMsfraggerFocusLost
-
-    private void textBinPhilosopherFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textBinPhilosopherFocusLost
-        validateAndSavePhilosopherPath(textBinPhilosopher.getText());
-    }//GEN-LAST:event_textBinPhilosopherFocusLost
-
-    private void textBinPhilosopherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textBinPhilosopherActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textBinPhilosopherActionPerformed
 
     private boolean validateAndSavePhilosopherPath(String path) {
         String validated = validatePhilosopherPath(path);
@@ -2118,15 +2123,29 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         return pepxmls;
     }
     
-    private Map<String, String> createInteractFilePaths(Map<String, String> cleanPepXmls, String workingDir) {
+    private Map<String, String> createInteractFilePaths(Map<String, String> cleanPepXmls, String workingDir, String pepxmlExt) {
         HashMap<String, String> interacts = new HashMap<>();
         Path wd = Paths.get(workingDir);
         for (Map.Entry<String, String> entry : cleanPepXmls.entrySet()) {
             String raw = entry.getKey();
             String pepxmlClean = entry.getValue();
             String pepxmlCleanFilename = Paths.get(pepxmlClean).getFileName().toString();
-            String pepxmlCleanBasename = pepxmlCleanFilename.substring(0, pepxmlCleanFilename.lastIndexOf(".") + 1);
-            Path interactXml = wd.resolve("interact-" + pepxmlCleanBasename + "pep.xml").toAbsolutePath();
+            
+            // hardcode typical params
+            String[] typicalExts = {pepxmlExt, "pep.xml", "pepxml"};
+            String lowerCase = pepxmlCleanFilename.toLowerCase();
+            String nameWithoutExt = null;
+            for (String ext : typicalExts) {
+                if (pepxmlCleanFilename.toLowerCase().endsWith(ext)) {
+                    int lastIndex = lowerCase.lastIndexOf(ext);
+                    nameWithoutExt = pepxmlCleanFilename.substring(0, lastIndex);
+                    break;
+                }
+            }
+            if (nameWithoutExt == null)
+                throw new IllegalStateException(String.format("Could not identify the extension for file: %s", pepxmlClean));
+            
+            Path interactXml = wd.resolve("interact-" + nameWithoutExt + "pep.xml").toAbsolutePath();
             interacts.put(raw, interactXml.toString());
         }
         return interacts;
@@ -2429,7 +2448,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             
             Map<String, String> pepxmlDirty = createPepxmlFilePathsDirty(lcmsFilePaths, fraggerPanel.getOutputFileExt());
             Map<String, String> pepxmlClean = createPepxmlFilePathsAfterMove(pepxmlDirty, workingDir);
-            Map<String, String> interacts = createInteractFilePaths(pepxmlClean, workingDir);
+            Map<String, String> interacts = createInteractFilePaths(pepxmlClean, workingDir, fraggerPanel.getOutputFileExt());
             
             if (isPhilosopher) {
                 commands.add(Philosopher.CMD_PROTEIN_PROPHET);
@@ -2643,7 +2662,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             
             Map<String, String> pepxmlDirty = createPepxmlFilePathsDirty(lcmsFilePaths, fraggerPanel.getOutputFileExt());
             Map<String, String> pepxmlClean = createPepxmlFilePathsAfterMove(pepxmlDirty, workingDir);
-            Map<String, String> interacts = createInteractFilePaths(pepxmlClean, workingDir);
+            Map<String, String> interacts = createInteractFilePaths(pepxmlClean, workingDir, fraggerPanel.getOutputFileExt());
             Path combinedProtFilePath = getCombinedProtFilePath(workingDir);
             
             if (checkReportDbAnnotate.isSelected()) {
@@ -2912,6 +2931,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbout;
     private javax.swing.JButton btnCheckJavaVersion;
+    private javax.swing.JButton btnClearCache;
     private javax.swing.JButton btnClearConsole;
     private javax.swing.JButton btnFindTools;
     private javax.swing.JButton btnMsfraggerBinBrowse;
@@ -2923,7 +2943,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnRawAddFolder;
     private javax.swing.JButton btnRawClear;
     private javax.swing.JButton btnRawRemove;
-    private javax.swing.JButton btnReset;
     private javax.swing.JButton btnRun;
     private javax.swing.JButton btnSelectPeptideProphetSeqDbPath;
     private javax.swing.JButton btnSelectWrkingDir;

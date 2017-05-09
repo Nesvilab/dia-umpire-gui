@@ -73,20 +73,25 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="panelMsfraggerConfig" max="32767" attributes="0"/>
-                          <Component id="panelPhilosopherConfig" max="32767" attributes="0"/>
-                          <Component id="jLabel4" alignment="1" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="panelMsfraggerConfig" max="32767" attributes="0"/>
+                                  <Component id="panelPhilosopherConfig" max="32767" attributes="0"/>
+                                  <Component id="jLabel4" alignment="1" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="btnFindTools" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblFindAutomatically" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnClearCache" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                      <Component id="btnFindTools" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblFindAutomatically" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -97,6 +102,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnFindTools" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblFindAutomatically" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnClearCache" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="panelMsfraggerConfig" min="-2" max="-2" attributes="0"/>
@@ -348,6 +354,14 @@
                 <Property name="text" type="java.lang.String" value="Recursively search for tools in a directory (e.g. Downloads)"/>
                 <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;If you have the tools downloaded somewhere already, you can&lt;br/&gt;&#xa;use this button to automatically look for them."/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnClearCache">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Clear Cache"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearCacheActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -980,11 +994,9 @@
                               <Component id="btnStop" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="checkDryRun" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace pref="142" max="32767" attributes="0"/>
                               <Component id="btnCheckJavaVersion" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btnReset" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="31" max="32767" attributes="0"/>
                               <Component id="btnAbout" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnClearConsole" min="-2" max="-2" attributes="0"/>
@@ -1012,13 +1024,12 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnRun" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnStop" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnClearConsole" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnAbout" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="checkDryRun" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnCheckJavaVersion" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnReset" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnRun" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="consoleScrollPane" pref="681" max="32767" attributes="0"/>
@@ -1028,17 +1039,6 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="btnRun">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="11" style="1"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Run"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRunActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JButton" name="btnStop">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Stop"/>
@@ -1110,12 +1110,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCheckJavaVersionActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="btnReset">
+            <Component class="javax.swing.JButton" name="btnRun">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Clear Cache"/>
+                <Property name="text" type="java.lang.String" value="RUN"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnResetActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRunActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
