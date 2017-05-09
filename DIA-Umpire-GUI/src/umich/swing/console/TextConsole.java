@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package umich.msfragger.gui;
+package umich.swing.console;
 
 import java.io.IOException;
 import javax.swing.JTextPane;
@@ -15,6 +15,11 @@ import javax.swing.text.StyledDocument;
  * @author dmitriya
  */
 public class TextConsole extends JTextPane implements Appendable {
+
+    public TextConsole() {
+    }
+    
+    
     @Override
     public Appendable append(CharSequence csq) throws IOException {
         //append(csq.toString());

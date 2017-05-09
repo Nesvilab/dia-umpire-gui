@@ -62,12 +62,13 @@ import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.DefaultCaret;
+import net.java.balloontip.BalloonTip;
 import umich.msfragger.Version;
 import umich.msfragger.gui.api.DataConverter;
 import umich.msfragger.gui.api.SimpleETable;
@@ -80,6 +81,7 @@ import umich.msfragger.util.GhostText;
 import umich.msfragger.util.HSLColor;
 import umich.msfragger.util.PathUtils;
 import umich.msfragger.util.SwingUtils;
+import umich.swing.console.TextConsole;
 
 /**
  *
@@ -88,12 +90,15 @@ import umich.msfragger.util.SwingUtils;
 public class MsfraggerGuiFrame extends javax.swing.JFrame {
 
     protected FraggerPanel fraggerPanel;
+    protected TextConsole console;
     protected ExecutorService exec;
     private final List<Process> submittedProcesses = new ArrayList<>(100);
     private static final String TEXT_SAME_SEQ_DB = "<Same as in MSFragger>";
     private Color defTextColor;
     private GhostText ghostTextPepProph;
     private GhostText ghostTextProtProp;
+    private BalloonTip balloonMsfragger;
+    private BalloonTip balloonPhilosopher;
     
     SimpleETable tableRawFiles;
     SimpleUniqueTableModel<Path> tableModelRawFiles;
@@ -107,24 +112,14 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         initMore();
     }
 
-    private void enablePhilosopherPanels(boolean enabled) {
-        SwingUtils.enableComponents(panelPeptideProphet, enabled);
-        chkRunPeptideProphet.setSelected(enabled);
-        SwingUtils.enableComponents(panelProteinProphet, enabled);
-        chkRunProteinProphet.setSelected(enabled);
-        SwingUtils.enableComponents(panelReport, enabled);
-        checkCreateReport.setSelected(enabled);
-    }
-    
-    private void enableMsfraggerPanels(boolean enabled) {
-        SwingUtils.enableComponents(panelMsFragger, enabled);
-        fraggerPanel.getCheckboxIsRunFragger().setSelected(enabled);
-    }
-
     private void initMore() {
         
         setTitle("MSFragger GUI (" + Version.getVersion() + ")");
     
+        console = new TextConsole();
+        consoleScrollPane.setViewportView(console);
+        
+        
         defTextColor = UIManager.getColor("TextField.foreground");
         if (defTextColor == null) {
             defTextColor = Color.BLACK;
@@ -181,10 +176,29 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             }
         });
         
-        
+        // check binary paths (can only be done after manual MSFragger panel creation)
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                validateAndSaveMsfraggerPath(textBinMsfragger.getText());
+                validateAndSavePhilosopherPath(textBinPhilosopher.getText());
+            }
+        });
     }
     
+    private void enablePhilosopherPanels(boolean enabled) {
+        SwingUtils.enableComponents(panelPeptideProphet, enabled);
+        chkRunPeptideProphet.setSelected(enabled);
+        SwingUtils.enableComponents(panelProteinProphet, enabled);
+        chkRunProteinProphet.setSelected(enabled);
+        SwingUtils.enableComponents(panelReport, enabled);
+        checkCreateReport.setSelected(enabled);
+    }
     
+    private void enableMsfraggerPanels(boolean enabled) {
+        SwingUtils.enableComponents(panelMsFragger, enabled);
+        fraggerPanel.getCheckboxIsRunFragger().setSelected(enabled);
+    }
     
     public SimpleUniqueTableModel<Path> createTableModelRawFiles() {
         if (tableModelRawFiles != null)
@@ -284,9 +298,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         btnStop = new javax.swing.JButton();
         btnClearConsole = new javax.swing.JButton();
         consoleScrollPane = new javax.swing.JScrollPane();
-        console = new umich.msfragger.gui.TextConsole();
-        DefaultCaret caret = (DefaultCaret) console.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         lblOutputDir = new javax.swing.JLabel();
         btnSelectWrkingDir = new javax.swing.JButton();
         txtWorkingDir = new javax.swing.JTextField();
@@ -890,8 +901,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             }
         });
 
-        consoleScrollPane.setViewportView(console);
-
         lblOutputDir.setText("Output dir");
         lblOutputDir.setToolTipText("<html>All the output will be placed into this directory.<br/>\nUmpire-SE always generates output near mzXML files, <br/>\nif you stop processing early, then these files might not have been<br/>\nmoved to the Output Dir yet. For this case there is a button<br/>\non \"DIA-Umpire SE\" tab to Clean Up the generated files."); // NOI18N
 
@@ -1299,9 +1308,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         int showOpenDialog = fileChooser.showOpenDialog(SwingUtils.findParentComponentForDialog(this));
         switch (showOpenDialog) {
             case JFileChooser.APPROVE_OPTION:
-                File f = fileChooser.getSelectedFile();
-                if (validateAndSaveMsfraggerPath(f.getAbsolutePath())) {
-                    ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, f.getAbsolutePath());
+                File foundFile = fileChooser.getSelectedFile();
+                if (validateAndSaveMsfraggerPath(foundFile.getAbsolutePath())) {
+                    ThisAppProps.save(ThisAppProps.PROP_BINARIES_IN, foundFile.getAbsolutePath());
                 }
                 break;
         }
@@ -1318,7 +1327,17 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             textBinMsfragger.setText(path);
             ThisAppProps.save(ThisAppProps.PROP_BIN_PATH_MSFRAGGER, path);
         }
+        if (balloonMsfragger != null) {
+            balloonMsfragger.closeBalloon();
+            balloonMsfragger = null;
+        }
+        if (!isValid) {
+            balloonMsfragger = new BalloonTip(textBinMsfragger, "Could not find MSFragger jar file at this location\n."
+                    + "Corresponding panel won't be active");
+            balloonMsfragger.setVisible(true);
+        }
         enableMsfraggerPanels(isValid);
+        
         return isValid;
     }
     
@@ -1747,7 +1766,17 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             textBinPhilosopher.setText(validated);
             ThisAppProps.save(ThisAppProps.PROP_BIN_PATH_PHILOSOPHER, validated);
         }
+        if (balloonPhilosopher != null) {
+            balloonPhilosopher.closeBalloon();
+            balloonPhilosopher = null;
+        }
+        if (!isValid) {
+            balloonPhilosopher = new BalloonTip(textBinPhilosopher, "Philosoper executable not found.\n"
+                    + "Corresponding panels won't be activate.");
+            balloonPhilosopher.setVisible(true);
+        }
         enablePhilosopherPanels(isValid);
+        
         return isValid;
     }
     
@@ -2954,7 +2983,6 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkProteinProphetInteractStar;
     private javax.swing.JCheckBox chkRunPeptideProphet;
     private javax.swing.JCheckBox chkRunProteinProphet;
-    private umich.msfragger.gui.TextConsole console;
     private javax.swing.JScrollPane consoleScrollPane;
     private javax.swing.JEditorPane editorMsfraggerCitation;
     private javax.swing.JLabel jLabel1;

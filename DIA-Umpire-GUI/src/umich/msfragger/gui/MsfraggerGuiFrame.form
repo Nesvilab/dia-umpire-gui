@@ -1059,13 +1059,6 @@
             <Container class="javax.swing.JScrollPane" name="consoleScrollPane">
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-              <SubComponents>
-                <Component class="umich.msfragger.gui.TextConsole" name="console">
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="DefaultCaret caret = (DefaultCaret) console.getCaret();&#xd;&#xa;caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);"/>
-                  </AuxValues>
-                </Component>
-              </SubComponents>
             </Container>
             <Component class="javax.swing.JLabel" name="lblOutputDir">
               <Properties>
