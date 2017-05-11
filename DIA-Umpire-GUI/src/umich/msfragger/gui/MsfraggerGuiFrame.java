@@ -251,6 +251,8 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         textBinPhilosopher = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        editorPhilosopherLink = new javax.swing.JEditorPane();
         btnFindTools = new javax.swing.JButton();
         lblFindAutomatically = new javax.swing.JLabel();
         btnClearCache = new javax.swing.JButton();
@@ -427,21 +429,37 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText(createSysInfoPhilosopherText());
 
+        jScrollPane3.setBorder(null);
+
+        editorPhilosopherLink.setEditable(false);
+        editorPhilosopherLink.setBackground(lblMsfraggerCitation.getBackground());
+        editorPhilosopherLink.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        editorPhilosopherLink.setContentType("text/html"); // NOI18N
+        editorPhilosopherLink.setFont(lblMsfraggerCitation.getFont());
+        editorPhilosopherLink.setText(getPhilosopherCitationHtml());
+        editorPhilosopherLink.addHyperlinkListener(new javax.swing.event.HyperlinkListener() {
+            public void hyperlinkUpdate(javax.swing.event.HyperlinkEvent evt) {
+                urlHandlerViaSystemBrowser(evt);
+            }
+        });
+        jScrollPane3.setViewportView(editorPhilosopherLink);
+
         javax.swing.GroupLayout panelPhilosopherConfigLayout = new javax.swing.GroupLayout(panelPhilosopherConfig);
         panelPhilosopherConfig.setLayout(panelPhilosopherConfigLayout);
         panelPhilosopherConfigLayout.setHorizontalGroup(
             panelPhilosopherConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPhilosopherConfigLayout.createSequentialGroup()
+            .addGroup(panelPhilosopherConfigLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelPhilosopherConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(panelPhilosopherConfigLayout.createSequentialGroup()
+                .addGroup(panelPhilosopherConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPhilosopherConfigLayout.createSequentialGroup()
                         .addComponent(textBinPhilosopher, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPhilosopherBinBrowse)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnPhilosopherBinDownload))
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3))
                 .addContainerGap())
         );
         panelPhilosopherConfigLayout.setVerticalGroup(
@@ -456,7 +474,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         btnFindTools.setText("Search tools");
@@ -511,9 +531,9 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 .addComponent(panelMsfraggerConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelPhilosopherConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(438, Short.MAX_VALUE))
+                .addContainerGap(380, Short.MAX_VALUE))
         );
 
         tabPane.addTab("Config", null, panelConfig, "Set up paths to tools");
@@ -1893,6 +1913,36 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
         return umpireGarbageFiles;
     }
 
+    private String getPhilosopherCitationHtml() {
+        // for copying style
+        Font font = lblMsfraggerCitation.getFont();
+
+        // create some css from the label's font
+        StringBuilder style = new StringBuilder();
+        style.append("font-family:").append(font.getFamily()).append(";");
+        style.append("font-weight:").append(font.isBold() ? "bold" : "normal").append(";");
+        style.append("font-size:").append(font.getSize()).append("pt;");
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        
+        sb.append("<head>");
+        sb.append("</head>");
+        
+        sb.append("<body style=\"").append(style.toString()).append("\"");
+        //sb.append("<body>");
+        
+        sb.append("<p style=\"margin-top: 0\">");
+        sb.append("<a href=\"https://prvst.github.io/philosopher\">Philosopher GitHub page</a>");
+        sb.append("<br/>");
+        sb.append("</p>");
+        
+        sb.append("</body>");        
+        sb.append("</html>");
+  
+        return sb.toString();
+    }
+    
     private String getFraggerCitationHtml() {
 
         // for copying style
@@ -2039,28 +2089,28 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private List<ProcessBuilder> processBuildersFragger(String programsDir, String workingDir, List<String> lcmsFilePaths, String dateStr) {
         List<ProcessBuilder> builders = new LinkedList<>();
         if (fraggerPanel.isRunMsfragger()) {
-            
+
             String bin = textBinMsfragger.getText().trim();
             if (StringUtils.isNullOrWhitespace(bin)) {
                 JOptionPane.showMessageDialog(this, "Binary for running Fragger can not be an empty string.\n",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+                        "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
             bin = PathUtils.testFilePath(bin, programsDir);
             if (bin == null) {
                 JOptionPane.showMessageDialog(this, "Binary for running Fragger not found or could not be run.\n"
                         + "Neither on PATH, nor in the working directory",
-                    "Error", JOptionPane.ERROR_MESSAGE);
+                        "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            
+
             String fastaPath = fraggerPanel.getFastaPath();
             if (StringUtils.isNullOrWhitespace(fastaPath)) {
                 JOptionPane.showMessageDialog(this, "Fasta file path (Fragger) can't be empty",
-                    "Warning", JOptionPane.WARNING_MESSAGE);
+                        "Warning", JOptionPane.WARNING_MESSAGE);
                 return null;
             }
-            
+
             // create a params file in the output directory
             MsfraggerParams params = null;
             try {
@@ -2068,7 +2118,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Could not collect MSFragger params from GUI.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
-                    return null;
+                return null;
             }
             Path savedParamsPath = Paths.get(workingDir, MsfraggerParams.DEFAULT_FILE);
             try {
@@ -2076,15 +2126,19 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Could not save fragger.params file to working dir.\n",
                         "Error", JOptionPane.ERROR_MESSAGE);
-                    return null;
+                return null;
             }
-            
+
             int ramGb = fraggerPanel.getRamGb();
-            
+
             Map<String, String> mapRawToPep = createPepxmlFilePathsDirty(lcmsFilePaths, params.getOutputFileExtension());
-            for (String filePath : lcmsFilePaths) {
-                // Fragger search
-                Path path = Paths.get(filePath);
+
+            StringBuilder sb = new StringBuilder();
+            final int commandLenLimit = 8192;
+
+            int fileIndex = 0;
+            while (fileIndex < lcmsFilePaths.size()) {
+                int fileIndexLo = fileIndex;
                 ArrayList<String> cmd = new ArrayList<>();
                 cmd.add("java");
                 cmd.add("-jar");
@@ -2093,41 +2147,58 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
                 }
                 cmd.add(bin);
                 cmd.add(savedParamsPath.toString());
-                cmd.add(path.toAbsolutePath().toString());
-                ProcessBuilder pb = new ProcessBuilder(cmd);
-                builders.add(pb);
+
+                for (String s : cmd) {
+                    sb.append(s).append(" ");
+                }
+                if (sb.length() > commandLenLimit) {
+                    JOptionPane.showMessageDialog(this, "MSFragger command line length too large even for a single file.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                    return null;
+                }
+
+                while (fileIndex < lcmsFilePaths.size()) {
+                    String nextFilePath = lcmsFilePaths.get(fileIndex);
+                    if (sb.length() + nextFilePath.length() + 1 > commandLenLimit) {
+                        break;
+                    }
+                    sb.append(nextFilePath).append(" ");
+                    cmd.add(nextFilePath);
+                    fileIndex++;
+                }
                 
-                // Move the resulting file
-                String pepFile = mapRawToPep.get(filePath);
-                Path pepPath = Paths.get(pepFile);
+                ProcessBuilder pbFragger = new ProcessBuilder(cmd);
+                builders.add(pbFragger);
+                sb.setLength(0);
+
+                // move the files if the output directory is not the same as where
+                // the lcms files were
+                URI currentJarUri = PathUtils.getCurrentJarPath();
+                String currentJarPath = Paths.get(currentJarUri).toAbsolutePath().toString();
                 Path wdPath = Paths.get(workingDir);
-                
-                // check if the working dir is the dir where the mzXML file was
-                // if it is, then don't do anything, if it is not, then copy
-                // UmpireSE outputs to the working directory
-                // and also create symlinks to the original files
 
-                if (!wdPath.equals(pepPath.getParent())) {
-                    // find the curernt gui JAR location
-                    URI currentJarUri = PathUtils.getCurrentJarPath();
-                    String currentJarPath = Paths.get(currentJarUri).toAbsolutePath().toString();
+                for (int i = fileIndexLo; i < fileIndex; i++) {
+                    String pepFile = mapRawToPep.get(lcmsFilePaths.get(i));
+                    Path pepPath = Paths.get(pepFile);
 
-                    // working dir is different from pepxml file location, need to move output
-                    List<String> commandsFileMove = new ArrayList<>();
-                    commandsFileMove.add("java");
-                    commandsFileMove.add("-cp");
-                    commandsFileMove.add(currentJarPath);
-                    commandsFileMove.add("umich.msfragger.util.FileMove");
-                    String origin = pepPath.toAbsolutePath().toString();
-                    String destination = Paths.get(wdPath.toString(), pepPath.getFileName().toString()).toString();
-                    commandsFileMove.add(origin);
-                    commandsFileMove.add(destination);
-                    ProcessBuilder pbFileMove = new ProcessBuilder(commandsFileMove);
-                    builders.add(pbFileMove);
+                    if (!wdPath.equals(pepPath.getParent())) {
+                        ArrayList<String> cmdMove = new ArrayList<>();
+                        cmdMove.add("java");
+                        cmdMove.add("-cp");
+                        cmdMove.add(currentJarPath);
+                        cmdMove.add("umich.msfragger.util.FileMove");
+                        String origin = pepPath.toAbsolutePath().toString();
+                        String destination = Paths.get(wdPath.toString(), pepPath.getFileName().toString()).toString();
+                        cmdMove.add(origin);
+                        cmdMove.add(destination);
+                        ProcessBuilder pbFileMove = new ProcessBuilder(cmdMove);
+                        builders.add(pbFileMove);
+                    }
                 }
             }
+
         }
-        
+
         return builders;
     }
     
@@ -2985,6 +3056,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkRunProteinProphet;
     private javax.swing.JScrollPane consoleScrollPane;
     private javax.swing.JEditorPane editorMsfraggerCitation;
+    private javax.swing.JEditorPane editorPhilosopherLink;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -2997,6 +3069,7 @@ public class MsfraggerGuiFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblFindAutomatically;
     private javax.swing.JLabel lblMsfraggerCitation;

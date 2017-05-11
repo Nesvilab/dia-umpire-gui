@@ -124,6 +124,8 @@ public class MsfraggerParams {
     public static final String FILE_BASE_EXT = "params";
     /** This file is in the jar, use getResourceAsStream() to get it.  */
     public static final String DEFAULT_FILE = "fragger.params";
+    public static final String DEFAULT_FILE_OPENSEARCH = "fragger_open.params";
+    public static final String DEFAULT_FILE_CLOSEDSEARCH = "fragger_closed.params";
     private static final long serialVersionUID = 1L;
 
     private static final DecimalFormat DF = new DecimalFormat("0.##########");
@@ -178,7 +180,11 @@ public class MsfraggerParams {
     }
     
     public void loadDefaults() throws IOException {
-        load(MsfraggerParams.class.getResourceAsStream(DEFAULT_FILE));
+        load(MsfraggerParams.class.getResourceAsStream(DEFAULT_FILE_OPENSEARCH));
+    }
+    
+    public void loadDefaultsClosedSearch() throws IOException {
+        load(MsfraggerParams.class.getResourceAsStream(DEFAULT_FILE_CLOSEDSEARCH));
     }
     
     public void load(InputStream is) throws IOException {
@@ -420,18 +426,6 @@ public class MsfraggerParams {
     public void setOverrideCharge(boolean v) {
         int vInt = v ? 1 : 0;
         props.setProp(PROP_override_charge, Integer.toString(vInt));
-    }
-    
-    public MsLevel getMsLevel() {
-        int v = Integer.parseInt(props.getProp(PROP_ms_level, "2").value);
-        for (MsLevel msl : MsLevel.values())
-            if (msl.valueInParamsFile() == v)
-                return msl;
-        throw new IllegalStateException("Unknown value for ms-level found in properties.");
-    }
-    
-    public void setMsLevel(MsLevel msLevel) {
-        props.setProp(PROP_ms_level, Integer.toString(msLevel.valueInParamsFile()));
     }
     
     public int getDigestMinLength() {
