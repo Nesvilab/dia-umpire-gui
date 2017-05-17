@@ -435,13 +435,10 @@ public class FraggerPanel extends javax.swing.JPanel {
         spinnerZeroBinMultiplyExpect = new javax.swing.JSpinner();
         lblAddTopNComplementary = new javax.swing.JLabel();
         spinnerAddTopNComplementary = new javax.swing.JSpinner();
-        btnDefaults = new javax.swing.JButton();
-        btnSave = new javax.swing.JButton();
-        btnLoad = new javax.swing.JButton();
         spinnerFraggerThreads = new javax.swing.JSpinner();
-        jLabel33 = new javax.swing.JLabel();
+        lblThreads = new javax.swing.JLabel();
         spinnerFraggerRam = new javax.swing.JSpinner();
-        jLabel34 = new javax.swing.JLabel();
+        lblRam = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -469,7 +466,11 @@ public class FraggerPanel extends javax.swing.JPanel {
         spinnerOutputMaxExpect = new javax.swing.JSpinner();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
+        btnSave = new javax.swing.JButton();
+        btnLoad = new javax.swing.JButton();
         chkRunMsfragger = new javax.swing.JCheckBox();
+        btnMsfraggerDefaultsClosed = new javax.swing.JButton();
+        btnMsfraggerDefaultsOpen = new javax.swing.JButton();
 
         panelMsfraggerParams.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
 
@@ -690,7 +691,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                                     .addComponent(checkMultipleVarMods))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(spinnerMaxCombos, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 163, Short.MAX_VALUE)))
+                                .addGap(0, 226, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
@@ -710,7 +711,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel32)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Spectral Processing"));
@@ -879,37 +880,17 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        btnDefaults.setText("Defaults");
-        btnDefaults.setToolTipText("Load default parameters");
-        btnDefaults.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDefaultsActionPerformed(evt);
-            }
-        });
-
-        btnSave.setText("Save");
-        btnSave.setToolTipText("<html>Save current configuration.");
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
-            }
-        });
-
-        btnLoad.setText("Load");
-        btnLoad.setToolTipText("<html>Load a previously saved configuration.<br/>\nYou can find a copy of parameter files (fragger.params) in your old <br/>\nsearch results directories, they are copied there automatically.");
-        btnLoad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoadActionPerformed(evt);
-            }
-        });
-
         spinnerFraggerThreads.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        spinnerFraggerThreads.setToolTipText(lblThreads.getToolTipText());
 
-        jLabel33.setText("Threads");
+        lblThreads.setText("Threads");
+        lblThreads.setToolTipText("<html>0 means auto-identify the number of processing cores available.");
 
         spinnerFraggerRam.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        spinnerFraggerRam.setToolTipText(lblRam.getToolTipText());
 
-        jLabel34.setText("RAM");
+        lblRam.setText("RAM");
+        lblRam.setToolTipText("<html>When set to 0 won't pass -Xmx parameter when starting JVM.<br/>\nIf unsure, just leave it at 0.");
 
         jLabel35.setText("GB");
 
@@ -1078,7 +1059,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                     .addComponent(spinnerReportTopN, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(spinnerOutputMaxExpect, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textOutputFileExt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1123,6 +1104,22 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        btnSave.setText("Save");
+        btnSave.setToolTipText("<html>Save current parameters to a file.");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        btnLoad.setText("Load");
+        btnLoad.setToolTipText("<html>Load a previously saved MSFragger parameter file.<br/>\nYou can find a copy of parameter files (fragger.params) in your old <br/>\nsearch results directories, they are copied there automatically.");
+        btnLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelMsfraggerParamsLayout = new javax.swing.GroupLayout(panelMsfraggerParams);
         panelMsfraggerParams.setLayout(panelMsfraggerParamsLayout);
         panelMsfraggerParamsLayout.setHorizontalGroup(
@@ -1135,19 +1132,17 @@ public class FraggerPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(panelMsfraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelMsfraggerParamsLayout.createSequentialGroup()
-                        .addComponent(btnDefaults)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSave)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLoad)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel34)
+                        .addComponent(lblRam)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerFraggerRam, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel35)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel33)
+                        .addComponent(lblThreads)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spinnerFraggerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelMsfraggerParamsLayout.createSequentialGroup()
@@ -1164,14 +1159,13 @@ public class FraggerPanel extends javax.swing.JPanel {
             .addGroup(panelMsfraggerParamsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelMsfraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDefaults)
-                    .addComponent(btnSave)
-                    .addComponent(btnLoad)
                     .addComponent(spinnerFraggerThreads, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel33)
+                    .addComponent(lblThreads)
                     .addComponent(spinnerFraggerRam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel34)
-                    .addComponent(jLabel35))
+                    .addComponent(lblRam)
+                    .addComponent(jLabel35)
+                    .addComponent(btnSave)
+                    .addComponent(btnLoad))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelMsfraggerParamsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -1198,6 +1192,21 @@ public class FraggerPanel extends javax.swing.JPanel {
             }
         });
 
+        btnMsfraggerDefaultsClosed.setText("Defaults Closed Search");
+        btnMsfraggerDefaultsClosed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMsfraggerDefaultsClosedActionPerformed(evt);
+            }
+        });
+
+        btnMsfraggerDefaultsOpen.setText("Defaults Open Search");
+        btnMsfraggerDefaultsOpen.setToolTipText("Load default parameters");
+        btnMsfraggerDefaultsOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMsfraggerDefaultsOpenActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelMsFraggerLayout = new javax.swing.GroupLayout(panelMsFragger);
         panelMsFragger.setLayout(panelMsFraggerLayout);
         panelMsFraggerLayout.setHorizontalGroup(
@@ -1205,15 +1214,25 @@ public class FraggerPanel extends javax.swing.JPanel {
             .addGroup(panelMsFraggerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelMsFraggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkRunMsfragger)
-                    .addComponent(panelMsfraggerParams, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelMsFraggerLayout.createSequentialGroup()
+                        .addComponent(panelMsfraggerParams, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(panelMsFraggerLayout.createSequentialGroup()
+                        .addComponent(chkRunMsfragger)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnMsfraggerDefaultsOpen)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnMsfraggerDefaultsClosed)))
+                .addContainerGap())
         );
         panelMsFraggerLayout.setVerticalGroup(
             panelMsFraggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMsFraggerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(chkRunMsfragger)
+                .addGroup(panelMsFraggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chkRunMsfragger)
+                    .addComponent(btnMsfraggerDefaultsClosed)
+                    .addComponent(btnMsfraggerDefaultsOpen))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelMsfraggerParams, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -1328,9 +1347,12 @@ public class FraggerPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void btnDefaultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDefaultsActionPerformed
+    private void btnMsfraggerDefaultsOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMsfraggerDefaultsOpenActionPerformed
         int confirmation = JOptionPane.showConfirmDialog(SwingUtils.findParentComponentForDialog(this),
-            "Are you sure you want to load defaults?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+            "Are you sure you want to load defaults\f"
+                    + "for open search?\n"
+                    + "It's a search with large precursor mass tolerance\n"
+                    + "usually used to identify PTMs.", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
         if (JOptionPane.OK_OPTION == confirmation) {
             try {
                 params.loadDefaults();
@@ -1339,7 +1361,7 @@ public class FraggerPanel extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Could not load defaults", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }//GEN-LAST:event_btnDefaultsActionPerformed
+    }//GEN-LAST:event_btnMsfraggerDefaultsOpenActionPerformed
 
     private void textEnzymeNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textEnzymeNameActionPerformed
         // TODO add your handling code here:
@@ -1410,6 +1432,21 @@ public class FraggerPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_comboFragMassTolActionPerformed
 
+    private void btnMsfraggerDefaultsClosedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMsfraggerDefaultsClosedActionPerformed
+        int confirmation = JOptionPane.showConfirmDialog(SwingUtils.findParentComponentForDialog(this),
+            "Are you sure you want to load defaults\n"
+                    + "for 'closed' search?\n"
+                    + "It's a standard search with tight mass tolerances.", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+        if (JOptionPane.OK_OPTION == confirmation) {
+            try {
+                params.loadDefaultsClosedSearch();
+                fillFormFromParams(params);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Could not load defaults", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnMsfraggerDefaultsClosedActionPerformed
+
     
     public static PlainDocument getFilterIsotopeCorrection() {
         final String filteredCharsRegex = "[^\\-\\d/]";
@@ -1444,8 +1481,9 @@ public class FraggerPanel extends javax.swing.JPanel {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDefaults;
     private javax.swing.JButton btnLoad;
+    private javax.swing.JButton btnMsfraggerDefaultsClosed;
+    private javax.swing.JButton btnMsfraggerDefaultsOpen;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSelectMsfraggerDb;
     private javax.swing.JCheckBox checkClipNTerm;
@@ -1480,8 +1518,6 @@ public class FraggerPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel4;
@@ -1501,6 +1537,8 @@ public class FraggerPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblAddTopNComplementary;
+    private javax.swing.JLabel lblRam;
+    private javax.swing.JLabel lblThreads;
     private javax.swing.JLabel lblTrackZeroTopN;
     private javax.swing.JLabel lblZeroBinAcceptExpect;
     private javax.swing.JLabel lblZeroBinMultiplyExpect;
